@@ -4,7 +4,7 @@
     <persistence-units>
       <persistence-unit name="Default">
         <packages>
-          <package value="com.endava_project.media_library" />
+          <package value="com.endava_project.online_wallet" />
         </packages>
       </persistence-unit>
     </persistence-units>

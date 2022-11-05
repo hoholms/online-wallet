@@ -1,13 +1,13 @@
-package com.endava_project.media_library;
+package com.endava_project.online_wallet;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MediaLibraryApplication {
+public class OnlineWalletApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MediaLibraryApplication.class, args);
+        SpringApplication.run(OnlineWalletApplication.class, args);
     }
 
 }

@@ -1,10 +1,10 @@
-package com.endava_project.media_library;
+package com.endava_project.online_wallet;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MediaLibraryApplicationTests {
+class OnlineWalletApplicationTests {
 
     @Test
     void contextLoads() {
