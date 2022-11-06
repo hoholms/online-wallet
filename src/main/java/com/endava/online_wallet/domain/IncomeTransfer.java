@@ -1,4 +1,4 @@
-package com.endava.online_wallet.entity;
+package com.endava.online_wallet.domain;
 
 import lombok.Data;
 
@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Table(name = "deposit_transfer")
+@Table(name = "income_transfer")
 @Data
-public class DepositTransfer {
+public class IncomeTransfer {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
@@ -19,12 +19,12 @@ public class DepositTransfer {
     private User username;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "from_account", nullable = false)
-    private CashAccount fromAccount;
+    @JoinColumn(name = "from_income_type", nullable = false)
+    private IncomeType fromIncomeType;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "to_deposit_type", nullable = false)
-    private DepositType toDepositType;
+    @JoinColumn(name = "to_account", nullable = false)
+    private CashAccount toAccount;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;

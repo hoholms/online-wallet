@@ -1,4 +1,4 @@
-package com.endava.online_wallet.entity;
+package com.endava.online_wallet.domain;
 
 import lombok.Data;
 
