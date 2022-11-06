@@ -8,7 +8,7 @@
         <version>2.7.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.endava_project</groupId>
+    <groupId>com.endava</groupId>
     <artifactId>Online_Wallet</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Online_Wallet</name>

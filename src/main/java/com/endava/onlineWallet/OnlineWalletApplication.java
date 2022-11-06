@@ -1,4 +1,4 @@
-package com.endava_project.online_wallet;
+package com.endava.onlineWallet;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
