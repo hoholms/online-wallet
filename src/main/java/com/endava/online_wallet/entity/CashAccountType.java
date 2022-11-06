@@ -1,47 +1,24 @@
 package com.endava.online_wallet.entity;
 
+import lombok.Data;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "cash_account_type")
+@Data
 public class CashAccountType {
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-  private long id;
-  private String username;
-  private String typeName;
-  private String isDefault;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username")
+    private User username;
 
+    @Column(name = "type_name", nullable = false, length = 50)
+    private String typeName;
 
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-
-  public String getTypeName() {
-    return typeName;
-  }
-
-  public void setTypeName(String typeName) {
-    this.typeName = typeName;
-  }
-
-
-  public String getIsDefault() {
-    return isDefault;
-  }
-
-  public void setIsDefault(String isDefault) {
-    this.isDefault = isDefault;
-  }
-
+    @Column(name = "is_default", nullable = false)
+    private Boolean isDefault = false;
 }

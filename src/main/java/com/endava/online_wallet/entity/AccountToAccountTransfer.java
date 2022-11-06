@@ -1,67 +1,34 @@
 package com.endava.online_wallet.entity;
 
+import lombok.Data;
 
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.Instant;
+
+@Entity
+@Table(name = "account_to_account_transfer")
+@Data
 public class AccountToAccountTransfer {
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-  private long id;
-  private String username;
-  private long fromAccount;
-  private long toAccount;
-  private String amount;
-  private java.sql.Timestamp transferDate;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "username", nullable = false)
+    private User username;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "from_account", nullable = false)
+    private CashAccount fromAccount;
 
-  public long getId() {
-    return id;
-  }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "to_account", nullable = false)
+    private CashAccount toAccount;
 
-  public void setId(long id) {
-    this.id = id;
-  }
+    @Column(name = "amount", nullable = false)
+    private BigDecimal amount;
 
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-
-  public long getFromAccount() {
-    return fromAccount;
-  }
-
-  public void setFromAccount(long fromAccount) {
-    this.fromAccount = fromAccount;
-  }
-
-
-  public long getToAccount() {
-    return toAccount;
-  }
-
-  public void setToAccount(long toAccount) {
-    this.toAccount = toAccount;
-  }
-
-
-  public String getAmount() {
-    return amount;
-  }
-
-  public void setAmount(String amount) {
-    this.amount = amount;
-  }
-
-
-  public java.sql.Timestamp getTransferDate() {
-    return transferDate;
-  }
-
-  public void setTransferDate(java.sql.Timestamp transferDate) {
-    this.transferDate = transferDate;
-  }
-
+    @Column(name = "transfer_date", nullable = false)
+    private Instant transferDate;
 }

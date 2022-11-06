@@ -1,47 +1,26 @@
 package com.endava.online_wallet.entity;
 
+import lombok.Data;
 
+import javax.persistence.*;
+import java.math.BigDecimal;
+
+@Entity
+@Table(name = "cash_account")
+@Data
 public class CashAccount {
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-  private long id;
-  private String username;
-  private long type;
-  private String amount;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "username", nullable = false)
+    private User username;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "type", nullable = false)
+    private CashAccountType type;
 
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-
-  public long getType() {
-    return type;
-  }
-
-  public void setType(long type) {
-    this.type = type;
-  }
-
-
-  public String getAmount() {
-    return amount;
-  }
-
-  public void setAmount(String amount) {
-    this.amount = amount;
-  }
-
+    @Column(name = "amount", nullable = false)
+    private BigDecimal amount;
 }
