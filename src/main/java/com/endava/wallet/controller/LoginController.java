@@ -26,7 +26,7 @@ public class LoginController {
         } else if (exception instanceof LockedException) {
             error = exception.getMessage();
         } else {
-            error = "Invalid username and password!";
+            error = "Something went wrong...";
         }
         return error;
     }
