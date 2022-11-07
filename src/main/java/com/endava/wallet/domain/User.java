@@ -78,8 +78,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-    /*public void setAccountNonLocked(Boolean accountNonLocked) {
-        this.enabled = accountNonLocked;
-    }*/
 }
