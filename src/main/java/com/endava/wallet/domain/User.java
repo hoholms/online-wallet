@@ -8,13 +8,11 @@ import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -40,6 +38,11 @@ public class User implements UserDetails {
         User user = (User) o;
         return username != null && Objects.equals(username, user.username);
     }
+
+    @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "username"))
+    @Enumerated(EnumType.STRING)
+    private Set<Authority> authority;
 
     @Override
     public int hashCode() {
