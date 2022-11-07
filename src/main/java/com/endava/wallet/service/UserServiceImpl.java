@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
@@ -18,6 +18,7 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new UsernameNotFoundException("User not present"));
 
     }
+
     public void createUser(User user) {
         userRepository.save(user);
     }

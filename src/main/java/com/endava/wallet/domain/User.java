@@ -30,6 +30,10 @@ public class User implements UserDetails {
 
     @Column(name = "enabled", nullable = false)
     private Boolean enabled = false;
+    @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "username"))
+    @Enumerated(EnumType.STRING)
+    private Set<Authority> authority;
 
     @Override
     public boolean equals(Object o) {
@@ -38,11 +42,6 @@ public class User implements UserDetails {
         User user = (User) o;
         return username != null && Objects.equals(username, user.username);
     }
-
-    @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "username"))
-    @Enumerated(EnumType.STRING)
-    private Set<Authority> authority;
 
     @Override
     public int hashCode() {
@@ -59,21 +58,27 @@ public class User implements UserDetails {
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return enabled;
     }
-    @Override public boolean isCredentialsNonExpired() {
+
+    @Override
+    public boolean isCredentialsNonExpired() {
         return true;
     }
-    @Override public boolean isEnabled() {
+
+    @Override
+    public boolean isEnabled() {
         return true;
+    }
+
+    public boolean getAccountNonLocked() {
+        return enabled;
     }
 
     public void setAccountNonLocked(Boolean accountNonLocked) {
         this.enabled = accountNonLocked;
-    }
-    public boolean getAccountNonLocked() {
-        return enabled;
     }
 }
