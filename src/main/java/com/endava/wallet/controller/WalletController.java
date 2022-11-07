@@ -2,6 +2,7 @@ package com.endava.wallet.controller;
 
 import com.endava.wallet.domain.User;
 import com.endava.wallet.service.UserServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,10 +20,9 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
+@AllArgsConstructor
 public class WalletController {
-    @Autowired
     private UserServiceImpl userDetailsManager;
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
