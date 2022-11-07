@@ -46,9 +46,11 @@ public class WalletController {
             MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
     )
     public void addUser(@RequestParam Map<String, String> body) {
-        User user = new User(); user.setUsername(body.get("username"));
+        User user = new User();
+        user.setUsername(body.get("username"));
         user.setPassword(passwordEncoder.encode(body.get("password")));
-        user.setAccountNonLocked(true); userDetailsManager.createUser(user);
+        user.setAccountNonLocked(true);
+        userDetailsManager.createUser(user);
     }
     private String getErrorMessage(HttpServletRequest request, String key) {
         Exception exception = (Exception) request.getSession().getAttribute(key);

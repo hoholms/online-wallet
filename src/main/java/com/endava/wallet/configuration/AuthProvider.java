@@ -37,7 +37,6 @@ import java.util.Optional;
                     attemptsRepository.save(attempts);
                 }
                 return null;
-                //Must be smth, idgf what
             }
             private void processFailedAttempts(String username, User user) {
                 Optional<Attempts>
