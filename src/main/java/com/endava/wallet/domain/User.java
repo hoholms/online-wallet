@@ -22,6 +22,10 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class User implements UserDetails {
     @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "username", nullable = false, length = 50)
     private String username;
 
@@ -32,7 +36,7 @@ public class User implements UserDetails {
     private Boolean enabled = false;
 
     @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "username"))
+    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Authority> authority;
 
@@ -75,11 +79,7 @@ public class User implements UserDetails {
         return true;
     }
 
-    public boolean getAccountNonLocked() {
-        return enabled;
-    }
-
-    public void setAccountNonLocked(Boolean accountNonLocked) {
+    /*public void setAccountNonLocked(Boolean accountNonLocked) {
         this.enabled = accountNonLocked;
-    }
+    }*/
 }

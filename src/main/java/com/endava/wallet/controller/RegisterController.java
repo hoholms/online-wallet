@@ -31,7 +31,7 @@ public class RegisterController {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAuthority(Collections.singleton(Authority.USER));
-        user.setAccountNonLocked(true);
+        user.setEnabled(true);
         userRepository.save(user);
 
         return "redirect:/login";
