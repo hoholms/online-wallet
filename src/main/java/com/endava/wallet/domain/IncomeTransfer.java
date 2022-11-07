@@ -1,4 +1,4 @@
-package com.endava.online_wallet.domain;
+package com.endava.wallet.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +12,12 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "deposit_transfer")
+@Table(name = "income_transfer")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class DepositTransfer {
+public class IncomeTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -29,14 +29,14 @@ public class DepositTransfer {
     private User username;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "from_account", nullable = false)
+    @JoinColumn(name = "from_income_type", nullable = false)
     @ToString.Exclude
-    private CashAccount fromAccount;
+    private IncomeType fromIncomeType;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "to_deposit_type", nullable = false)
+    @JoinColumn(name = "to_account", nullable = false)
     @ToString.Exclude
-    private DepositType toDepositType;
+    private CashAccount toAccount;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
@@ -48,7 +48,7 @@ public class DepositTransfer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        DepositTransfer that = (DepositTransfer) o;
+        IncomeTransfer that = (IncomeTransfer) o;
         return id != null && Objects.equals(id, that.id);
     }
 

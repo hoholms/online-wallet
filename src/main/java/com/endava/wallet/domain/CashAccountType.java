@@ -1,4 +1,4 @@
-package com.endava.online_wallet.domain;
+package com.endava.wallet.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,38 +7,35 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cash_account")
+@Table(name = "cash_account_type")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class CashAccount {
+public class CashAccountType {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "username", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username")
     @ToString.Exclude
     private User username;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "type", nullable = false)
-    @ToString.Exclude
-    private CashAccountType type;
+    @Column(name = "type_name", nullable = false, length = 50)
+    private String typeName;
 
-    @Column(name = "amount", nullable = false)
-    private BigDecimal amount;
+    @Column(name = "is_default", nullable = false)
+    private Boolean isDefault = false;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CashAccount that = (CashAccount) o;
+        CashAccountType that = (CashAccountType) o;
         return id != null && Objects.equals(id, that.id);
     }
 

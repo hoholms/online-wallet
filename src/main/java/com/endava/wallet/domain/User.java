@@ -1,4 +1,4 @@
-package com.endava.online_wallet.domain;
+package com.endava.wallet.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

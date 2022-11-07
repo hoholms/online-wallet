@@ -1,4 +1,4 @@
-package com.endava.online_wallet.domain;
+package com.endava.wallet.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,16 +7,19 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "deposit_type")
+@Table(name = "deposit_transfer")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class DepositType {
+public class DepositTransfer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -25,17 +28,27 @@ public class DepositType {
     @ToString.Exclude
     private User username;
 
-    @Column(name = "type_name", nullable = false, length = 50)
-    private String typeName;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "from_account", nullable = false)
+    @ToString.Exclude
+    private CashAccount fromAccount;
 
-    @Column(name = "is_default")
-    private Boolean isDefault;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "to_deposit_type", nullable = false)
+    @ToString.Exclude
+    private DepositType toDepositType;
+
+    @Column(name = "amount", nullable = false)
+    private BigDecimal amount;
+
+    @Column(name = "transfer_date", nullable = false)
+    private LocalDate transferDate;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        DepositType that = (DepositType) o;
+        DepositTransfer that = (DepositTransfer) o;
         return id != null && Objects.equals(id, that.id);
     }
 

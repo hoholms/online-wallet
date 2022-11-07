@@ -1,4 +1,4 @@
-package com.endava.online_wallet;
+package com.endava.wallet;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
