@@ -24,6 +24,11 @@ import java.util.Map;
 @Builder
 public class WalletController {
     @GetMapping("/")
+    public String hello() {
+        return "hello";
+    }
+
+    @GetMapping("/index")
     public String index() {
         return "index";
     }
