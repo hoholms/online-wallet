@@ -29,6 +29,7 @@ public class WalletController {
     public String index() {
         return "index";
     }
+
     @GetMapping("/login")
     public String login(HttpServletRequest request, HttpSession session) {
         session.setAttribute(
@@ -36,10 +37,12 @@ public class WalletController {
         );
         return "login";
     }
+
     @GetMapping("/register")
     public String register() {
         return "register";
     }
+
     @PostMapping(
             value = "/register",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = {

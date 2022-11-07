@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @AllArgsConstructor
 @Configuration
-public class MySecurityConfig extends WebSecurityConfigurerAdapter {
+public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -27,12 +27,12 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests().antMatchers("/register**")
-                .permitAll() .anyRequest().authenticated()
+                .permitAll().anyRequest().authenticated()
                 .and()
-                .formLogin() .loginPage("/login")
+                .formLogin().loginPage("/login")
                 .permitAll()
                 .and()
-                .logout() .invalidateHttpSession(true)
-                .clearAuthentication(true) .permitAll();
+                .logout().invalidateHttpSession(true)
+                .clearAuthentication(true).permitAll();
     }
 }
