@@ -1,7 +1,0 @@
-package com.endava.wallet.repository;
-
-import com.endava.wallet.domain.IncomeType;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface IncomeTypeRepository extends JpaRepository<IncomeType, Long> {
-}

@@ -3,7 +3,6 @@ package com.endava.wallet.controller;
 import com.endava.wallet.domain.Authority;
 import com.endava.wallet.domain.User;
 import com.endava.wallet.repository.UserRepository;
-import com.endava.wallet.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ import java.util.Collections;
 @Controller
 @RequiredArgsConstructor
 public class RegisterController {
-    private final UserServiceImpl userDetailsManager;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
@@ -34,7 +32,7 @@ public class RegisterController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAuthority(Collections.singleton(Authority.USER));
         user.setAccountNonLocked(true);
-        userDetailsManager.createUser(user);
+        userRepository.save(user);
 
         return "redirect:/login";
     }
