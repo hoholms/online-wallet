@@ -1,4 +1,4 @@
-package com.endava.wallet.repositories;
+package com.endava.wallet.repository;
 
 import com.endava.wallet.domain.CashAccountType;
 import org.springframework.data.jpa.repository.JpaRepository;

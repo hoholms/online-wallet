@@ -1,7 +1,7 @@
 package com.endava.wallet.service;
 
 import com.endava.wallet.domain.User;
-import com.endava.wallet.repositories.UserRepository;
+import com.endava.wallet.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
