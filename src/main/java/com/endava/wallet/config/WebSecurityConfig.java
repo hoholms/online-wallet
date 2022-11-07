@@ -1,4 +1,4 @@
-package com.endava.wallet.configuration;
+package com.endava.wallet.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
