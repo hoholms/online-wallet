@@ -1,4 +1,4 @@
-package com.endava.wallet.dao;
+package com.endava.wallet.repositories;
 
 import com.endava.wallet.domain.IncomeTransfer;
 import org.springframework.data.jpa.repository.JpaRepository;
