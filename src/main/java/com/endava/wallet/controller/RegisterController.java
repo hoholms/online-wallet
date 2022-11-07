@@ -7,6 +7,7 @@ import com.endava.wallet.service.UserServiceImpl;
 import lombok.Builder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -36,11 +37,9 @@ public class RegisterController {
     }*/
 
     @PostMapping("/register")
-    public String addUser(User user, Map<String, Object> model) {
-        //Optional<User> userFromDB = userRepository.findUserByUsername(user.getUsername());
-
-        if (/*userFromDB.isPresent()*/ userRepository.existsUserByUsername(user.getUsername())) {
-            model.put("message", "User already exists!");
+    public String addUser(User user, Model model) {
+        if (userRepository.existsUserByUsername(user.getUsername())) {
+            model.addAttribute("message", "User already exists!");
             return "register";
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
