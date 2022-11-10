@@ -29,6 +29,7 @@ public class RegisterController {
             model.addAttribute("message", "User already exists!");
             return "register";
         }
+        model.addAttribute(user.getUsername(), "username");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAuthority(Collections.singleton(Authority.USER));
         user.setEnabled(true);

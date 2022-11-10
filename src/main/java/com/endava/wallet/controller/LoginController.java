@@ -1,9 +1,12 @@
 package com.endava.wallet.controller;
 
+import com.endava.wallet.domain.User;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +19,10 @@ public class LoginController {
                 "error", getErrorMessage(request)
         );
         return "login";
+    }
+    @PostMapping("/login")
+    public String loginPost() {
+        return "redirect:/hello";
     }
 
     private String getErrorMessage(HttpServletRequest request) {

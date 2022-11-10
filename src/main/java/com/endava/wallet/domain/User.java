@@ -37,6 +37,7 @@ public class User implements UserDetails {
 
     @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
+
     @Enumerated(EnumType.STRING)
     private Set<Authority> authority;
 
