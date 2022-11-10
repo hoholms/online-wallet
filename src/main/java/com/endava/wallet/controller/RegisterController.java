@@ -1,7 +1,7 @@
 package com.endava.wallet.controller;
 
-import com.endava.wallet.domain.Authority;
-import com.endava.wallet.domain.User;
+import com.endava.wallet.entity.Authority;
+import com.endava.wallet.entity.User;
 import com.endava.wallet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +26,7 @@ public class RegisterController {
     @PostMapping("/register")
     public String addUser(User user, Model model) {
         if (userRepository.existsUserByUsername(user.getUsername())) {
-            model.addAttribute("message", "User already exists!");
+            model.addAttribute("error", "User already exists!");
             return "register";
         }
         model.addAttribute(user.getUsername(), "username");

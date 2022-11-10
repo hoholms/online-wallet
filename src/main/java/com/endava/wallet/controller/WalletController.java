@@ -12,8 +12,13 @@ public class WalletController {
         return "index";
     }
 
-    @GetMapping("/index")
-    public String index() {
-        return "index";
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "dashboard";
+    }
+
+    @GetMapping("/transactions")
+    public String transactions() {
+        return "transactions";
     }
 }
