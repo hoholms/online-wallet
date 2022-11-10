@@ -1,17 +1,44 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    User editor
-
+    <h4>User editor</h4>
     <form action="/user" method="post">
-        <input type="text" name="username" value="${user.username}">
-        <#list authorities as authority>
-            <div>
-                <label> <input type="checkbox" name="${authority}" ${user.authorities?seq_contains(authority)?string("checked", "")}>${authority}</label>
-            </div>
-        </#list>
-        <input type="hidden" value="${user.id}" name="userId">
         <input type="hidden" value="${_csrf.token}" name="_csrf">
-        <button type="submit">Save</button>
+
+        <div class="form-group row">
+            <label for="userId" class="col-sm-2 col-form-label">User ID</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" value="${user.id}" name="userId" id="userId">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="username" class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+                <input type="text" id="username" name="username" class="form-control" value="${user.username}"
+                       placeholder="Username">
+            </div>
+        </div>
+
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-sm-2 pt-0">Roles</legend>
+                <div class="col-sm-10">
+                    <#list authorities as authority>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="authority"
+                                   name="${authority}" ${user.authorities?seq_contains(authority)?string("checked", "")}>
+                            <label for="authority" class="form-check-label">${authority}</label>
+                        </div>
+                    </#list>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button class="btn btn-primary mt-3" type="submit">Save</button>
+            </div>
+        </div>
     </form>
 </@c.page>
