@@ -1,4 +1,4 @@
-package com.endava.wallet.domain;
+package com.endava.wallet.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +37,12 @@ public class User implements UserDetails {
 
     @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
-
     @Enumerated(EnumType.STRING)
     private Set<Authority> authority;
+
+    public boolean isAdmin() {
+        return authority.contains(Authority.ADMIN);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -56,7 +59,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "read");
+        return getAuthority();
     }
 
 
@@ -77,6 +80,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return getEnabled();
     }
 }
