@@ -1,6 +1,5 @@
-package com.endava.wallet;
+package com.endava.wallet.entity;
 
-import com.endava.wallet.entity.User;
 import lombok.*;
 import org.hibernate.Hibernate;
 
