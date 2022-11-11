@@ -1,5 +1,6 @@
 <#import "parts/common.ftlh" as c>
+<#include "parts/security.ftlh">
 
 <@c.page>
-    <h1>There will be ur dashboard!</h1>
+    <h1>${user.username}'s dashboard</h1>
 </@c.page>

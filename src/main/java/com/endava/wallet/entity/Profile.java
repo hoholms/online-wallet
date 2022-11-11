@@ -5,6 +5,8 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,7 +19,7 @@ import java.util.Objects;
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "profile_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "first_name", nullable = false, length = 50)
@@ -36,6 +38,12 @@ public class Profile {
     @JoinColumn(name = "user_id", nullable = false)
     @ToString.Exclude
     private User user;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private List<ExpenseTransfer> expenseList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private List<IncomeTransfer> incomeList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

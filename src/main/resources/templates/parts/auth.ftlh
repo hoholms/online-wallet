@@ -1,23 +1,23 @@
 <#macro auth path isRegisterForm>
     <form action="${path}" method="post">
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="uname">Username</label>
             <input type="text" class="form-control" name="username" id="uname" placeholder="Username"/>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="passwd">Password</label>
             <input type="password" class="form-control" name="password" id="passwd" placeholder="Password"/>
         </div>
         <#if isRegisterForm>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="fname">First Name</label>
                 <input type="text" class="form-control" name="firstName" id="fname" placeholder="First Name"/>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="lname">Last Name</label>
                 <input type="text" class="form-control" name="lastName" id="lname" placeholder="Last Name"/>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="email">Email</label>
                 <input type="email" class="form-control" name="email" id="email" placeholder="Email"/>
             </div>
