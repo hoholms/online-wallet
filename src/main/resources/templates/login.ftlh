@@ -6,5 +6,5 @@
         <h5>Login Page</h5>
         <p class="text-danger">${error!""}</p>
     </div>
-    <@l.authLogin "/login" false/>
+    <@l.auth "/login" false/>
 </@c.page>

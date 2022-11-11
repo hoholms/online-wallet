@@ -39,13 +39,9 @@ public class RegisterController {
         user.setEnabled(true);
         userRepository.save(user);
 
-        profile.setUser(userRepository.findUserByUsername(user.getUsername()).get());
-        profile.setEmail(profile.getEmail());
-        profile.setFirstName(profile.getFirstName());
-        profile.setLastName(profile.getLastName());
+        profile.setUser(user);
         profile.setCreatedDate(Instant.now());
         profileRepository.save(profile);
-
         return "redirect:/login";
     }
 }
