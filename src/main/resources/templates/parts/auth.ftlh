@@ -10,12 +10,12 @@
         </div>
         <#if isRegisterForm>
             <div class="form-group">
-                <label for="firstname">First Name</label>
-                <input type="text" class="form-control" name="firstname" id="fname" placeholder="First Name"/>
+                <label for="fname">First Name</label>
+                <input type="text" class="form-control" name="firstName" id="fname" placeholder="First Name"/>
             </div>
             <div class="form-group">
-                <label for="lastname">Last Name</label>
-                <input type="text" class="form-control" name="lastname" id="lname" placeholder="Last Name"/>
+                <label for="lname">Last Name</label>
+                <input type="text" class="form-control" name="lastName" id="lname" placeholder="Last Name"/>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
