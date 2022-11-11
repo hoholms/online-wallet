@@ -14,6 +14,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Builder
 public class IncomeTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
