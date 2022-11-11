@@ -29,6 +29,9 @@ public class Profile {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "balance", nullable = false)
+    private Integer balance;
+
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
 
