@@ -41,6 +41,7 @@ public class RegisterController {
 
         profile.setUser(user);
         profile.setCreatedDate(Instant.now());
+        profile.setBalance(0);
         profileRepository.save(profile);
         return "redirect:/login";
     }
