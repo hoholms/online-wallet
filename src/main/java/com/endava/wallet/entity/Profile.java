@@ -17,25 +17,28 @@ import java.text.SimpleDateFormat;
 @ToString
 @RequiredArgsConstructor
 public class Profile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "profile_id", nullable = false)
+    private Long id;
 
     @OneToOne()
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "profile_id", nullable = false)
-    private Long profile_id;
+    @Column(name = "user_id", nullable = false)
+    private Long user_id;
 
-    @Id
     @Column(name = "email", nullable = false, length = 256)
     private String email;
 
-    @Column(name = "f_name", nullable = false, length = 50)
-    private String f_name;
+    @Column(name = "first_name", nullable = false, length = 50)
+    private String first_name;
 
-    @Column(name = "l_name", nullable = false, length = 50)
-    private String l_name;
+    @Column(name = "last_name", nullable = false, length = 50)
+    private String last_name;
 
-    @Column(name = "created_on")
+    @Column(name = "created_date")
     private Timestamp created_on;
 
     private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
