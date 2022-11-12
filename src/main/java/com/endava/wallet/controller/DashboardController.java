@@ -9,6 +9,7 @@ import com.endava.wallet.repository.TransactionRepository;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,15 +29,18 @@ public class DashboardController {
     private final TransactionsCategoryRepository categoryRepository;
 
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
+    public String dashboard(@AuthenticationPrincipal User user, Model model) {
+        Profile currentProfile = profileRepository.findByUser(user);
+        model.addAttribute("currentProfile", currentProfile);
+
         List<TransactionsCategory> incomeCategories = categoryRepository.findByIsIncome(true);
         model.addAttribute("incomeCategories", incomeCategories);
 
         List<TransactionsCategory> expenseCategories = categoryRepository.findByIsIncome(false);
         model.addAttribute("expenseCategories", expenseCategories);
 
-        List<Transaction> transactions = transactionRepository.findAll(Sort.by(Sort.Direction.DESC, "transactionDate"));
-        model.addAttribute("transactions", transactions);
+        List<Transaction> recentTransactions = transactionRepository.findTop10ByProfileOrderByTransactionDateDesc(currentProfile);
+        model.addAttribute("recentTransactions", recentTransactions);
 
         return "dashboard";
     }
@@ -44,17 +48,17 @@ public class DashboardController {
     @PostMapping("/dashboard")
     public String addTransaction(
             @AuthenticationPrincipal User user,
-            @RequestParam TransactionsCategory category,
+            @RequestParam String category,
             @RequestParam boolean isIncome,
             @RequestParam BigDecimal amount,
             @RequestParam String message,
-            @RequestParam LocalDate transactionDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate transactionDate,
             Model model
     ) {
         Profile currentProfile = profileRepository.findByUser(user);
         Transaction transaction = Transaction.builder()
                 .profile(currentProfile)
-                .category(category)
+                .category(categoryRepository.findByCategory(category))
                 .isIncome(isIncome)
                 .amount(amount)
                 .message(message)
@@ -63,9 +67,14 @@ public class DashboardController {
 
         transactionRepository.save(transaction);
 
-        List<Transaction> transactions = transactionRepository.findAll(Sort.by(Sort.Direction.DESC, "transactionDate"));
-        model.addAttribute("transactions", transactions);
+        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
+            currentProfile.setBalance(currentProfile.getBalance().add(transaction.getAmount()));
+        }
+        else {
+            currentProfile.setBalance(currentProfile.getBalance().subtract(transaction.getAmount()));
+        }
+        profileRepository.save(currentProfile);
 
-        return "dashboard";
+        return dashboard(user, model);
     }
 }
