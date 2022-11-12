@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @PreAuthorize("hasAuthority('ADMIN')")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserRepository userRepository;
 
     @GetMapping

@@ -1,5 +1,7 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    <h1>There will be all ur transactions!</h1>
+        <#list transactions as transaction>
+            ${transaction.id} : ${transaction.category_id} : ${transaction.price}
+        </#list>
 </@c.page>
