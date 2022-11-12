@@ -8,7 +8,6 @@ import com.endava.wallet.repository.ProfileRepository;
 import com.endava.wallet.repository.TransactionRepository;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,10 @@ public class DashboardController {
     private final TransactionsCategoryRepository categoryRepository;
 
     @GetMapping("/dashboard")
-    public String dashboard(@AuthenticationPrincipal User user, Model model) {
+    public String dashboard(
+            @AuthenticationPrincipal User user,
+            Model model
+    ) {
         Profile currentProfile = profileRepository.findByUser(user);
         model.addAttribute("currentProfile", currentProfile);
 
@@ -41,6 +43,8 @@ public class DashboardController {
 
         List<Transaction> recentTransactions = transactionRepository.findTop10ByProfileOrderByTransactionDateDesc(currentProfile);
         model.addAttribute("recentTransactions", recentTransactions);
+
+        model.addAttribute("today", LocalDate.now());
 
         return "dashboard";
     }
@@ -69,8 +73,7 @@ public class DashboardController {
 
         if (Boolean.TRUE.equals(transaction.getIsIncome())) {
             currentProfile.setBalance(currentProfile.getBalance().add(transaction.getAmount()));
-        }
-        else {
+        } else {
             currentProfile.setBalance(currentProfile.getBalance().subtract(transaction.getAmount()));
         }
         profileRepository.save(currentProfile);
