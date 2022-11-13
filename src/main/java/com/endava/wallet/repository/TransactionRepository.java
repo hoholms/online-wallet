@@ -10,4 +10,7 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByProfileAndTransactionDateBetweenOrderByTransactionDateAsc(Profile profile, LocalDate from, LocalDate to);
     List<Transaction> findTop10ByProfileOrderByTransactionDateAsc(Profile profile);
+    List<Transaction> findTransactionByProfileOrderByIdAsc(Profile profile);
+    Transaction findTransactionById(Long id);
+
 }
