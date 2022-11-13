@@ -50,28 +50,57 @@
 
     <div class="container-fluid my-4">
         <h3>Statistics:</h3>
-        <div  class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">In <span style="text-transform: lowercase">${today.month}</span></h5>
-                    <h6 class="card-subtitle mb-2">
-                        you <span class="text-success">earned ${monthIncome}</span>, but <span
-                                class="text-danger">spent ${monthExpense}</span>
-                    </h6>
-                </div>
-                <div class="card-footer">
-                    <span class="text-success">${monthIncome}</span> - <span class="text-danger">${monthExpense}</span>
-                    =
-                    <#if monthIncome - monthExpense gt 0>
-                        <span class="text-success">${monthIncome - monthExpense}</span>
-                    <#elseif monthIncome - monthExpense lt 0>
-                        <span class="text-danger">${monthIncome - monthExpense}</span>
-                    <#else>
-                        <span class="text-muted">0</span>
-                    </#if>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">In <span style="text-transform: lowercase">${today.month}</span></h5>
+                        <h6 class="card-subtitle mb-2">
+                            you <span class="text-success">earned ${monthIncome}</span>, but <span
+                                    class="text-danger">spent ${monthExpense}</span>
+                        </h6>
+                    </div>
+                    <div class="card-footer">
+                        <span class="text-success">${monthIncome}</span> - <span
+                                class="text-danger">${monthExpense}</span>
+                        =
+                        <#if monthIncome - monthExpense gt 0>
+                            <span class="text-success">${monthIncome - monthExpense}</span>
+                        <#elseif monthIncome - monthExpense lt 0>
+                            <span class="text-danger">${monthIncome - monthExpense}</span>
+                        <#else>
+                            <span class="text-muted">0</span>
+                        </#if>
+                    </div>
                 </div>
             </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">In <span style="text-transform: lowercase">${today.month}</span></h5>
+                        <h6 class="card-subtitle mb-2">
+                            you <span class="text-success">earned the most money (${maxIncomeSum})</span>
+                            from ${maxIncomeCategory}
+                        </h6>
+                    </div>
+                    <div class="card-footer">
+                        <span class="text-success">+${maxIncomeSum}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">In <span style="text-transform: lowercase">${today.month}</span></h5>
+                        <h6 class="card-subtitle mb-2">
+                            you <span class="text-danger">spent the most money (${maxExpenseSum})</span>
+                            on ${maxExpenseCategory}
+                        </h6>
+                    </div>
+                    <div class="card-footer">
+                        <span class="text-danger">-${maxExpenseSum}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

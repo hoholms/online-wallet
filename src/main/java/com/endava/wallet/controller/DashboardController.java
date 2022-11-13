@@ -68,6 +68,34 @@ public class DashboardController {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         model.addAttribute("monthExpense", monthExpense);
 
+        String maxIncomeCategory = transactionRepository.FindMaxCategoryDateBetween(
+                currentProfile,
+                true,
+                LocalDate.now().withDayOfMonth(1),
+                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear())));
+        model.addAttribute("maxIncomeCategory", maxIncomeCategory);
+
+        BigDecimal maxIncomeSum = transactionRepository.FindMaxSumDateBetween(
+                currentProfile,
+                true,
+                LocalDate.now().withDayOfMonth(1),
+                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear())));
+        model.addAttribute("maxIncomeSum", maxIncomeSum);
+
+        String maxExpenseCategory = transactionRepository.FindMaxCategoryDateBetween(
+                currentProfile,
+                false,
+                LocalDate.now().withDayOfMonth(1),
+                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear())));
+        model.addAttribute("maxExpenseCategory", maxExpenseCategory);
+
+        BigDecimal maxExpenseSum = transactionRepository.FindMaxSumDateBetween(
+                currentProfile,
+                false,
+                LocalDate.now().withDayOfMonth(1),
+                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear())));
+        model.addAttribute("maxExpenseSum", maxExpenseSum);
+
         model.addAttribute("today", LocalDate.now());
 
         return "dashboard";
