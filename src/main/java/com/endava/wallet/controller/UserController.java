@@ -2,7 +2,7 @@ package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.repository.UserRepository;
+import com.endava.wallet.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,15 +16,15 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasAuthority('ADMIN')")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final CustomUserDetailsService userService;
 
     @GetMapping
     public String userList(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.findAll());
 
         return "userList";
     }
@@ -43,7 +43,6 @@ public class UserController {
             @RequestParam("userId") User user
     ) {
         user.setUsername(username);
-
         Set<String> authorities = Arrays.stream(Authority.values())
                 .map(Authority::name)
                 .collect(Collectors.toSet());
@@ -56,7 +55,7 @@ public class UserController {
             }
         }
 
-        userRepository.save(user);
+        userService.save(user);
 
         return "redirect:/user";
     }

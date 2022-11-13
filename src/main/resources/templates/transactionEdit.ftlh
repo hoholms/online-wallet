@@ -1,5 +1,42 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    <h4>Your transaction</h4>
+    <h4>Transaction editor</h4>
+    <form action="/transactions" method="post">
+        <input type="hidden" value="${_csrf.token}" name="_csrf">
+
+        <div class="form-group row">
+            <label for="transactionId" class="col-sm-2 col-form-label">Transaction ID</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" value="${transactionEdit.id}" name="id" id="transactionId">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="message" class="col-sm-2 col-form-label">Message</label>
+            <div class="col-sm-10">
+                <input type="text" id="message" name="message" class="form-control" value="${transactionEdit.message}"
+                       placeholder="Message">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="tAmount" class="col-sm-2 col-form-label">Amount</label>
+            <div class="col-sm-10">
+                <input type="number" id="tAmount" name="amount" class="form-control" placeholder="Amount"
+                       step="0.01" min="0" value="${transactionEdit.amount}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="tDate" class="col-sm-2 col-form-label">Date</label>
+            <div class="col-sm-10">
+                <input type="date" id="tDate" name="transactionDate" class="form-control" placeholder="Date"
+                       value="${transactionEdit.transactionDate}">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button class="btn btn-primary mt-3" type="submit">Save</button>
+            </div>
+        </div>
+    </form>
 </@c.page>
