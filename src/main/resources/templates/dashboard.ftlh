@@ -49,15 +49,14 @@
     </div>
 
     <div class="container-fluid my-4">
-        <h3>Statistics:</h3>
+        <h3>In <span style="text-transform: lowercase">${today.month}</span> you:</h3>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">In <span style="text-transform: lowercase">${today.month}</span></h5>
+                        <h5 class="card-title"><span class="text-success">Earned ${monthIncome}</span></h5>
                         <h6 class="card-subtitle mb-2">
-                            you <span class="text-success">earned ${monthIncome}</span>, but <span
-                                    class="text-danger">spent ${monthExpense}</span>
+                            and <span class="text-danger">spent ${monthExpense}</span>
                         </h6>
                     </div>
                     <div class="card-footer">
@@ -77,28 +76,28 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">In <span style="text-transform: lowercase">${today.month}</span></h5>
+                        <h5 class="card-title"><span
+                                    class="text-success">Earned the most money (${maxIncomeSum!"0"})</span></h5>
                         <h6 class="card-subtitle mb-2">
-                            you <span class="text-success">earned the most money (${maxIncomeSum})</span>
-                            from ${maxIncomeCategory}
+                            from ${maxIncomeCategory!"nothing"}
                         </h6>
                     </div>
                     <div class="card-footer">
-                        <span class="text-success">+${maxIncomeSum}</span>
+                        <span class="text-success">+${maxIncomeSum!"0"}</span>
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">In <span style="text-transform: lowercase">${today.month}</span></h5>
+                        <h5 class="card-title"><span
+                                    class="text-danger">Spent the most money (${maxExpenseSum!"0"})</span></h5>
                         <h6 class="card-subtitle mb-2">
-                            you <span class="text-danger">spent the most money (${maxExpenseSum})</span>
-                            on ${maxExpenseCategory}
+                            on ${maxExpenseCategory!"nothing"}
                         </h6>
                     </div>
                     <div class="card-footer">
-                        <span class="text-danger">-${maxExpenseSum}</span>
+                        <span class="text-danger">-${maxExpenseSum!"0"}</span>
                     </div>
                 </div>
             </div>
