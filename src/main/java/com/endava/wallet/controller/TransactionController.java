@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @AllArgsConstructor
-public class TransactionsController {
+public class TransactionController {
     private TransactionsCategoryRepository transactionsCategoryRepository;
     private TransactionsService transactionsService;
 
@@ -27,9 +27,9 @@ public class TransactionsController {
 
     @GetMapping("{transaction}")
     public String transactionEditForm(@PathVariable Transaction transaction, Model model) {
-        model.addAttribute("transaction", transaction);
+        model.addAttribute("transactionEdit", transaction);
         model.addAttribute("categories", transactionsCategoryRepository.findAll());
-        return "userEdit";
+        return "transactionEdit";
     }
 
 

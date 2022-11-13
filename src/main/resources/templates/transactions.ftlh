@@ -22,7 +22,7 @@
                 <td>${transaction.amount} MDL</td>
                 <td>${transaction.message}</td>
                 <td>${transaction.transactionDate}</td>
-                <td><a href="/transaction/${transaction.id}">edit</a></td>
+                <td><a href="/transactions/${transaction.id}">edit</a></td>
             </tr>
         </#list>
         </tbody>
