@@ -8,7 +8,8 @@
         <div class="form-group row">
             <label for="transactionId" class="col-sm-2 col-form-label">Transaction ID</label>
             <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" value="${transactionEdit.id}" name="id" id="transactionId">
+                <input type="text" readonly class="form-control-plaintext" value="${transactionEdit.id}" name="id"
+                       id="transactionId">
             </div>
         </div>
         <div class="form-group row">
@@ -21,7 +22,8 @@
         <div class="form-group row">
             <label for="tAmount" class="col-sm-2 col-form-label">Amount</label>
             <div class="col-sm-10">
-                <input type="number" id="tAmount" name="amount" class="form-control" placeholder="Amount"
+                <input type="number" id="tAmount" name="amount" class="form-control"
+                       placeholder="${transactionEdit.amount}"
                        step="0.01" min="0" value="${transactionEdit.amount}">
             </div>
         </div>

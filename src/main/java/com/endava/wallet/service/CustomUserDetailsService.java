@@ -22,11 +22,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public List<User> findAll(){
-       return this.userRepository.findAll();
+    public List<User> findAll() {
+        return this.userRepository.findAll();
     }
 
-    public void save(User user){
+    public void save(User user) {
         userRepository.save(user);
     }
 

@@ -33,7 +33,7 @@ public class DashboardController {
             @AuthenticationPrincipal User user,
             Model model
     ) {
-        Profile currentProfile = profileRepository.findProfileByUser(user);
+        Profile currentProfile = profileRepository.findByUser(user);
         model.addAttribute("currentProfile", currentProfile);
 
         List<Transaction> recentTransactions = transactionRepository.findTop9ByProfileOrderByTransactionDateAsc(currentProfile);
@@ -111,7 +111,7 @@ public class DashboardController {
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate transactionDate,
             Model model
     ) {
-        Profile currentProfile = profileRepository.findProfileByUser(user);
+        Profile currentProfile = profileRepository.findByUser(user);
         Transaction transaction = Transaction.builder()
                 .profile(currentProfile)
                 .category(categoryRepository.findByCategory(category))

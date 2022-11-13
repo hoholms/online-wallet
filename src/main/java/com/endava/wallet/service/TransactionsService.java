@@ -15,7 +15,7 @@ public class TransactionsService {
 
     private TransactionRepository transactionRepository;
 
-    public List<Transaction> getAllTransactions(){
+    public List<Transaction> getAllTransactions() {
         return this.transactionRepository.findAll();
     }
 
@@ -23,18 +23,19 @@ public class TransactionsService {
         return this.transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
     }
 
-    public Transaction findTransactionById(Long id){
+    public Transaction findTransactionById(Long id) {
         return this.transactionRepository.findTransactionById(id);
     }
 
-    public void save(Transaction transaction){
+    public void save(Transaction transaction) {
         transactionRepository.save(transaction);
     }
-    public LocalDate parseDate(String transactionDate){
+
+    public LocalDate parseDate(String transactionDate) {
         return LocalDate.parse(transactionDate);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         Transaction transaction = findTransactionById(id);
         Profile currentProfile = transaction.getProfile();
 

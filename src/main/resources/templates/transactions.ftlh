@@ -25,8 +25,10 @@
                 <td>${transaction.amount} MDL</td>
                 <td>${transaction.message}</td>
                 <td>${transaction.transactionDate}</td>
-                <td><a class="btn btn-outline-primary btn-sm" href="/transactions/${transaction.id}" role="button">Edit</a></td>
-                <td><a class="btn btn-outline-danger btn-sm" href="/transactions/delete/${transaction.id}" role="button">Delete</a></td>
+                <td><a class="btn btn-outline-primary btn-sm" href="/transactions/${transaction.id}"
+                       role="button">Edit</a></td>
+                <td><a class="btn btn-outline-danger btn-sm" href="/transactions/delete/${transaction.id}"
+                       role="button">Delete</a></td>
             </tr>
         </#list>
         </tbody>

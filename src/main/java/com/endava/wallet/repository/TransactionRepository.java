@@ -11,6 +11,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+    List<Transaction> findTransactionByProfileOrderByIdAsc(Profile profile);
+
+    Transaction findTransactionById(Long id);
+
     List<Transaction> findByProfileAndTransactionDateBetweenOrderByTransactionDateAsc(Profile profile, LocalDate from, LocalDate to);
 
     List<Transaction> findTop9ByProfileOrderByTransactionDateAsc(Profile profile);
