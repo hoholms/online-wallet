@@ -8,6 +8,7 @@ import java.util.List;
 public interface TransactionsCategoryRepository extends JpaRepository<TransactionsCategory, Long> {
 
     List<TransactionsCategory> findByIsIncome(boolean isIncome);
+
     TransactionsCategory findByCategory(String category);
 
 }

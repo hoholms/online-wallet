@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
     boolean existsProfileByEmail(String email);
 
-    Profile findProfileByUser(User user);
-
+    Profile findByUser(User user);
 }
