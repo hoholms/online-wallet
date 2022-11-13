@@ -42,6 +42,4 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "                                                 WHERE profile_id = :cur_profile and tc.is_income = :isIncome and transaction_date between :from_date and :to_date\n" +
             "                                                 group by category) as ttsa)", nativeQuery = true)
     BigDecimal FindMaxSumDateBetween(@Param("cur_profile") Profile cur_profile, @Param("isIncome") Boolean isIncome, @Param("from_date") LocalDate from_date, @Param("to_date") LocalDate to_date);
-
-
 }

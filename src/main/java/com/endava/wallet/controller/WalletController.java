@@ -12,8 +12,4 @@ public class WalletController {
         return "index";
     }
 
-    @GetMapping("/transactions")
-    public String transactions() {
-        return "transactions";
-    }
 }
