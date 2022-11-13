@@ -7,7 +7,7 @@
         <tr>
             <th>ID</th>
             <th>Category</th>
-            <th>Is Income</th>
+            <th>Type</th>
             <th>Amount</th>
             <th>Message</th>
             <th>Transaction Date</th>
@@ -22,6 +22,7 @@
                 <td>${transaction.amount} MDL</td>
                 <td>${transaction.message}</td>
                 <td>${transaction.transactionDate}</td>
+                <td><a href="/transaction/${transaction.id}">edit</a></td>
             </tr>
         </#list>
         </tbody>
