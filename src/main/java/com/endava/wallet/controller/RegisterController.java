@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Collections;
 
@@ -41,7 +42,7 @@ public class RegisterController {
 
         profile.setUser(user);
         profile.setCreatedDate(Instant.now());
-        profile.setBalance(0);
+        profile.setBalance(BigDecimal.valueOf(0));
         profileRepository.save(profile);
         return "redirect:/login";
     }

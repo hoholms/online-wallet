@@ -4,10 +4,9 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "profiles")
@@ -32,7 +31,7 @@ public class Profile {
     private String email;
 
     @Column(name = "balance", nullable = false)
-    private Integer balance;
+    private BigDecimal balance;
 
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
@@ -42,11 +41,9 @@ public class Profile {
     @ToString.Exclude
     private User user;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-    private List<ExpenseTransfer> expenseList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-    private List<IncomeTransfer> incomeList = new ArrayList<>();
+    @OneToMany(mappedBy = "profile")
+    @ToString.Exclude
+    private Set<Transaction> transactions = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {

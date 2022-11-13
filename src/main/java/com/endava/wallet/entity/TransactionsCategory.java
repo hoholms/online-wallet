@@ -10,16 +10,19 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "expense_categories")
+@Table(name = "transactions_categories")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class ExpenseCategory {
+public class TransactionsCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "is_income")
+    private Boolean isIncome;
 
     @Column(name = "category", nullable = false, length = 50)
     private String category;
@@ -28,7 +31,7 @@ public class ExpenseCategory {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ExpenseCategory that = (ExpenseCategory) o;
+        TransactionsCategory that = (TransactionsCategory) o;
         return id != null && Objects.equals(id, that.id);
     }
 

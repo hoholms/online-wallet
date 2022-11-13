@@ -9,19 +9,20 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "income_transfers")
+@Table(name = "transactions")
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class IncomeTransfer {
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "profile_id", nullable = false)
     @ToString.Exclude
     private Profile profile;
@@ -29,7 +30,10 @@ public class IncomeTransfer {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     @ToString.Exclude
-    private IncomeCategory category;
+    private TransactionsCategory category;
+
+    @Column(name = "is_income", nullable = false)
+    private Boolean isIncome = false;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
@@ -37,14 +41,14 @@ public class IncomeTransfer {
     @Column(name = "message")
     private String message;
 
-    @Column(name = "transfer_date", nullable = false)
-    private LocalDate transferDate;
+    @Column(name = "transaction_date", nullable = false)
+    private LocalDate transactionDate;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        IncomeTransfer that = (IncomeTransfer) o;
+        Transaction that = (Transaction) o;
         return id != null && Objects.equals(id, that.id);
     }
 

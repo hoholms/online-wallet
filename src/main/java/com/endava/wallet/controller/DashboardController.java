@@ -1,10 +1,14 @@
 package com.endava.wallet.controller;
 
-import com.endava.wallet.entity.*;
-import com.endava.wallet.repository.ExpenseTransferRepository;
-import com.endava.wallet.repository.IncomeTransferRepository;
+import com.endava.wallet.entity.Profile;
+import com.endava.wallet.entity.Transaction;
+import com.endava.wallet.entity.TransactionsCategory;
+import com.endava.wallet.entity.User;
 import com.endava.wallet.repository.ProfileRepository;
+import com.endava.wallet.repository.TransactionRepository;
+import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,60 +24,60 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DashboardController {
     private final ProfileRepository profileRepository;
-    private final IncomeTransferRepository incomeTransferRepository;
-    private final ExpenseTransferRepository expenseTransferRepository;
-    private static final String FRONT_ENDPOINT = "dashboard";
+    private final TransactionRepository transactionRepository;
+    private final TransactionsCategoryRepository categoryRepository;
 
     @GetMapping("/dashboard")
-    public String dashboard(@AuthenticationPrincipal User user, Model model) {
+    public String dashboard(
+            @AuthenticationPrincipal User user,
+            Model model
+    ) {
         Profile currentProfile = profileRepository.findByUser(user);
-        List<IncomeTransfer> todayIncomeTransfers = incomeTransferRepository.findIncomeTransferByProfileAndTransferDateBetween(currentProfile, LocalDate.now(), LocalDate.now());
-        List<ExpenseTransfer> todayExpenseTransfers = expenseTransferRepository.findExpenseTransferByProfileAndTransferDateBetween(currentProfile, LocalDate.now(), LocalDate.now());
-        model.addAttribute(todayIncomeTransfers);
-        model.addAttribute(todayExpenseTransfers);
+        model.addAttribute("currentProfile", currentProfile);
 
-        return FRONT_ENDPOINT;
+        List<TransactionsCategory> incomeCategories = categoryRepository.findByIsIncome(true);
+        model.addAttribute("incomeCategories", incomeCategories);
+
+        List<TransactionsCategory> expenseCategories = categoryRepository.findByIsIncome(false);
+        model.addAttribute("expenseCategories", expenseCategories);
+
+        List<Transaction> recentTransactions = transactionRepository.findTop10ByProfileOrderByTransactionDateDesc(currentProfile);
+        model.addAttribute("recentTransactions", recentTransactions);
+
+        model.addAttribute("today", LocalDate.now());
+
+        return "dashboard";
     }
 
     @PostMapping("/dashboard")
-    public String addIncome(
+    public String addTransaction(
             @AuthenticationPrincipal User user,
-            @RequestParam IncomeCategory incCategory,
-            @RequestParam BigDecimal incAmount,
-            @RequestParam String incMessage,
-            @RequestParam LocalDate incTransferDate
+            @RequestParam String category,
+            @RequestParam boolean isIncome,
+            @RequestParam BigDecimal amount,
+            @RequestParam String message,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate transactionDate,
+            Model model
     ) {
-        IncomeTransfer incomeTransfer = IncomeTransfer.builder()
-                .profile(profileRepository.findByUser(user))
-                .category(incCategory)
-                .amount(incAmount)
-                .message(incMessage)
-                .transferDate(incTransferDate)
+        Profile currentProfile = profileRepository.findByUser(user);
+        Transaction transaction = Transaction.builder()
+                .profile(currentProfile)
+                .category(categoryRepository.findByCategory(category))
+                .isIncome(isIncome)
+                .amount(amount)
+                .message(message)
+                .transactionDate(transactionDate)
                 .build();
 
-        incomeTransferRepository.save(incomeTransfer);
+        transactionRepository.save(transaction);
 
-        return FRONT_ENDPOINT;
-    }
+        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
+            currentProfile.setBalance(currentProfile.getBalance().add(transaction.getAmount()));
+        } else {
+            currentProfile.setBalance(currentProfile.getBalance().subtract(transaction.getAmount()));
+        }
+        profileRepository.save(currentProfile);
 
-    @PostMapping("/dashboardd")
-    public String addExpense(
-            @AuthenticationPrincipal User user,
-            @RequestParam ExpenseCategory expCategory,
-            @RequestParam BigDecimal expAmount,
-            @RequestParam String expMessage,
-            @RequestParam LocalDate expTransferDate
-    ) {
-        ExpenseTransfer expenseTransfer = ExpenseTransfer.builder()
-                .profile(profileRepository.findByUser(user))
-                .category(expCategory)
-                .amount(expAmount)
-                .message(expMessage)
-                .transferDate(expTransferDate)
-                .build();
-
-        expenseTransferRepository.save(expenseTransfer);
-
-        return FRONT_ENDPOINT;
+        return dashboard(user, model);
     }
 }
