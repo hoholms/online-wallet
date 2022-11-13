@@ -39,7 +39,6 @@ public class TransactionsService {
         Transaction transaction = findTransactionById(id);
         Profile currentProfile = transaction.getProfile();
 
-
         transactionRepository.deleteById(id);
     }
 }
