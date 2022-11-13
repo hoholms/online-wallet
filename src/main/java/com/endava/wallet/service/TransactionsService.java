@@ -36,8 +36,8 @@ public class TransactionsService {
     }
 
     public void deleteById(Long id) {
-        Transaction transaction = findTransactionById(id);
-        Profile currentProfile = transaction.getProfile();
+//        Transaction transaction = findTransactionById(id);
+//        Profile currentProfile = transaction.getProfile();
 
         transactionRepository.deleteById(id);
     }

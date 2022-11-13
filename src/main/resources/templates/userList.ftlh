@@ -9,6 +9,7 @@
             <th>Name</th>
             <th>Role</th>
             <th>Edit</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -17,7 +18,10 @@
                 <td>${user.id}</td>
                 <td>${user.username}</td>
                 <td><#list user.authority as authority>${authority}<#sep>, </#list></td>
-                <td><a href="/user/${user.id}">edit</a></td>
+                <td><a class="btn btn-outline-primary btn-sm" href="/user/${user.id}"
+                       role="button">Edit</a></td>
+                <td><a class="btn btn-outline-danger btn-sm" href="/user/delete/${user.id}"
+                       role="button">Delete</a></td>
             </tr>
         </#list>
         </tbody>
