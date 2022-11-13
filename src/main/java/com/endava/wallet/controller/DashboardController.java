@@ -36,15 +36,37 @@ public class DashboardController {
         Profile currentProfile = profileRepository.findByUser(user);
         model.addAttribute("currentProfile", currentProfile);
 
+        List<Transaction> recentTransactions = transactionRepository.findTop9ByProfileOrderByTransactionDateAsc(currentProfile);
+        Collections.reverse(recentTransactions);
+        model.addAttribute("recentTransactions", recentTransactions);
+
         List<TransactionsCategory> incomeCategories = categoryRepository.findByIsIncome(true);
         model.addAttribute("incomeCategories", incomeCategories);
 
         List<TransactionsCategory> expenseCategories = categoryRepository.findByIsIncome(false);
         model.addAttribute("expenseCategories", expenseCategories);
 
-        List<Transaction> recentTransactions = transactionRepository.findTop10ByProfileOrderByTransactionDateAsc(currentProfile);
-        Collections.reverse(recentTransactions);
-        model.addAttribute("recentTransactions", recentTransactions);
+        List<Transaction> monthIncomeList = transactionRepository.findByProfileAndIsIncomeAndTransactionDateBetween(
+                currentProfile,
+                true,
+                LocalDate.now().withDayOfMonth(1),
+                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear())));
+
+        BigDecimal monthIncome = monthIncomeList.stream()
+                .map(Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        model.addAttribute("monthIncome", monthIncome);
+
+        List<Transaction> monthExpenseList = transactionRepository.findByProfileAndIsIncomeAndTransactionDateBetween(
+                currentProfile,
+                false,
+                LocalDate.now().withDayOfMonth(1),
+                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear())));
+
+        BigDecimal monthExpense = monthExpenseList.stream()
+                .map(Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        model.addAttribute("monthExpense", monthExpense);
 
         model.addAttribute("today", LocalDate.now());
 
