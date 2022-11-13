@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -41,7 +42,8 @@ public class DashboardController {
         List<TransactionsCategory> expenseCategories = categoryRepository.findByIsIncome(false);
         model.addAttribute("expenseCategories", expenseCategories);
 
-        List<Transaction> recentTransactions = transactionRepository.findTop10ByProfileOrderByTransactionDateDesc(currentProfile);
+        List<Transaction> recentTransactions = transactionRepository.findTop10ByProfileOrderByTransactionDateAsc(currentProfile);
+        Collections.reverse(recentTransactions);
         model.addAttribute("recentTransactions", recentTransactions);
 
         model.addAttribute("today", LocalDate.now());
