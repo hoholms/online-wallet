@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 
@@ -30,7 +31,7 @@ public class Profile {
     private String email;
 
     @Column(name = "balance", nullable = false)
-    private Integer balance;
+    private BigDecimal balance;
 
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;

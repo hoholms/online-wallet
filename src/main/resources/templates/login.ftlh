@@ -3,7 +3,7 @@
 
 <@c.page>
     <div class="mb-1">
-        <h5>Login Page</h5>
+        <h4>Login</h4>
         <p class="text-danger">${error!""}</p>
     </div>
     <@l.auth "/login" false/>

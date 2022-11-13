@@ -2,7 +2,8 @@
 <#import "auth.ftlh" as l>
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
         <a class="navbar-brand" href="/">Online Wallet</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,7 +11,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="/dashboard">Dashboard</a>
                 </li>
@@ -25,8 +26,9 @@
             </ul>
 
             <#if name != "guest">
-                <div class="navbar-text mr-3">${name}</div>
-                <div><@l.logout /></div>
+            <span class="navbar-text me-3">${name}</span>
+            <@l.logout />
             </#if>
         </div>
+    </div>
 </nav>

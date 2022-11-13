@@ -13,7 +13,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
