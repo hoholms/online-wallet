@@ -26,9 +26,9 @@
                 <div class="col-sm-10">
                     <#list authorities as authority>
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="authority"
+                            <input type="checkbox" class="form-check-input" id="${authority}"
                                    name="${authority}" ${user.authorities?seq_contains(authority)?string("checked", "")}>
-                            <label for="authority" class="form-check-label">${authority}</label>
+                            <label for="${authority}" class="form-check-label">${authority}</label>
                         </div>
                     </#list>
                 </div>
