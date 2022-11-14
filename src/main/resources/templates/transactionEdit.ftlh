@@ -2,6 +2,7 @@
 
 <@c.page>
     <h4>Transaction editor</h4>
+    <br>
     <form action="/transactions" method="post">
         <input type="hidden" value="${_csrf.token}" name="_csrf">
 
@@ -51,8 +52,11 @@
 
         <div class="form-group row">
             <div class="col-sm-10">
-                <button class="btn btn-primary mt-3" type="submit">Save</button>
+                <button class="btn btn-outline-primary mt-3" type="submit">Save</button>
+
+                <a href="/transactions/delete/${transactionEdit.id}" class="btn btn-outline-danger mt-3" >Delete</a>
             </div>
         </div>
+
     </form>
 </@c.page>

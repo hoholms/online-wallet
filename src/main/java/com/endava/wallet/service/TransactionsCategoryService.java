@@ -15,9 +15,9 @@ public class TransactionsCategoryService
 
     public List<TransactionsCategory> findAllByIsIncomeById(Long id){
 
-        TransactionsCategory category = null;
+        TransactionsCategory category;
         if (categoryRepository.findById(id).isPresent()) {
-            categoryRepository.findById(id).get();
+            category = categoryRepository.findById(id).get();
             return categoryRepository.findAll().stream()
                     .filter(a -> {
                         assert false;
@@ -25,7 +25,9 @@ public class TransactionsCategoryService
                     })
                     .toList();
         }
-        return null;
+        else {
+           return null;
+        }
     }
     public TransactionsCategory findByCategory(String category){
         return categoryRepository.findByCategory(category);
