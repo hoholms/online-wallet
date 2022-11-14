@@ -1,5 +1,6 @@
 package com.endava.wallet.service;
 
+import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
 import com.endava.wallet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +31,20 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findAll();
     }
 
-    public void save(User user) {
+    public void save(String username, Map<String, String> form, User user) {
+        user.setUsername(username);
+        Set<String> authorities = Arrays.stream(Authority.values())
+                .map(Authority::name)
+                .collect(Collectors.toSet());
+
+        user.getAuthority().clear();
+
+        for (String key : form.keySet()) {
+            if (authorities.contains(key)) {
+                user.getAuthority().add(Authority.valueOf(key));
+            }
+        }
+
         userRepository.save(user);
     }
 

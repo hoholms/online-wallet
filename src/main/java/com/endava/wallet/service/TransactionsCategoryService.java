@@ -13,7 +13,7 @@ public class TransactionsCategoryService
 {
     public final TransactionsCategoryRepository categoryRepository;
 
-    public List<TransactionsCategory> findAllByIsIncomeById(Long id){
+    public List<TransactionsCategory> findAllByIdByIsIncome(Long id){
 
         TransactionsCategory category;
         if (categoryRepository.findById(id).isPresent()) {
