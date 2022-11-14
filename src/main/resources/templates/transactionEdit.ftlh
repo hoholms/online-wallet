@@ -12,6 +12,18 @@
                        id="transactionId">
             </div>
         </div>
+        <br>
+        <div class="form-group row">
+            <label for="transactionId" class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-10">
+            <select class="form-select" name="category" id="transactionId">
+                <#list categories as category>
+                    <option>${category.category}</option>
+                </#list>
+            </select>
+            </div>
+        </div>
+        <br>
         <div class="form-group row">
             <label for="message" class="col-sm-2 col-form-label">Message</label>
             <div class="col-sm-10">
@@ -19,6 +31,7 @@
                        placeholder="Message">
             </div>
         </div>
+        <br>
         <div class="form-group row">
             <label for="tAmount" class="col-sm-2 col-form-label">Amount</label>
             <div class="col-sm-10">
@@ -27,6 +40,7 @@
                        step="0.01" min="0" value="${transactionEdit.amount}">
             </div>
         </div>
+        <br>
         <div class="form-group row">
             <label for="tDate" class="col-sm-2 col-form-label">Date</label>
             <div class="col-sm-10">
