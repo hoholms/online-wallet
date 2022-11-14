@@ -1,13 +1,10 @@
 package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Authority;
-import com.endava.wallet.entity.Profile;
-import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.service.CustomUserDetailsService;
+import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +20,7 @@ import java.util.stream.Collectors;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
 
-    private final CustomUserDetailsService userService;
+    private final UserService userService;
 
     @GetMapping
     public String userList(Model model) {
@@ -58,15 +55,17 @@ public class UserController {
             }
         }
 
+
         userService.save(user);
 
         return "redirect:/user";
     }
 
     @GetMapping("/delete/{userID}")
-    public String transactionDelete(@PathVariable Long userID,
-                                    @AuthenticationPrincipal User user,
-                                    Model model) {
-        return "user";
+    public String transactionDelete(@PathVariable Long userID) {
+
+        userService.deleteById(userID);
+
+        return "redirect:/user";
     }
 }

@@ -1,6 +1,6 @@
 package com.endava.wallet.config;
 
-import com.endava.wallet.service.CustomUserDetailsService;
+import com.endava.wallet.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class WebSecurityConfig {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     @Bean
@@ -39,7 +39,7 @@ public class WebSecurityConfig {
 
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService)
+        auth.userDetailsService(userService)
                 .passwordEncoder(passwordEncoder);
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -28,6 +28,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    public void deleteById(Long id){
+        userRepository.deleteById(id);
     }
 
 
