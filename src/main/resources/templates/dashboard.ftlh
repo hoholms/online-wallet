@@ -124,6 +124,7 @@
                                 +${transaction.amount}
                                 <span class="text-muted float-end">${transaction.transactionDate}</span>
                             </div>
+                            <a href="/transactions/${transaction.id}" class="stretched-link"></a>
                         </div>
                     </div>
                 <#else>
@@ -141,6 +142,7 @@
                             <div class="card-footer text-danger">
                                 -${transaction.amount}
                                 <span class="text-muted float-end">${transaction.transactionDate}</span>
+                                <a href="/transactions/${transaction.id}" class="stretched-link"></a>
                             </div>
                         </div>
                     </div>

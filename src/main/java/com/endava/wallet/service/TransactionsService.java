@@ -4,6 +4,7 @@ import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.User;
 import com.endava.wallet.repository.TransactionRepository;
+import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -17,9 +18,7 @@ import java.util.List;
 public class TransactionsService {
 
     private TransactionRepository transactionRepository;
-
-    private TransactionsCategoryService categoryService;
-
+    private TransactionsCategoryRepository categoryRepository;
     private ProfileService profileService;
 
 
@@ -48,7 +47,7 @@ public class TransactionsService {
         if (amount != null) {
             transaction.setAmount(amount);
         }
-        transaction.setCategory(categoryService.findByCategory(category));
+        transaction.setCategory(categoryRepository.findByCategory(category));
         transaction.setTransactionDate(parseDate(transactionDate));
         transaction.setMessage(message);
 
