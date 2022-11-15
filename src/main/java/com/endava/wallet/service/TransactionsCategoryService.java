@@ -13,7 +13,11 @@ public class TransactionsCategoryService
 {
     public final TransactionsCategoryRepository categoryRepository;
 
-    public List<TransactionsCategory> findAllByIdByIsIncome(Long id){
+    public final TransactionsService transactionsService;
+
+    public List<TransactionsCategory> findAllCategoriesByTransactionIdByIsIncome(Long transactionId){
+
+        Long id = transactionsService.findTransactionById(transactionId).getCategory().getId();
 
         TransactionsCategory category;
         if (categoryRepository.findById(id).isPresent()) {
@@ -21,6 +25,7 @@ public class TransactionsCategoryService
             return categoryRepository.findAll().stream()
                     .filter(a -> {
                         assert false;
+
                         return a.getIsIncome().equals(category.getIsIncome());
                     })
                     .toList();

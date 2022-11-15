@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import java.util.List;
 public class TransactionsService {
 
     private TransactionRepository transactionRepository;
+
+    private TransactionsCategoryService categoryService;
 
     private ProfileService profileService;
 
@@ -29,8 +32,28 @@ public class TransactionsService {
         return transactionRepository.findTransactionById(id);
     }
 
-    public void save(Transaction transaction) {
+    public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {
+        Profile profile = profileService.findProfileByUser(user);
+        Transaction transaction = findTransactionById(id);
+        if (amount != null && !amount.equals(transaction.getAmount())) {
+            if (Boolean.TRUE.equals(transaction.getIsIncome())) {
+                profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
+                profile.setBalance(profile.getBalance().add(amount));
+            } else {
+                profile.setBalance(profile.getBalance().add(transaction.getAmount()));
+                profile.setBalance(profile.getBalance().subtract(amount));
+            }
+        }
+
+        if (amount != null) {
+            transaction.setAmount(amount);
+        }
+        transaction.setCategory(categoryService.findByCategory(category));
+        transaction.setTransactionDate(parseDate(transactionDate));
+        transaction.setMessage(message);
+
         transactionRepository.save(transaction);
+        profileService.save(profile);
     }
 
     public LocalDate parseDate(String transactionDate) {

@@ -1,10 +1,6 @@
 package com.endava.wallet.controller;
 
-import com.endava.wallet.entity.Profile;
-import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.repository.ProfileRepository;
-import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.TransactionsCategoryService;
 import com.endava.wallet.service.TransactionsService;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +16,15 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class TransactionController {
     private final TransactionsService transactionsService;
-    private final ProfileService profileService;
-    private final ProfileRepository profileRepository;
 
     private final TransactionsCategoryService categoryService;
 
     @GetMapping
     public String transactionsList(@AuthenticationPrincipal User user, Model model) {
+
         model.addAttribute("transactions", transactionsService.findTransactionByUserIdOrderAsc(user));
         model.addAttribute("userID", user.getId());
+
         return "transactions";
     }
 
@@ -38,11 +34,7 @@ public class TransactionController {
                 transactionsService.findTransactionById(transactionID));
 
         model.addAttribute("categories",
-                categoryService.findAllByIdByIsIncome(
-                        transactionsService
-                                .findTransactionById(transactionID)
-                                .getCategory()
-                                .getId()));
+                categoryService.findAllCategoriesByTransactionIdByIsIncome(transactionID));
         return "transactionEdit";
     }
 
@@ -63,27 +55,9 @@ public class TransactionController {
             @RequestParam(required = false) BigDecimal amount,
             @RequestParam String transactionDate
     ) {
-        Profile profile = profileService.findProfileByUser(user);
-        Transaction transaction = transactionsService.findTransactionById(id);
-        if (amount != null && !amount.equals(transaction.getAmount())) {
-            if (Boolean.TRUE.equals(transaction.getIsIncome())) {
-                profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
-                profile.setBalance(profile.getBalance().add(amount));
-            } else {
-                profile.setBalance(profile.getBalance().add(transaction.getAmount()));
-                profile.setBalance(profile.getBalance().subtract(amount));
-            }
-        }
 
-        if (amount != null) {
-            transaction.setAmount(amount);
-        }
-        transaction.setCategory(categoryService.findByCategory(category));
-        transaction.setTransactionDate(transactionsService.parseDate(transactionDate));
-        transaction.setMessage(message);
+        transactionsService.save(user, id, message, category, amount, transactionDate);
 
-        transactionsService.save(transaction);
-        profileRepository.save(profile);
 
         return "redirect:/transactions";
     }
