@@ -2,9 +2,11 @@ package com.endava.wallet.service;
 
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.Transaction;
+import com.endava.wallet.entity.User;
 import com.endava.wallet.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,13 +16,15 @@ import java.util.List;
 public class TransactionsService {
 
     private TransactionRepository transactionRepository;
+    private ProfileService profileService;
 
     public List<Transaction> getAllTransactions() {
         return this.transactionRepository.findAll();
     }
 
-    public List<Transaction> findTransactionByProfileOrderByIdAsc(Profile profile) {
-        return this.transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
+    public List<Transaction> findTransactionByProfileOrderByIdAsc(User user, Model model) {
+        Profile profile = profileService.findProfileByUser(user);
+        return transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
     }
 
     public Transaction findTransactionById(Long id) {
@@ -36,8 +40,6 @@ public class TransactionsService {
     }
 
     public void deleteById(Long id) {
-//        Transaction transaction = findTransactionById(id);
-//        Profile currentProfile = transaction.getProfile();
 
         transactionRepository.deleteById(id);
     }

@@ -27,9 +27,7 @@ public class TransactionController {
 
     @GetMapping
     public String transactionsList(@AuthenticationPrincipal User user, Model model) {
-        Profile profile = profileService.findProfileByUser(user);
-        model.addAttribute("transactions",
-                transactionsService.findTransactionByProfileOrderByIdAsc(profile));
+        model.addAttribute("transactions", transactionsService.findTransactionByProfileOrderByIdAsc(user, model));
         model.addAttribute("userID", user.getId());
         return "transactions";
     }
@@ -40,7 +38,7 @@ public class TransactionController {
                 transactionsService.findTransactionById(transactionID));
 
         model.addAttribute("categories",
-                categoryService.findAllByIsIncomeById(
+                categoryService.findAllByIdByIsIncome(
                         transactionsService
                                 .findTransactionById(transactionID)
                                 .getCategory()
