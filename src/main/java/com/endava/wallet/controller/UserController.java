@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -24,8 +21,7 @@ public class UserController {
 
     @GetMapping
     public String userList(Model model) {
-        model.addAttribute("users", userService.findAll());
-
+        model.addAttribute("users", userService.findAllUsers());
         return "userList";
     }
 
@@ -42,30 +38,13 @@ public class UserController {
             @RequestParam Map<String, String> form,
             @RequestParam("userId") User user
     ) {
-        user.setUsername(username);
-        Set<String> authorities = Arrays.stream(Authority.values())
-                .map(Authority::name)
-                .collect(Collectors.toSet());
-
-        user.getAuthority().clear();
-
-        for (String key : form.keySet()) {
-            if (authorities.contains(key)) {
-                user.getAuthority().add(Authority.valueOf(key));
-            }
-        }
-
-
-        userService.save(user);
-
+        userService.save(username, form, user);
         return "redirect:/user";
     }
 
     @GetMapping("/delete/{userID}")
-    public String transactionDelete(@PathVariable Long userID) {
-
+    public String userDelete(@PathVariable Long userID) {
         userService.deleteById(userID);
-
         return "redirect:/user";
     }
 }
