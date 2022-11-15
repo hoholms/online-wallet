@@ -16,19 +16,17 @@ import java.util.List;
 public class TransactionsService {
 
     private TransactionRepository transactionRepository;
+
     private ProfileService profileService;
 
-    public List<Transaction> getAllTransactions() {
-        return this.transactionRepository.findAll();
-    }
 
-    public List<Transaction> findTransactionByProfileOrderByIdAsc(User user, Model model) {
+    public List<Transaction> findTransactionByUserIdOrderAsc(User user) {
         Profile profile = profileService.findProfileByUser(user);
         return transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
     }
 
     public Transaction findTransactionById(Long id) {
-        return this.transactionRepository.findTransactionById(id);
+        return transactionRepository.findTransactionById(id);
     }
 
     public void save(Transaction transaction) {
@@ -39,8 +37,16 @@ public class TransactionsService {
         return LocalDate.parse(transactionDate);
     }
 
-    public void deleteById(Long id) {
-
-        transactionRepository.deleteById(id);
+    public void deleteById(Long transactionID, User user, Model model) {
+        Transaction transaction = transactionRepository.findTransactionById(transactionID);
+        transactionRepository.deleteById(transactionID);
+        Profile profile = profileService.findProfileByUser(user);
+        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
+            profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
+        } else {
+            profile.setBalance(profile.getBalance().add(transaction.getAmount()));
+        }
+        profileService.save(profile);
+        model.addAttribute("transactions", findTransactionByUserIdOrderAsc(user));
     }
 }

@@ -11,11 +11,12 @@ import org.springframework.stereotype.Service;
 public class ProfileService {
     private ProfileRepository profileRepository;
 
-    public boolean existsProfileByEmail(String email) {
-        return profileRepository.existsProfileByEmail(email);
-    }
 
     public Profile findProfileByUser(User user) {
         return profileRepository.findByUser(user);
+    }
+
+    public void save(Profile profile) {
+        profileRepository.save(profile);
     }
 }

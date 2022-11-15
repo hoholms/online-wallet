@@ -27,7 +27,7 @@ public class TransactionController {
 
     @GetMapping
     public String transactionsList(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("transactions", transactionsService.findTransactionByProfileOrderByIdAsc(user, model));
+        model.addAttribute("transactions", transactionsService.findTransactionByUserIdOrderAsc(user));
         model.addAttribute("userID", user.getId());
         return "transactions";
     }
@@ -48,16 +48,9 @@ public class TransactionController {
 
     @GetMapping("/delete/{transactionID}")
     public String transactionDelete(@PathVariable Long transactionID, @AuthenticationPrincipal User user, Model model) {
-        Transaction transaction = transactionsService.findTransactionById(transactionID);
-        transactionsService.deleteById(transactionID);
-        Profile profile = profileService.findProfileByUser(user);
-        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
-            profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
-        } else {
-            profile.setBalance(profile.getBalance().add(transaction.getAmount()));
-        }
-        profileRepository.save(profile);
-        model.addAttribute("transactions", transactionsService.findTransactionByProfileOrderByIdAsc(profile));
+
+        transactionsService.deleteById(transactionID, user, model);
+
         return "transactions";
     }
 
