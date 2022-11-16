@@ -42,7 +42,8 @@ public class TransactionController {
     @GetMapping("/delete/{transactionID}")
     public String transactionDelete(@PathVariable Long transactionID, @AuthenticationPrincipal User user, Model model) {
 
-        transactionService.deleteById(transactionID, user, model);
+        transactionService.deleteById(transactionID, user);
+        model.addAttribute("transactions", transactionService.findTransactionByUserIdOrderAsc(user));
 
         return TRANSACTION_VIEW;
     }
