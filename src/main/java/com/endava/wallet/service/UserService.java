@@ -10,7 +10,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,9 +32,13 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findAll();
     }
 
-    public void save(@RequestParam String username,
-                     @RequestParam Map<String, String> form,
-                     User user) {
+    public void update(User user) {
+        userRepository.save(user);
+    }
+
+    public void update(@RequestParam String username,
+                       @RequestParam Map<String, String> form,
+                       User user) {
 
         user.setUsername(username);
         Set<String> authorities = Arrays.stream(Authority.values())
@@ -53,7 +60,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).get();
     }
 
-    public void deleteById(Long userID){
+    public Boolean existsUserByUsername(String username) {
+        return userRepository.existsUserByUsername(username);
+    }
+
+    public void deleteById(Long userID) {
         userRepository.deleteById(userID);
     }
 

@@ -77,13 +77,13 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><span
-                                    class="text-success">Earned the most money (${maxIncomeSum!"0"})</span></h5>
+                                    class="text-success">Earned the most money (${maxIncomeCategory.first!"0"})</span></h5>
                         <h6 class="card-subtitle mb-2">
-                            from ${maxIncomeCategory!"nothing"}
+                            from ${maxIncomeCategory.second!"nothing"}
                         </h6>
                     </div>
                     <div class="card-footer">
-                        <span class="text-success">+${maxIncomeSum!"0"}</span>
+                        <span class="text-success">+${maxIncomeCategory.first!"0"}</span>
                     </div>
                 </div>
             </div>
@@ -91,13 +91,13 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><span
-                                    class="text-danger">Spent the most money (${maxExpenseSum!"0"})</span></h5>
+                                    class="text-danger">Spent the most money (${maxExpenseCategory.first!"0"})</span></h5>
                         <h6 class="card-subtitle mb-2">
-                            on ${maxExpenseCategory!"nothing"}
+                            on ${maxExpenseCategory.second!"nothing"}
                         </h6>
                     </div>
                     <div class="card-footer">
-                        <span class="text-danger">-${maxExpenseSum!"0"}</span>
+                        <span class="text-danger">-${maxExpenseCategory.first!"0"}</span>
                     </div>
                 </div>
             </div>

@@ -6,11 +6,13 @@ import com.endava.wallet.entity.User;
 import com.endava.wallet.repository.TransactionRepository;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -27,8 +29,56 @@ public class TransactionService {
         return transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
     }
 
+    public List<Transaction> findRecentTransactions(Profile profile) {
+        List<Transaction> recentTransactions = transactionRepository.findTop9ByProfileOrderByTransactionDateAsc(profile);
+        Collections.reverse(recentTransactions);
+        return recentTransactions;
+    }
+
+    public List<Transaction> findByIsIncomeDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
+        return transactionRepository.findByProfileAndIsIncomeAndTransactionDateBetween(
+                profile,
+                isIncome,
+                from,
+                to);
+    }
+
+    public BigDecimal findTranSumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
+        List<Transaction> transactions = transactionRepository.findByProfileAndIsIncomeAndTransactionDateBetween(
+                profile,
+                isIncome,
+                from,
+                to);
+
+        return transactions.stream()
+                .map(Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public Pair<String, BigDecimal> findMaxCategorySumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
+        String maxTranCategory = transactionRepository.FindMaxCategoryDateBetween(
+                profile,
+                isIncome,
+                from,
+                to
+        );
+
+        BigDecimal maxTranSum = transactionRepository.FindMaxSumDateBetween(
+                profile,
+                isIncome,
+                from,
+                to
+        );
+
+        return Pair.of(maxTranCategory, maxTranSum);
+    }
+
     public Transaction findTransactionById(Long id) {
         return transactionRepository.findTransactionById(id);
+    }
+
+    public void save(Transaction transaction) {
+        transactionRepository.save(transaction);
     }
 
     public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {

@@ -2,7 +2,6 @@ package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.entity.UserDto;
 import com.endava.wallet.entity.UserDtoConverter;
 import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +40,7 @@ public class UserController {
             @RequestParam Map<String, String> form,
             @RequestParam Long id
     ) {
-        userService.save(username, form, userService.findById(id));
+        userService.update(username, form, userService.findById(id));
         return "redirect:/user";
     }
 

@@ -9,13 +9,12 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class TransactionsCategoryService
-{
+public class TransactionsCategoryService {
     public final TransactionsCategoryRepository categoryRepository;
 
     public final TransactionService transactionService;
 
-    public List<TransactionsCategory> findAllCategoriesByTransactionIdByIsIncome(Long transactionId){
+    public List<TransactionsCategory> findAllCategoriesByTransactionIdByIsIncome(Long transactionId) {
 
         Long id = transactionService.findTransactionById(transactionId).getCategory().getId();
 
@@ -29,12 +28,16 @@ public class TransactionsCategoryService
                         return a.getIsIncome().equals(category.getIsIncome());
                     })
                     .toList();
-        }
-        else {
-           return null;
+        } else {
+            return null;
         }
     }
-    public TransactionsCategory findByCategory(String category){
+
+    public TransactionsCategory findByCategory(String category) {
         return categoryRepository.findByCategory(category);
+    }
+
+    public List<TransactionsCategory> findByIsIncome(boolean isIncome) {
+        return categoryRepository.findByIsIncome(isIncome);
     }
 }

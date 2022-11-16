@@ -1,8 +1,8 @@
 package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.User;
-import com.endava.wallet.service.TransactionsCategoryService;
 import com.endava.wallet.service.TransactionService;
+import com.endava.wallet.service.TransactionsCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 @RequestMapping("/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
+    private final String TRANSACTION_VIEW = "transactions";
     private final TransactionService transactionService;
 
     private final TransactionsCategoryService categoryService;
@@ -22,10 +23,10 @@ public class TransactionController {
     @GetMapping
     public String transactionsList(@AuthenticationPrincipal User user, Model model) {
 
-        model.addAttribute("transactions", transactionService.findTransactionByUserIdOrderAsc(user));
+        model.addAttribute(TRANSACTION_VIEW, transactionService.findTransactionByUserIdOrderAsc(user));
         model.addAttribute("userID", user.getId());
 
-        return "transactions";
+        return TRANSACTION_VIEW;
     }
 
     @GetMapping("{transactionID}")
@@ -43,7 +44,7 @@ public class TransactionController {
 
         transactionService.deleteById(transactionID, user, model);
 
-        return "transactions";
+        return TRANSACTION_VIEW;
     }
 
     @PostMapping
