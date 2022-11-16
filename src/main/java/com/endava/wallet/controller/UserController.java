@@ -2,6 +2,8 @@ package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
+import com.endava.wallet.entity.UserDto;
+import com.endava.wallet.entity.UserDtoConverter;
 import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +20,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final UserDtoConverter userDtoConverter;
 
     @GetMapping
     public String userList(Model model) {
@@ -36,9 +39,9 @@ public class UserController {
     public String userSave(
             @RequestParam String username,
             @RequestParam Map<String, String> form,
-            @RequestParam("userId") User user
+            @RequestParam Long id
     ) {
-        userService.save(username, form, user);
+        userService.save(username, form, userService.findById(id));
         return "redirect:/user";
     }
 

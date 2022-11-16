@@ -15,8 +15,9 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

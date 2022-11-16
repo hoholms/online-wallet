@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class TransactionsService {
+public class TransactionService {
 
     private TransactionRepository transactionRepository;
     private TransactionsCategoryRepository categoryRepository;

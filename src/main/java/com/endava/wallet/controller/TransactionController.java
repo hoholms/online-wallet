@@ -2,7 +2,7 @@ package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.User;
 import com.endava.wallet.service.TransactionsCategoryService;
-import com.endava.wallet.service.TransactionsService;
+import com.endava.wallet.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,14 +15,14 @@ import java.math.BigDecimal;
 @RequestMapping("/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
-    private final TransactionsService transactionsService;
+    private final TransactionService transactionService;
 
     private final TransactionsCategoryService categoryService;
 
     @GetMapping
     public String transactionsList(@AuthenticationPrincipal User user, Model model) {
 
-        model.addAttribute("transactions", transactionsService.findTransactionByUserIdOrderAsc(user));
+        model.addAttribute("transactions", transactionService.findTransactionByUserIdOrderAsc(user));
         model.addAttribute("userID", user.getId());
 
         return "transactions";
@@ -31,7 +31,7 @@ public class TransactionController {
     @GetMapping("{transactionID}")
     public String transactionEditForm(@PathVariable Long transactionID, Model model) {
         model.addAttribute("transactionEdit",
-                transactionsService.findTransactionById(transactionID));
+                transactionService.findTransactionById(transactionID));
 
         model.addAttribute("categories",
                 categoryService.findAllCategoriesByTransactionIdByIsIncome(transactionID));
@@ -41,7 +41,7 @@ public class TransactionController {
     @GetMapping("/delete/{transactionID}")
     public String transactionDelete(@PathVariable Long transactionID, @AuthenticationPrincipal User user, Model model) {
 
-        transactionsService.deleteById(transactionID, user, model);
+        transactionService.deleteById(transactionID, user, model);
 
         return "transactions";
     }
@@ -56,7 +56,7 @@ public class TransactionController {
             @RequestParam String transactionDate
     ) {
 
-        transactionsService.save(user, id, message, category, amount, transactionDate);
+        transactionService.save(user, id, message, category, amount, transactionDate);
 
 
         return "redirect:/transactions";

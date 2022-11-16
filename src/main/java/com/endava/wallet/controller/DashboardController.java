@@ -1,9 +1,6 @@
 package com.endava.wallet.controller;
 
-import com.endava.wallet.entity.Profile;
-import com.endava.wallet.entity.Transaction;
-import com.endava.wallet.entity.TransactionsCategory;
-import com.endava.wallet.entity.User;
+import com.endava.wallet.entity.*;
 import com.endava.wallet.repository.ProfileRepository;
 import com.endava.wallet.repository.TransactionRepository;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
@@ -27,6 +25,8 @@ public class DashboardController {
     private final ProfileRepository profileRepository;
     private final TransactionRepository transactionRepository;
     private final TransactionsCategoryRepository categoryRepository;
+
+    private final TransactionDtoConverter transactionDtoConverter;
 
     @GetMapping("/dashboard")
     public String dashboard(
@@ -104,29 +104,19 @@ public class DashboardController {
     @PostMapping("/dashboard")
     public String addTransaction(
             @AuthenticationPrincipal User user,
-            @RequestParam String category,
-            @RequestParam boolean isIncome,
-            @RequestParam BigDecimal amount,
-            @RequestParam String message,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate transactionDate,
+            TransactionDto transactionDto,
             Model model
     ) {
         Profile currentProfile = profileRepository.findByUser(user);
-        Transaction transaction = Transaction.builder()
-                .profile(currentProfile)
-                .category(categoryRepository.findByCategory(category))
-                .isIncome(isIncome)
-                .amount(amount)
-                .message(message)
-                .transactionDate(transactionDate)
-                .build();
+
+        Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
 
         transactionRepository.save(transaction);
 
-        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
-            currentProfile.setBalance(currentProfile.getBalance().add(transaction.getAmount()));
+        if (Boolean.TRUE.equals(transactionDto.getIsIncome())) {
+            currentProfile.setBalance(currentProfile.getBalance().add(transactionDto.getAmount()));
         } else {
-            currentProfile.setBalance(currentProfile.getBalance().subtract(transaction.getAmount()));
+            currentProfile.setBalance(currentProfile.getBalance().subtract(transactionDto.getAmount()));
         }
         profileRepository.save(currentProfile);
 

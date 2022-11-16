@@ -1,8 +1,6 @@
 package com.endava.wallet.controller;
 
-import com.endava.wallet.entity.Authority;
-import com.endava.wallet.entity.Profile;
-import com.endava.wallet.entity.User;
+import com.endava.wallet.entity.*;
 import com.endava.wallet.repository.ProfileRepository;
 import com.endava.wallet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +17,11 @@ import java.util.Collections;
 @Controller
 @RequiredArgsConstructor
 public class RegisterController {
-    private final PasswordEncoder passwordEncoder;
+    private final UserDtoConverter userDtoConverter;
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
+    private final ProfileDtoConverter profileDtoConverter;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/register")
     public String register() {
@@ -29,20 +29,17 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String addUser(User user, Profile profile, Model model) {
-        if (userRepository.existsUserByUsername(user.getUsername()) ||
-                profileRepository.existsProfileByEmail(profile.getEmail())) {
+    public String addUser(UserDto userDto, ProfileDto profileDto, Model model) {
+        if (userRepository.existsUserByUsername(userDto.getUsername()) ||
+                profileRepository.existsProfileByEmail(profileDto.getEmail())) {
             model.addAttribute("error", "User already exists!");
             return "register";
         }
+        User user  = userDtoConverter.fromDto(userDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setAuthority(Collections.singleton(Authority.USER));
-        user.setEnabled(true);
         userRepository.save(user);
 
-        profile.setUser(user);
-        profile.setCreatedDate(Instant.now());
-        profile.setBalance(BigDecimal.valueOf(0));
+        Profile profile = profileDtoConverter.fromDto(profileDto, user);
         profileRepository.save(profile);
         return "redirect:/login";
     }
