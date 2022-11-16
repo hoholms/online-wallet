@@ -1,7 +1,8 @@
 package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.*;
-import com.endava.wallet.repository.TransactionRepository;
+import com.endava.wallet.entity.DTO.TransactionDto;
+import com.endava.wallet.entity.DTO.TransactionDtoConverter;
 import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.TransactionService;
 import com.endava.wallet.service.TransactionsCategoryService;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 @Controller

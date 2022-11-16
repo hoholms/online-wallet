@@ -1,5 +1,6 @@
-package com.endava.wallet.entity;
+package com.endava.wallet.entity.DTO;
 
+import com.endava.wallet.entity.Transaction;
 import lombok.Data;
 
 import java.io.Serializable;

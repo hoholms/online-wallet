@@ -1,5 +1,7 @@
-package com.endava.wallet.entity;
+package com.endava.wallet.entity.DTO;
 
+import com.endava.wallet.entity.Profile;
+import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.service.TransactionsCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

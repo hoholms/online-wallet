@@ -1,10 +1,9 @@
-package com.endava.wallet.entity;
+package com.endava.wallet.entity.DTO;
 
+import com.endava.wallet.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor

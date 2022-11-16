@@ -2,7 +2,7 @@ package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.entity.UserDtoConverter;
+import com.endava.wallet.entity.DTO.UserDtoConverter;
 import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
