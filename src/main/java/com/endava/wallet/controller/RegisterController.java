@@ -1,10 +1,12 @@
 package com.endava.wallet.controller;
 
-import com.endava.wallet.entity.Authority;
-import com.endava.wallet.entity.Profile;
-import com.endava.wallet.entity.User;
-import com.endava.wallet.repository.ProfileRepository;
-import com.endava.wallet.repository.UserRepository;
+import com.endava.wallet.entity.*;
+import com.endava.wallet.entity.DTO.ProfileDto;
+import com.endava.wallet.entity.DTO.ProfileDtoConverter;
+import com.endava.wallet.entity.DTO.UserDto;
+import com.endava.wallet.entity.DTO.UserDtoConverter;
+import com.endava.wallet.service.ProfileService;
+import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,16 +14,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Collections;
 
 @Controller
 @RequiredArgsConstructor
 public class RegisterController {
+    private final UserDtoConverter userDtoConverter;
+    private final UserService userService;
+    private final ProfileService profileService;
+    private final ProfileDtoConverter profileDtoConverter;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    private final ProfileRepository profileRepository;
 
     @GetMapping("/register")
     public String register() {
@@ -29,21 +31,21 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String addUser(User user, Profile profile, Model model) {
-        if (userRepository.existsUserByUsername(user.getUsername()) ||
-                profileRepository.existsProfileByEmail(profile.getEmail())) {
+    public String addUser(UserDto userDto, ProfileDto profileDto, Model model) {
+        if (userService.existsUserByUsername(userDto.getUsername()) ||
+                profileService.existsProfileByEmail(profileDto.getEmail())) {
             model.addAttribute("error", "User already exists!");
             return "register";
         }
+        User user = userDtoConverter.fromDto(userDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAuthority(Collections.singleton(Authority.USER));
         user.setEnabled(true);
-        userRepository.save(user);
+        userService.add(user);
 
-        profile.setUser(user);
-        profile.setCreatedDate(Instant.now());
-        profile.setBalance(BigDecimal.valueOf(0));
-        profileRepository.save(profile);
+        Profile profile = profileDtoConverter.fromDto(profileDto, user);
+        profileService.save(profile);
+
         return "redirect:/login";
     }
 }

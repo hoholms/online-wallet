@@ -17,11 +17,11 @@
         <div class="form-group row">
             <label for="transactionId" class="col-sm-2 col-form-label">Category</label>
             <div class="col-sm-10">
-            <select class="form-select" name="category" id="transactionId">
-                <#list categories as category>
-                    <option>${category.category}</option>
-                </#list>
-            </select>
+                <select class="form-select" name="category" id="transactionId">
+                    <#list categories as category>
+                        <option>${category.category}</option>
+                    </#list>
+                </select>
             </div>
         </div>
         <br>
@@ -54,7 +54,7 @@
             <div class="col-sm-10">
                 <button class="btn btn-outline-primary mt-3" type="submit">Save</button>
 
-                <a href="/transactions/delete/${transactionEdit.id}" class="btn btn-outline-danger mt-3" >Delete</a>
+                <a href="/transactions/delete/${transactionEdit.id}" class="btn btn-outline-danger mt-3">Delete</a>
             </div>
         </div>
 

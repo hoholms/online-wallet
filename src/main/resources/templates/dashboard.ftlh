@@ -77,13 +77,13 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><span
-                                    class="text-success">Earned the most money (${maxIncomeSum!"0"})</span></h5>
+                                    class="text-success">Earned the most money (${maxIncomeCategory.second!"0"})</span></h5>
                         <h6 class="card-subtitle mb-2">
-                            from ${maxIncomeCategory!"nothing"}
+                            from ${maxIncomeCategory.first!"nothing"}
                         </h6>
                     </div>
                     <div class="card-footer">
-                        <span class="text-success">+${maxIncomeSum!"0"}</span>
+                        <span class="text-success">+${maxIncomeCategory.second!"0"}</span>
                     </div>
                 </div>
             </div>
@@ -91,13 +91,13 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><span
-                                    class="text-danger">Spent the most money (${maxExpenseSum!"0"})</span></h5>
+                                    class="text-danger">Spent the most money (${maxExpenseCategory.second!"0"})</span></h5>
                         <h6 class="card-subtitle mb-2">
-                            on ${maxExpenseCategory!"nothing"}
+                            on ${maxExpenseCategory.first!"nothing"}
                         </h6>
                     </div>
                     <div class="card-footer">
-                        <span class="text-danger">-${maxExpenseSum!"0"}</span>
+                        <span class="text-danger">-${maxExpenseCategory.second!"0"}</span>
                     </div>
                 </div>
             </div>
@@ -125,6 +125,7 @@
                                 <span class="text-muted float-end">${transaction.transactionDate}</span>
                                 <a href="/transactions/${transaction.id}" class="stretched-link"></a>
                             </div>
+                            <a href="/transactions/${transaction.id}" class="stretched-link"></a>
                         </div>
                     </div>
                 <#else>

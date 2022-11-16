@@ -9,11 +9,14 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class TransactionsCategoryService
-{
+public class TransactionsCategoryService {
     public final TransactionsCategoryRepository categoryRepository;
 
-    public List<TransactionsCategory> findAllByIsIncomeById(Long id){
+    public final TransactionService transactionService;
+
+    public List<TransactionsCategory> findAllCategoriesByTransactionIdByIsIncome(Long transactionId) {
+
+        Long id = transactionService.findTransactionById(transactionId).getCategory().getId();
 
         TransactionsCategory category;
         if (categoryRepository.findById(id).isPresent()) {
@@ -21,15 +24,20 @@ public class TransactionsCategoryService
             return categoryRepository.findAll().stream()
                     .filter(a -> {
                         assert false;
+
                         return a.getIsIncome().equals(category.getIsIncome());
                     })
                     .toList();
-        }
-        else {
-           return null;
+        } else {
+            return null;
         }
     }
-    public TransactionsCategory findByCategory(String category){
+
+    public TransactionsCategory findByCategory(String category) {
         return categoryRepository.findByCategory(category);
+    }
+
+    public List<TransactionsCategory> findByIsIncome(boolean isIncome) {
+        return categoryRepository.findByIsIncome(isIncome);
     }
 }

@@ -8,7 +8,7 @@
         <div class="form-group row">
             <label for="userId" class="col-sm-2 col-form-label">User ID</label>
             <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" value="${user.id}" name="userId" id="userId">
+                <input type="text" readonly class="form-control-plaintext" value="${user.id}" name="id" id="userId">
             </div>
         </div>
 

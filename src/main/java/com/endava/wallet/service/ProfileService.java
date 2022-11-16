@@ -10,12 +10,17 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class ProfileService {
     private ProfileRepository profileRepository;
-
-    public boolean existsProfileByEmail(String email) {
-        return profileRepository.existsProfileByEmail(email);
-    }
+    private UserService userService;
 
     public Profile findProfileByUser(User user) {
         return profileRepository.findByUser(user);
+    }
+
+    public Boolean existsProfileByEmail(String email) {
+        return profileRepository.existsProfileByEmail(email);
+    }
+
+    public void save(Profile profile) {
+        profileRepository.save(profile);
     }
 }
