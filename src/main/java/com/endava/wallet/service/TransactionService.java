@@ -62,6 +62,7 @@ public class TransactionService {
                 from,
                 to
         );
+        if (maxTranCategory == null) maxTranCategory = "nothing";
 
         BigDecimal maxTranSum = transactionRepository.FindMaxSumDateBetween(
                 profile,
@@ -69,6 +70,7 @@ public class TransactionService {
                 from,
                 to
         );
+        if (maxTranSum == null) maxTranSum = BigDecimal.ZERO;
 
         return Pair.of(maxTranCategory, maxTranSum);
     }
