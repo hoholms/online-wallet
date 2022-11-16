@@ -41,10 +41,11 @@ public class RegisterController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAuthority(Collections.singleton(Authority.USER));
         user.setEnabled(true);
-        userService.update(user);
+        userService.add(user);
 
         Profile profile = profileDtoConverter.fromDto(profileDto, user);
         profileService.save(profile);
+
         return "redirect:/login";
     }
 }

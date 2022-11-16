@@ -2,7 +2,6 @@ package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.entity.DTO.UserDtoConverter;
 import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +18,6 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-    private final UserDtoConverter userDtoConverter;
 
     @GetMapping
     public String userList(Model model) {
@@ -40,13 +38,13 @@ public class UserController {
             @RequestParam Map<String, String> form,
             @RequestParam Long id
     ) {
-        userService.update(username, form, userService.findById(id));
+        userService.add(username, form, userService.findUserById(id));
         return "redirect:/user";
     }
 
     @GetMapping("/delete/{userID}")
     public String userDelete(@PathVariable Long userID) {
-        userService.deleteById(userID);
+        userService.deleteUserById(userID);
         return "redirect:/user";
     }
 }

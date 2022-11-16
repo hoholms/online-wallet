@@ -32,13 +32,13 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findAll();
     }
 
-    public void update(User user) {
+    public void add(User user) {
         userRepository.save(user);
     }
 
-    public void update(@RequestParam String username,
-                       @RequestParam Map<String, String> form,
-                       User user) {
+    public void add(@RequestParam String username,
+                    @RequestParam Map<String, String> form,
+                    User user) {
 
         user.setUsername(username);
         Set<String> authorities = Arrays.stream(Authority.values())
@@ -56,7 +56,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public User findById(Long id) {
+    public User findUserById(Long id) {
         return userRepository.findById(id).get();
     }
 
@@ -64,7 +64,7 @@ public class UserService implements UserDetailsService {
         return userRepository.existsUserByUsername(username);
     }
 
-    public void deleteById(Long userID) {
+    public void deleteUserById(Long userID) {
         userRepository.deleteById(userID);
     }
 

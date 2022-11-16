@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -23,15 +22,13 @@ public class TransactionService {
     private ProfileService profileService;
 
 
-    public List<Transaction> findTransactionByUserIdOrderAsc(User user) {
+    public List<Transaction> findRecentTransactionsByUser(User user) {
         Profile profile = profileService.findProfileByUser(user);
         return transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
     }
 
-    public List<Transaction> findRecentTransactions(Profile profile) {
-        List<Transaction> recentTransactions = transactionRepository.findTop9ByProfileOrderByTransactionDateAsc(profile);
-        Collections.reverse(recentTransactions);
-        return recentTransactions;
+    public List<Transaction> findRecentTransactionsByProfile(Profile profile) {
+        return transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
     }
 
     public List<Transaction> findByIsIncomeDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
@@ -110,7 +107,7 @@ public class TransactionService {
         return LocalDate.parse(transactionDate);
     }
 
-    public void deleteById(Long transactionID, User user) {
+    public void deleteTransactionById(Long transactionID, User user) {
         Transaction transaction = transactionRepository.findTransactionById(transactionID);
         transactionRepository.deleteById(transactionID);
         Profile profile = profileService.findProfileByUser(user);

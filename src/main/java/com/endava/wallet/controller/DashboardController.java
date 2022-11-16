@@ -34,7 +34,7 @@ public class DashboardController {
         Profile currentProfile = profileService.findProfileByUser(user);
         model.addAttribute("currentProfile", currentProfile);
 
-        model.addAttribute("recentTransactions", transactionService.findRecentTransactions(currentProfile));
+        model.addAttribute("recentTransactions", transactionService.findRecentTransactionsByProfile(currentProfile));
 
         List<TransactionsCategory> incomeCategories = categoryService.findByIsIncome(true);
         model.addAttribute("incomeCategories", incomeCategories);

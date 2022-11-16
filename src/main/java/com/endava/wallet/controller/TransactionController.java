@@ -1,5 +1,7 @@
 package com.endava.wallet.controller;
 
+import com.endava.wallet.entity.Transaction;
+import com.endava.wallet.entity.TransactionsCategory;
 import com.endava.wallet.entity.User;
 import com.endava.wallet.service.TransactionService;
 import com.endava.wallet.service.TransactionsCategoryService;
@@ -10,42 +12,37 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
-    private final String TRANSACTION_VIEW = "transactions";
+
     private final TransactionService transactionService;
-
     private final TransactionsCategoryService categoryService;
-
-    @GetMapping
-    public String transactionsList(@AuthenticationPrincipal User user, Model model) {
-
-        model.addAttribute(TRANSACTION_VIEW, transactionService.findTransactionByUserIdOrderAsc(user));
-        model.addAttribute("userID", user.getId());
-
-        return TRANSACTION_VIEW;
-    }
 
     @GetMapping("{transactionID}")
     public String transactionEditForm(@PathVariable Long transactionID, Model model) {
-        model.addAttribute("transactionEdit",
-                transactionService.findTransactionById(transactionID));
 
-        model.addAttribute("categories",
-                categoryService.findAllCategoriesByTransactionIdByIsIncome(transactionID));
+        Transaction transactionEdit = transactionService.findTransactionById(transactionID);
+        model.addAttribute("transactionEdit", transactionEdit);
+
+        List<TransactionsCategory> similarCategories = categoryService.findAllCategoriesByTransactionIdByIsIncome(transactionID);
+        model.addAttribute("categories", similarCategories);
+
         return "transactionEdit";
     }
 
     @GetMapping("/delete/{transactionID}")
     public String transactionDelete(@PathVariable Long transactionID, @AuthenticationPrincipal User user, Model model) {
 
-        transactionService.deleteById(transactionID, user);
-        model.addAttribute("transactions", transactionService.findTransactionByUserIdOrderAsc(user));
+        transactionService.deleteTransactionById(transactionID, user);
 
-        return TRANSACTION_VIEW;
+        List<Transaction> transactionList = transactionService.findRecentTransactionsByUser(user);
+        model.addAttribute("transactions", transactionList);
+
+        return "redirect:/dashboard";
     }
 
     @PostMapping
@@ -61,7 +58,7 @@ public class TransactionController {
         transactionService.save(user, id, message, category, amount, transactionDate);
 
 
-        return "redirect:/transactions";
+        return "redirect:/dashboard";
     }
 
 }
