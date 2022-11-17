@@ -32,6 +32,7 @@ public class TransactionsCategoryService {
             return null;
         }
     }
+    //sdfsdfds
 
     public TransactionsCategory findByCategory(String category) {
         return categoryRepository.findByCategory(category);
