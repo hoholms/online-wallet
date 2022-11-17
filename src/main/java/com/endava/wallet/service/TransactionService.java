@@ -117,8 +117,9 @@ public class TransactionService {
     }
 
     public void deleteTransaction(Transaction transaction, User user) {
+        findTransactionById(transaction.getId());
 
-        transactionRepository.deleteTransaction(transaction);
+        transactionRepository.delete(transaction);
 
         Profile profile = profileService.findProfileByUser(user);
 

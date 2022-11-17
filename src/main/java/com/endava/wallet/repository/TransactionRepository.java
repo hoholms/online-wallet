@@ -15,8 +15,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     Transaction findTransactionById(Long id);
 
-    void deleteTransaction(Transaction transaction);
-
     List<Transaction> findByProfileAndTransactionDateBetweenOrderByTransactionDateAsc(Profile profile, LocalDate from, LocalDate to);
 
     List<Transaction> findTop9ByProfileOrderByTransactionDateAsc(Profile profile);
