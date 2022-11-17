@@ -32,7 +32,6 @@ public class TransactionService {
     }
 
     public List<Transaction> findByIsIncomeDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
-
         return transactionRepository.findByProfileAndIsIncomeAndTransactionDateBetween(
                 profile,
                 isIncome,
@@ -41,7 +40,6 @@ public class TransactionService {
     }
 
     public BigDecimal findTranSumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
-
         List<Transaction> transactions = transactionRepository.findByProfileAndIsIncomeAndTransactionDateBetween(
                 profile,
                 isIncome,
@@ -54,7 +52,6 @@ public class TransactionService {
     }
 
     public Pair<String, BigDecimal> findMaxCategorySumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
-
         String maxTranCategory = transactionRepository.FindMaxCategoryDateBetween(
                 profile,
                 isIncome,
@@ -83,11 +80,8 @@ public class TransactionService {
     }
 
     public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {
-
         Profile profile = profileService.findProfileByUser(user);
-
         Transaction transaction = findTransactionById(id);
-
         if (amount != null && !amount.equals(transaction.getAmount())) {
             if (Boolean.TRUE.equals(transaction.getIsIncome())) {
                 profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
@@ -98,8 +92,9 @@ public class TransactionService {
             }
         }
 
-        transaction.setAmount(amount);
-
+        if (amount != null) {
+            transaction.setAmount(amount);
+        }
         transaction.setCategory(categoryRepository.findByCategory(category));
         transaction.setTransactionDate(parseDate(transactionDate));
         transaction.setMessage(message);
@@ -112,18 +107,15 @@ public class TransactionService {
         return LocalDate.parse(transactionDate);
     }
 
-    public void deleteTransaction(Transaction transaction, User user) {
-
-        transactionRepository.deleteTransaction(transaction);
-
+    public void deleteTransactionById(Long transactionID, User user) {
+        Transaction transaction = transactionRepository.findTransactionById(transactionID);
+        transactionRepository.deleteById(transactionID);
         Profile profile = profileService.findProfileByUser(user);
-
         if (Boolean.TRUE.equals(transaction.getIsIncome())) {
             profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
         } else {
             profile.setBalance(profile.getBalance().add(transaction.getAmount()));
         }
-
         profileService.save(profile);
 
     }

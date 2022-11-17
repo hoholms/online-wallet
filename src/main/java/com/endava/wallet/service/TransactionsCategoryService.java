@@ -1,7 +1,6 @@
 package com.endava.wallet.service;
 
 import com.endava.wallet.entity.TransactionsCategory;
-import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,19 +16,20 @@ public class TransactionsCategoryService {
 
     public List<TransactionsCategory> findAllCategoriesByTransactionIdByIsIncome(Long transactionId) {
 
-        Long categoryId = transactionService.findTransactionById(transactionId).getCategory().getId();
+        Long id = transactionService.findTransactionById(transactionId).getCategory().getId();
 
         TransactionsCategory category;
-        if (categoryRepository.findById(categoryId).isPresent()) {
-            category = categoryRepository.findById(categoryId).get();
+        if (categoryRepository.findById(id).isPresent()) {
+            category = categoryRepository.findById(id).get();
             return categoryRepository.findAll().stream()
-                    .filter(a ->
-                         a.getIsIncome().equals(category.getIsIncome())
-                    )
+                    .filter(a -> {
+                        assert false;
+
+                        return a.getIsIncome().equals(category.getIsIncome());
+                    })
                     .toList();
         } else {
-            throw new ApiRequestException(
-                    "There is no categories similar to this transaction's categories in database");
+            return null;
         }
     }
 
