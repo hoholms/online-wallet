@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class ProfileService {
     private ProfileRepository profileRepository;
+    private UserService userService;
 
     public Profile findProfileByUser(User user) {
         return profileRepository.findByUser(user);

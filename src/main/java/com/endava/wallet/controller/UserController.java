@@ -2,7 +2,6 @@ package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,11 +25,8 @@ public class UserController {
         return "userList";
     }
 
-    @GetMapping("{userID}")
-    public String userEditForm(@PathVariable Long userID, Model model) {
-        User user = userService.findUserById(userID);
-        if (user == null)
-            throw new ApiRequestException("There is no user with such id in database");
+    @GetMapping("{user}")
+    public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("authorities", Authority.values());
         return "userEdit";
@@ -40,19 +36,14 @@ public class UserController {
     public String userSave(
             @RequestParam String username,
             @RequestParam Map<String, String> form,
-            @RequestParam Long userID
+            @RequestParam Long id
     ) {
-        User user = userService.findUserById(userID);
-        if (user == null)
-            throw new ApiRequestException("There is no user with id = " + userID + " in database");
-        userService.add(username, form, user);
+        userService.add(username, form, userService.findUserById(id));
         return "redirect:/user";
     }
 
     @GetMapping("/delete/{userID}")
     public String userDelete(@PathVariable Long userID) {
-        if (userService.findUserById(userID) == null)
-            throw new ApiRequestException("There is no user with id = " + userID + " in database");
         userService.deleteUserById(userID);
         return "redirect:/user";
     }
