@@ -1,8 +1,6 @@
 package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Authority;
-import com.endava.wallet.entity.User;
-import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,10 +26,8 @@ public class UserController {
 
     @GetMapping("{userID}")
     public String userEditForm(@PathVariable Long userID, Model model) {
-        User user = userService.findUserById(userID);
-        if (user == null)
-            throw new ApiRequestException("There is no user with such id in database");
-        model.addAttribute("user", user);
+
+        model.addAttribute("user", userService.findUserById(userID));
         model.addAttribute("authorities", Authority.values());
         return "userEdit";
     }
@@ -42,9 +38,6 @@ public class UserController {
             @RequestParam Map<String, String> form,
             @RequestParam Long id
     ) {
-        User user = userService.findUserById(id);
-        if (user == null)
-            throw new ApiRequestException("There is no user with id = " + id + " in database");
         userService.add(username, form, userService.findUserById(id));
         return "redirect:/user";
     }
