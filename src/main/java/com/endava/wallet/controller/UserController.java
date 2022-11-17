@@ -40,17 +40,19 @@ public class UserController {
     public String userSave(
             @RequestParam String username,
             @RequestParam Map<String, String> form,
-            @RequestParam Long id
+            @RequestParam Long userID
     ) {
-        User user = userService.findUserById(id);
+        User user = userService.findUserById(userID);
         if (user == null)
-            throw new ApiRequestException("There is no user with id = " + id + " in database");
-        userService.add(username, form, userService.findUserById(id));
+            throw new ApiRequestException("There is no user with id = " + userID + " in database");
+        userService.add(username, form, user);
         return "redirect:/user";
     }
 
     @GetMapping("/delete/{userID}")
     public String userDelete(@PathVariable Long userID) {
+        if (userService.findUserById(userID) == null)
+            throw new ApiRequestException("There is no user with id = " + userID + " in database");
         userService.deleteUserById(userID);
         return "redirect:/user";
     }
