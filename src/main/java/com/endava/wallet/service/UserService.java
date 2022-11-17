@@ -2,6 +2,7 @@ package com.endava.wallet.service;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
+import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +26,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new ApiRequestException("User not found"));
     }
 
     public List<User> findAllUsers() {
@@ -62,7 +63,9 @@ public class UserService implements UserDetailsService {
             user = userRepository.findById(id).get();
             return user;
         }
-        else return null;
+        else {
+            throw new ApiRequestException("User not found");
+        }
     }
 
     public Boolean existsUserByUsername(String username) {
