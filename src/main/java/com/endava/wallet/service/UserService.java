@@ -58,12 +58,14 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserById(Long id) {
+
         User user;
         if (userRepository.findById(id).isPresent()){
             user = userRepository.findById(id).get();
             return user;
         }
         else throw new ApiRequestException("User with id " + id + " not found");
+
     }
 
     public Boolean existsUserByUsername(String username) {
