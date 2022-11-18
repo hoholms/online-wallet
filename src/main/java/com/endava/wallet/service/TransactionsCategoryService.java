@@ -6,7 +6,6 @@ import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,7 @@ public class TransactionsCategoryService {
 
         Long categoryId = transactionService.findTransactionById(transactionId).getCategory().getId();
 
-        Optional<TransactionsCategory> categoryOptional = categoryRepository.findById(id);
+        Optional<TransactionsCategory> categoryOptional = categoryRepository.findById(transactionId);
         TransactionsCategory category;
 
         if (categoryRepository.findById(categoryId).isPresent()) {
