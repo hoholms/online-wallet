@@ -3,6 +3,7 @@ package com.endava.wallet.service;
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.User;
+import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.repository.TransactionRepository;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.AllArgsConstructor;
@@ -67,6 +68,9 @@ public class TransactionService {
     }
 
     public Transaction findTransactionById(Long id) {
+        if(transactionRepository.findTransactionById(id) == null){
+            throw new ApiRequestException("Transaction with id " + id + " not found");
+        }
         return transactionRepository.findTransactionById(id);
     }
 
@@ -102,9 +106,10 @@ public class TransactionService {
         return LocalDate.parse(transactionDate);
     }
 
-    public void deleteTransactionById(Long transactionID, User user) {
-        Transaction transaction = transactionRepository.findTransactionById(transactionID);
-        transactionRepository.deleteById(transactionID);
+    public void deleteTransaction(Transaction transaction, User user) {
+        findTransactionById(transaction.getId());
+        transactionRepository.delete(transaction);
+        
         Profile profile = profileService.findProfileByUser(user);
         if (Boolean.TRUE.equals(transaction.getIsIncome())) {
             profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
