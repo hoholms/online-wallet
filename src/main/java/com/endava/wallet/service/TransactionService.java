@@ -57,7 +57,7 @@ public class TransactionService {
     public Pair<String, BigDecimal> findMaxCategorySumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
 
 
-        String maxTranCategory = transactionRepository.FindMaxCategoryDateBetween(
+        String maxTranCategory = transactionRepository.findMaxCategoryDateBetween(
 
                 profile,
                 isIncome,
