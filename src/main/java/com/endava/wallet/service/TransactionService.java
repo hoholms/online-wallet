@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -25,11 +26,13 @@ public class TransactionService {
 
     public List<Transaction> findRecentTransactionsByUser(User user) {
         Profile profile = profileService.findProfileByUser(user);
-        return transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
+        return findRecentTransactionsByProfile(profile);
     }
 
     public List<Transaction> findRecentTransactionsByProfile(Profile profile) {
-        return transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
+        List<Transaction> transactions = transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
+        Collections.reverse(transactions);
+        return transactions;
     }
 
     public BigDecimal findTranSumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
