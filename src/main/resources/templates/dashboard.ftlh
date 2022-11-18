@@ -77,7 +77,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><span
-                                    class="text-success">Earned the most money (${maxIncomeCategory.second!"0"})</span></h5>
+                                    class="text-success">Earned the most money (${maxIncomeCategory.second!"0"})</span>
+                        </h5>
                         <h6 class="card-subtitle mb-2">
                             from ${maxIncomeCategory.first!"nothing"}
                         </h6>
@@ -91,7 +92,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><span
-                                    class="text-danger">Spent the most money (${maxExpenseCategory.second!"0"})</span></h5>
+                                    class="text-danger">Spent the most money (${maxExpenseCategory.second!"0"})</span>
+                        </h5>
                         <h6 class="card-subtitle mb-2">
                             on ${maxExpenseCategory.first!"nothing"}
                         </h6>
