@@ -1,4 +1,4 @@
-package com.endava.wallet.entity.dto;
+package com.endava.wallet.entity.DTO;
 
 import com.endava.wallet.entity.Transaction;
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * A dto for the {@link Transaction} entity
+ * A DTO for the {@link Transaction} entity
  */
 @Data
 public class TransactionDto implements Serializable {

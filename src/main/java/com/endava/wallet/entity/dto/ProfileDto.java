@@ -1,4 +1,4 @@
-package com.endava.wallet.entity.dto;
+package com.endava.wallet.entity.DTO;
 
 import com.endava.wallet.entity.Profile;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
- * A dto for the {@link Profile} entity
+ * A DTO for the {@link Profile} entity
  */
 @Data
 public class ProfileDto implements Serializable {

@@ -2,6 +2,7 @@ package com.endava.wallet.service;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
+import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,8 +58,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserById(Long id) {
-        return userRepository.findById(id)
-                .orElse(null);
+        User user;
+        if (userRepository.findById(id).isPresent()){
+            user = userRepository.findById(id).get();
+            return user;
+        }
+        else throw new ApiRequestException("User with id " + id + " not found");
     }
 
     public Boolean existsUserByUsername(String username) {
@@ -66,6 +71,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUserById(Long userID) {
+        findUserById(userID);
         userRepository.deleteById(userID);
     }
 

@@ -1,11 +1,8 @@
 package com.endava.wallet.controller;
 
-import com.endava.wallet.entity.Profile;
-import com.endava.wallet.entity.Transaction;
-import com.endava.wallet.entity.TransactionsCategory;
-import com.endava.wallet.entity.User;
-import com.endava.wallet.entity.dto.TransactionDto;
-import com.endava.wallet.entity.dto.TransactionDtoConverter;
+import com.endava.wallet.entity.*;
+import com.endava.wallet.entity.DTO.TransactionDto;
+import com.endava.wallet.entity.DTO.TransactionDtoConverter;
 import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.TransactionService;
 import com.endava.wallet.service.TransactionsCategoryService;
