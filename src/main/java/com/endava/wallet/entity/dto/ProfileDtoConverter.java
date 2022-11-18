@@ -1,15 +1,13 @@
-package com.endava.wallet.entity.DTO;
+package com.endava.wallet.entity.dto;
 
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
 @Component
-@RequiredArgsConstructor
 public class ProfileDtoConverter {
 
     public Profile fromDto(ProfileDto profile, User user) {

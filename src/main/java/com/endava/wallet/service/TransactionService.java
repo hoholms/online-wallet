@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,15 +29,9 @@ public class TransactionService {
     }
 
     public List<Transaction> findRecentTransactionsByProfile(Profile profile) {
-        return transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
-    }
-
-    public List<Transaction> findByIsIncomeDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
-        return transactionRepository.findByProfileAndIsIncomeAndTransactionDateBetween(
-                profile,
-                isIncome,
-                from,
-                to);
+        List<Transaction> transactions = transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
+        Collections.reverse(transactions);
+        return transactions;
     }
 
     public BigDecimal findTranSumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
@@ -52,7 +47,7 @@ public class TransactionService {
     }
 
     public Pair<String, BigDecimal> findMaxCategorySumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
-        String maxTranCategory = transactionRepository.FindMaxCategoryDateBetween(
+        String maxTranCategory = transactionRepository.findMaxCategoryDateBetween(
                 profile,
                 isIncome,
                 from,
@@ -60,7 +55,7 @@ public class TransactionService {
         );
         if (maxTranCategory == null) maxTranCategory = "nothing";
 
-        BigDecimal maxTranSum = transactionRepository.FindMaxSumDateBetween(
+        BigDecimal maxTranSum = transactionRepository.findMaxSumDateBetween(
                 profile,
                 isIncome,
                 from,
