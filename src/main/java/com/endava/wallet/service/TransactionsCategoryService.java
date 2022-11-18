@@ -5,7 +5,9 @@ import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -18,9 +20,10 @@ public class TransactionsCategoryService {
 
         Long id = transactionService.findTransactionById(transactionId).getCategory().getId();
 
+        Optional<TransactionsCategory> categoryOptional = categoryRepository.findById(id);
         TransactionsCategory category;
-        if (categoryRepository.findById(id).isPresent()) {
-            category = categoryRepository.findById(id).get();
+        if (categoryOptional.isPresent()) {
+            category = categoryOptional.get();
             return categoryRepository.findAll().stream()
                     .filter(a -> {
                         assert false;
@@ -29,7 +32,7 @@ public class TransactionsCategoryService {
                     })
                     .toList();
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 

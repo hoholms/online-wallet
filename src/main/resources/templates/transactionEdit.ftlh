@@ -19,7 +19,11 @@
             <div class="col-sm-10">
                 <select class="form-select" name="category" id="transactionId">
                     <#list categories as category>
-                        <option>${category.category}</option>
+                        <#if category == transactionEdit.category>
+                            <option selected="selected">${category.category}</option>
+                        <#else>
+                            <option>${category.category}</option>
+                        </#if>
                     </#list>
                 </select>
             </div>
