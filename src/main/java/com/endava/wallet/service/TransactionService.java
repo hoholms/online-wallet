@@ -62,6 +62,7 @@ public class TransactionService {
 
         return Pair.of(maxTranCategory, maxTranSum);
     }
+    //Exception
 
     public Transaction findTransactionById(Long id) {
         return transactionRepository.findTransactionById(id);
