@@ -1,4 +1,6 @@
+
 package com.endava.wallet.entity.DTO;
+
 
 import com.endava.wallet.entity.User;
 import lombok.Data;
@@ -6,7 +8,9 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
+
  * A DTO for the {@link User} entity
+
  */
 @Data
 public class UserDto implements Serializable {

@@ -1,9 +1,7 @@
 package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Transaction;
-import com.endava.wallet.entity.TransactionsCategory;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.service.TransactionService;
 import com.endava.wallet.service.TransactionsCategoryService;
 import lombok.RequiredArgsConstructor;
@@ -26,20 +24,10 @@ public class TransactionController {
     @GetMapping("{transactionID}")
     public String transactionEditForm(@PathVariable Long transactionID, Model model) {
 
-        Transaction transactionEdit = transactionService.findTransactionById(transactionID);
-        if (transactionEdit == null) {
-            throw new ApiRequestException(
-                    "There is no transaction with id = " + transactionID + " in database");
-        }
-        model.addAttribute("transactionEdit", transactionEdit);
+        model.addAttribute("transactionEdit", transactionService.findTransactionById(transactionID));
 
-        List<TransactionsCategory> similarCategories =
-                categoryService.findAllCategoriesByTransactionIdByIsIncome(transactionID);
-        if (similarCategories.isEmpty()) {
-            throw new ApiRequestException(
-                    "There is no categories similar to this transaction's categories in database");
-        }
-        model.addAttribute("categories", similarCategories);
+        model.addAttribute("categories",
+                categoryService.findAllCategoriesByTransactionIdByIsIncome(transactionID));
 
         return "transactionEdit";
     }
@@ -47,13 +35,7 @@ public class TransactionController {
     @GetMapping("/delete/{transactionID}")
     public String transactionDelete(@PathVariable Long transactionID, @AuthenticationPrincipal User user, Model model) {
 
-        Transaction transaction = transactionService.findTransactionById(transactionID);
-        if (transaction == null) {
-            throw new ApiRequestException(
-                    "There is no transaction with id = " + transactionID + " in database");
-        }
-
-        transactionService.deleteTransaction(transaction, user);
+        transactionService.deleteTransaction(transactionService.findTransactionById(transactionID), user);
 
         List<Transaction> transactionList = transactionService.findRecentTransactionsByUser(user);
         model.addAttribute("transactions", transactionList);
