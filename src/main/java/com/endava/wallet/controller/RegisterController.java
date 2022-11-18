@@ -1,10 +1,12 @@
 package com.endava.wallet.controller;
 
-import com.endava.wallet.entity.*;
-import com.endava.wallet.entity.DTO.ProfileDto;
-import com.endava.wallet.entity.DTO.ProfileDtoConverter;
-import com.endava.wallet.entity.DTO.UserDto;
-import com.endava.wallet.entity.DTO.UserDtoConverter;
+import com.endava.wallet.entity.Authority;
+import com.endava.wallet.entity.Profile;
+import com.endava.wallet.entity.User;
+import com.endava.wallet.entity.dto.ProfileDto;
+import com.endava.wallet.entity.dto.ProfileDtoConverter;
+import com.endava.wallet.entity.dto.UserDto;
+import com.endava.wallet.entity.dto.UserDtoConverter;
 import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;

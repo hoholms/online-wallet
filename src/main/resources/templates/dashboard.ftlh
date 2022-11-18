@@ -3,6 +3,7 @@
 <#include "parts/security.ftlh">
 
 <@c.page>
+<#--noinspection FtlReferencesInspection-->
     <h1>${user.username}'s dashboard</h1>
 
     <div class="container-fluid my-3">
@@ -77,7 +78,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><span
-                                    class="text-success">Earned the most money (${maxIncomeCategory.second!"0"})</span></h5>
+                                    class="text-success">Earned the most money (${maxIncomeCategory.second!"0"})</span>
+                        </h5>
                         <h6 class="card-subtitle mb-2">
                             from ${maxIncomeCategory.first!"nothing"}
                         </h6>
@@ -91,7 +93,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><span
-                                    class="text-danger">Spent the most money (${maxExpenseCategory.second!"0"})</span></h5>
+                                    class="text-danger">Spent the most money (${maxExpenseCategory.second!"0"})</span>
+                        </h5>
                         <h6 class="card-subtitle mb-2">
                             on ${maxExpenseCategory.first!"nothing"}
                         </h6>
@@ -123,6 +126,7 @@
                             <div class="card-footer text-success">
                                 +${transaction.amount}
                                 <span class="text-muted float-end">${transaction.transactionDate}</span>
+                                <a href="/transactions/${transaction.id}" class="stretched-link"></a>
                             </div>
                             <a href="/transactions/${transaction.id}" class="stretched-link"></a>
                         </div>
