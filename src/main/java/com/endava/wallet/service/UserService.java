@@ -2,7 +2,6 @@ package com.endava.wallet.service;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

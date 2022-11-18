@@ -1,4 +1,4 @@
-package com.endava.wallet.entity.DTO;
+package com.endava.wallet.entity.dto;
 
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.Transaction;

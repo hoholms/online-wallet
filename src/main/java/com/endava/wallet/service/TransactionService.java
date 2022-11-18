@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -29,20 +30,12 @@ public class TransactionService {
     }
 
     public List<Transaction> findRecentTransactionsByProfile(Profile profile) {
-        return transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
-    }
-
-    public List<Transaction> findByIsIncomeDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
-
-        return transactionRepository.findByProfileAndIsIncomeAndTransactionDateBetween(
-                profile,
-                isIncome,
-                from,
-                to);
+        List<Transaction> transactions = transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
+        Collections.reverse(transactions);
+        return transactions;
     }
 
     public BigDecimal findTranSumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
-
         List<Transaction> transactions = transactionRepository.findByProfileAndIsIncomeAndTransactionDateBetween(
                 profile,
                 isIncome,
@@ -55,8 +48,7 @@ public class TransactionService {
     }
 
     public Pair<String, BigDecimal> findMaxCategorySumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
-
-        String maxTranCategory = transactionRepository.FindMaxCategoryDateBetween(
+        String maxTranCategory = transactionRepository.findMaxCategoryDateBetween(
                 profile,
                 isIncome,
                 from,
@@ -64,7 +56,7 @@ public class TransactionService {
         );
         if (maxTranCategory == null) maxTranCategory = "nothing";
 
-        BigDecimal maxTranSum = transactionRepository.FindMaxSumDateBetween(
+        BigDecimal maxTranSum = transactionRepository.findMaxSumDateBetween(
                 profile,
                 isIncome,
                 from,
@@ -87,11 +79,8 @@ public class TransactionService {
     }
 
     public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {
-
         Profile profile = profileService.findProfileByUser(user);
-
         Transaction transaction = findTransactionById(id);
-
         if (amount != null && !amount.equals(transaction.getAmount())) {
             if (Boolean.TRUE.equals(transaction.getIsIncome())) {
                 profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
@@ -102,8 +91,9 @@ public class TransactionService {
             }
         }
 
-        transaction.setAmount(amount);
-
+        if (amount != null) {
+            transaction.setAmount(amount);
+        }
         transaction.setCategory(categoryRepository.findByCategory(category));
         transaction.setTransactionDate(parseDate(transactionDate));
         transaction.setMessage(message);
@@ -118,17 +108,13 @@ public class TransactionService {
 
     public void deleteTransaction(Transaction transaction, User user) {
         findTransactionById(transaction.getId());
-
         transactionRepository.delete(transaction);
-
         Profile profile = profileService.findProfileByUser(user);
-
         if (Boolean.TRUE.equals(transaction.getIsIncome())) {
             profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
         } else {
             profile.setBalance(profile.getBalance().add(transaction.getAmount()));
         }
-
         profileService.save(profile);
 
     }

@@ -1,6 +1,7 @@
 package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Authority;
+import com.endava.wallet.entity.User;
 import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,10 +25,9 @@ public class UserController {
         return "userList";
     }
 
-    @GetMapping("{userID}")
-    public String userEditForm(@PathVariable Long userID, Model model) {
-
-        model.addAttribute("user", userService.findUserById(userID));
+    @GetMapping("{user}")
+    public String userEditForm(@PathVariable User user, Model model) {
+        model.addAttribute("user", user);
         model.addAttribute("authorities", Authority.values());
         return "userEdit";
     }

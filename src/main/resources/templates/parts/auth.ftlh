@@ -22,6 +22,7 @@
                 <label for="email">Email</label>
             </div>
         </#if>
+        <#--noinspection FtlReferencesInspection-->
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit" class="btn btn-primary">
             <#if isRegisterForm>
@@ -36,6 +37,7 @@
 
 <#macro logout>
     <form action="/logout" method="post">
+        <#--noinspection FtlReferencesInspection-->
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit" class="btn btn-outline-danger btn-sm">Sign Out</button>
     </form>
