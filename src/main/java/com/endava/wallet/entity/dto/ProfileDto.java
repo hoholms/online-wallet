@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
+
  * A DTO for the {@link Profile} entity
+
  */
 @Data
 public class ProfileDto implements Serializable {
