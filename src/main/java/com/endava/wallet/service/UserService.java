@@ -30,6 +30,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> findAllUsers() {
+
         return this.userRepository.findAll();
     }
 
@@ -58,14 +59,9 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserById(Long id) {
-
-        User user;
-        if (userRepository.findById(id).isPresent()){
-            user = userRepository.findById(id).get();
-            return user;
-        }
-        else throw new ApiRequestException("User with id " + id + " not found");
-
+        if (userRepository.findUserById(id) == null)
+            throw new ApiRequestException("User with id: " + id + " not found");
+        return userRepository.findUserById(id);
     }
 
     public Boolean existsUserByUsername(String username) {

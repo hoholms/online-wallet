@@ -1,7 +1,7 @@
 package com.endava.wallet.exception;
 
 // API Request Exception
-public class ApiRequestException extends RuntimeException{
+public class ApiRequestException extends RuntimeException {
 
     public ApiRequestException(String message) {
         super(message);

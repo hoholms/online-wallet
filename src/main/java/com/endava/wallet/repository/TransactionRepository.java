@@ -15,11 +15,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     Transaction findTransactionById(Long id);
 
-
-    List<Transaction> findByProfileAndTransactionDateBetweenOrderByTransactionDateAsc(Profile profile, LocalDate from, LocalDate to);
-
-    List<Transaction> findTop9ByProfileOrderByTransactionDateAsc(Profile profile);
-
     List<Transaction> findByProfileAndIsIncomeAndTransactionDateBetween(Profile profile, Boolean isIncome, LocalDate from, LocalDate to);
 
     @Query(value = """
@@ -33,7 +28,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                                                              FROM transactions
                                                                       JOIN transactions_categories tc on tc.id = transactions.category_id
                                                              WHERE profile_id = :cur_profile and tc.is_income = :isIncome and transaction_date between :from_date and :to_date
-                                                             group by category) as ttsa)""", nativeQuery = true)
+                                                             group by category) as ttsa)
+            """, nativeQuery = true)
     String findMaxCategoryDateBetween(@Param("cur_profile") Profile curProfile, @Param("isIncome") Boolean isIncome, @Param("from_date") LocalDate fromDate, @Param("to_date") LocalDate toDate);
 
     @Query(value = """
@@ -47,6 +43,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                                                              FROM transactions
                                                                       JOIN transactions_categories tc on tc.id = transactions.category_id
                                                              WHERE profile_id = :cur_profile and tc.is_income = :isIncome and transaction_date between :from_date and :to_date
-                                                             group by category) as ttsa)""", nativeQuery = true)
+                                                             group by category) as ttsa)
+            """, nativeQuery = true)
     BigDecimal findMaxSumDateBetween(@Param("cur_profile") Profile curProfile, @Param("isIncome") Boolean isIncome, @Param("from_date") LocalDate fromDate, @Param("to_date") LocalDate toDate);
 }
