@@ -8,13 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +20,7 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -34,8 +33,18 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findAll();
     }
 
-    public void add(User user) {
+    public boolean add(User user) {
+        if (userRepository.existsUserByUsername(user.getUsername())) {
+            return false;
+        }
+
+        user.setEnabled(false);
+        user.setAuthority(Collections.singleton(Authority.USER));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         userRepository.save(user);
+
+        return true;
     }
 
     public void add(@RequestParam String username,
@@ -73,5 +82,7 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(userID);
     }
 
-
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }

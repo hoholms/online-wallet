@@ -20,6 +20,7 @@
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" name="email" id="email" placeholder="Email" required/>
                 <label for="email">Email</label>
+                <div id="emailHelp" class="form-text">We'll send you an activation link</div>
             </div>
         </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
