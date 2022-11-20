@@ -8,4 +8,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     boolean existsProfileByEmail(String email);
 
     Profile findByUser(User user);
+
+    Profile findByActivationCode(String code);
 }
