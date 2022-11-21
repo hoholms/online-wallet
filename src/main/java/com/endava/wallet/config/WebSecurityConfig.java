@@ -25,7 +25,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(requests -> requests
-                        .antMatchers("/", "/register", "/static/**").permitAll()
+                        .antMatchers("/", "/register", "/static/**", "/activate/*").permitAll()
                         .antMatchers("/user").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )

@@ -44,6 +44,9 @@ public class Profile {
     @ToString.Exclude
     private User user;
 
+    @Column(name = "activation_code")
+    private String activationCode;
+
     @OneToMany(mappedBy = "profile")
     @ToString.Exclude
     private Set<Transaction> transactions = new LinkedHashSet<>();
