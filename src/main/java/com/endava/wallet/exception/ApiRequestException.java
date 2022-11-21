@@ -10,4 +10,6 @@ public class ApiRequestException extends RuntimeException {
     public ApiRequestException(Throwable cause) {
         super(cause);
     }
+
+
 }

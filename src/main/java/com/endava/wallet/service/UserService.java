@@ -68,8 +68,9 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserById(Long id) {
-        if (userRepository.findUserById(id) == null)
+        if (userRepository.findUserById(id) == null) {
             throw new ApiRequestException("User with id: " + id + " not found");
+        }
         return userRepository.findUserById(id);
     }
 
