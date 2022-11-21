@@ -90,17 +90,8 @@ public class DashboardController {
             Model model
     ) {
         Profile currentProfile = profileService.findProfileByUser(user);
-
         Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
-
-        transactionService.save(transaction);
-
-        if (Boolean.TRUE.equals(transactionDto.getIsIncome())) {
-            currentProfile.setBalance(currentProfile.getBalance().add(transactionDto.getAmount()));
-        } else {
-            currentProfile.setBalance(currentProfile.getBalance().subtract(transactionDto.getAmount()));
-        }
-        profileService.save(currentProfile);
+        transactionService.add(transaction, currentProfile);
 
         return dashboard(user, model);
     }

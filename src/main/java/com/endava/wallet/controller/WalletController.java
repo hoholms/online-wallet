@@ -11,5 +11,4 @@ public class WalletController {
     public String hello() {
         return "index";
     }
-
 }

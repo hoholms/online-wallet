@@ -7,14 +7,6 @@
         <input type="hidden" value="${_csrf.token}" name="_csrf">
 
         <div class="form-group row">
-            <label for="transactionId" class="col-sm-2 col-form-label">Transaction ID</label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" value="${transactionEdit.id}" name="id"
-                       id="transactionId">
-            </div>
-        </div>
-        <br>
-        <div class="form-group row">
             <label for="transactionId" class="col-sm-2 col-form-label">Category</label>
             <div class="col-sm-10">
                 <select class="form-select" name="category" id="transactionId">

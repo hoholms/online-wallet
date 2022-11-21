@@ -22,8 +22,8 @@
                 </#if>
             </ul>
 
-            <#if name != "guest">
-                <span class="navbar-text me-3">${name}</span>
+            <#if user??>
+                <a href="/profile" class="navbar-text nav-link me-3">${name}</a>
                 <@l.logout />
             </#if>
         </div>
