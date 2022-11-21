@@ -119,8 +119,9 @@
                                 <#if transaction.message != "">
                                     <p class="card-text">${transaction.message}</p>
                                 <#else>
-                                    <p class="card-text">Got ${transaction.amount}
-                                        from ${transaction.category.category}.</p>
+                                    <p class="card-text">
+                                        Got ${transaction.amount} from ${transaction.category.category}.
+                                    </p>
                                 </#if>
                             </div>
                             <div class="card-footer text-success">
@@ -139,8 +140,9 @@
                                 <#if transaction.message != "">
                                     <p class="card-text">${transaction.message}</p>
                                 <#else>
-                                    <p class="card-text">Spent ${transaction.amount}
-                                        to ${transaction.category.category}.</p>
+                                    <p class="card-text">
+                                        Spent ${transaction.amount} on ${transaction.category.category}.
+                                    </p>
                                 </#if>
                             </div>
                             <div class="card-footer text-danger">

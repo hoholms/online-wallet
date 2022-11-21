@@ -1,7 +1,9 @@
 package com.endava.wallet.controller;
 
+import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.User;
+import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.TransactionService;
 import com.endava.wallet.service.TransactionsCategoryService;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +19,19 @@ import java.util.List;
 @RequestMapping("/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
-
     private final TransactionService transactionService;
     private final TransactionsCategoryService categoryService;
+    private final ProfileService profileService;
 
     @GetMapping("{transactionID}")
-    public String transactionEditForm(@PathVariable Long transactionID, Model model) {
+    public String transactionEditForm(@AuthenticationPrincipal User user, @PathVariable Long transactionID, Model model) {
+        Profile currentProfile = profileService.findProfileByUser(user);
+        Transaction transaction = transactionService.findTransactionById(transactionID);
+        if (currentProfile.getId() != transaction.getProfile().getId()) {
+            return "redirect:/dashboard";
+        }
 
-        model.addAttribute("transactionEdit", transactionService.findTransactionById(transactionID));
+        model.addAttribute("transactionEdit", transaction);
 
         model.addAttribute("categories",
                 categoryService.findAllCategoriesByTransactionIdByIsIncome(transactionID));

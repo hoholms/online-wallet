@@ -20,6 +20,7 @@ class OnlineWalletApplicationTests {
     private TransactionController transactionController;
     @Autowired
     private UserController userController;
+
     @Test
     void contextLoads() {
         assertThat(dashboardController).isNotNull();
