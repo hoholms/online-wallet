@@ -54,11 +54,8 @@ public class TransactionController {
             @RequestParam(required = false) BigDecimal amount,
             @RequestParam String transactionDate
     ) {
-
         transactionService.save(user, id, message, category, amount, transactionDate);
-
 
         return "redirect:/dashboard";
     }
-
 }

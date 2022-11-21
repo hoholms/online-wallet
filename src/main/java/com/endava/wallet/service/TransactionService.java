@@ -73,6 +73,17 @@ public class TransactionService {
         return transactionRepository.findTransactionById(id);
     }
 
+    public void add(Transaction transaction, Profile profile) {
+        transactionRepository.save(transaction);
+
+        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
+            profile.setBalance(profile.getBalance().add(transaction.getAmount()));
+        } else {
+            profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
+        }
+        profileService.save(profile);
+    }
+
     public void save(Transaction transaction) {
         transactionRepository.save(transaction);
     }
