@@ -35,7 +35,7 @@ public class TransactionController {
     @GetMapping("/delete/{transactionID}")
     public String transactionDelete(@PathVariable Long transactionID, @AuthenticationPrincipal User user, Model model) {
 
-        transactionService.deleteTransaction(transactionService.findTransactionById(transactionID), user);
+        transactionService.deleteTransactionById(transactionID, user);
 
         List<Transaction> transactionList = transactionService.findRecentTransactionsByUser(user);
         model.addAttribute("transactions", transactionList);
