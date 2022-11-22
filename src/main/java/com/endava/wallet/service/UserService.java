@@ -21,11 +21,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -82,10 +80,6 @@ public class UserService implements UserDetailsService {
             throw new ApiRequestException("User with id: " + id + " not found");
         }
         return userRepository.findUserById(id);
-    }
-
-    public Boolean existsUserByUsername(String username) {
-        return userRepository.existsUserByUsername(username);
     }
 
     public void deleteUserById(Long userID) {

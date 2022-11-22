@@ -26,6 +26,7 @@ import java.util.function.Predicate;
 @AllArgsConstructor
 public class TransactionService {
 
+    private static final Logger logger = LoggerFactory.getLogger(TransactionService.class);
     private TransactionRepository transactionRepository;
     private TransactionsCategoryRepository categoryRepository;
     private ProfileService profileService;
@@ -35,15 +36,13 @@ public class TransactionService {
         return t -> seen.add(keyExtractor.apply(t));
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(TransactionService.class);
-
     public List<Transaction> findRecentTransactionsByUser(User user) {
         Profile profile = profileService.findProfileByUser(user);
         return findRecentTransactionsByProfile(profile);
     }
 
     public List<Transaction> findRecentTransactionsByProfile(Profile profile) {
-        List<Transaction> transactions = transactionRepository.findTransactionByProfileOrderByIdAsc(profile);
+        List<Transaction> transactions = transactionRepository.findTransactionByProfileOrderByTransactionDateAsc(profile);
         Collections.reverse(transactions);
         return transactions;
     }
@@ -94,6 +93,7 @@ public class TransactionService {
         }
         return transactionRepository.findTransactionById(id);
     }
+
     public Transaction findTransactionByIdAndProfile(Long id, Profile profile) {
         if (transactionRepository.findTransactionById(id).getProfile() != profile) {
             logger.error("Transaction with id: " + id + " not found");

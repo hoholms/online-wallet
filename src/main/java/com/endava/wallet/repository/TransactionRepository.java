@@ -11,11 +11,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    List<Transaction> findTransactionByProfileOrderByIdAsc(Profile profile);
+    List<Transaction> findTransactionByProfileOrderByTransactionDateAsc(Profile profile);
 
     Transaction findTransactionById(Long id);
-
-    Transaction findTransactionByIdAndProfile(Long id, Profile profile);
 
     List<Transaction> findByProfileAndIsIncomeAndTransactionDateBetween(Profile profile, Boolean isIncome, LocalDate from, LocalDate to);
 

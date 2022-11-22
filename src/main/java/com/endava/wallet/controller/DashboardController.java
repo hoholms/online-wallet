@@ -26,19 +26,18 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class DashboardController {
+    private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
     private final ProfileService profileService;
     private final TransactionService transactionService;
     private final TransactionsCategoryService categoryService;
     private final TransactionDtoConverter transactionDtoConverter;
-
-    private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
     @GetMapping("/dashboard")
     public String dashboard(
             @AuthenticationPrincipal User user,
             Model model
     ) {
-        logger.info("Call for dashboard page");
+        logger.info("Call for dashboard page by user id " + user.getId());
         Profile currentProfile = profileService.findProfileByUser(user);
         model.addAttribute("currentProfile", currentProfile);
 

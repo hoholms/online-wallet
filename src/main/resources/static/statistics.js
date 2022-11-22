@@ -2,9 +2,6 @@ const lineStatistics = document.getElementById('lineChart');
 const incomeCircleStatistics = document.getElementById('incomeCircleChart');
 const expenseCircleStatistics = document.getElementById('expenseCircleChart');
 
-let statData,
-    statLabels;
-
 $.getJSON('/statistics/line', function (data) {
     new Chart(lineStatistics, {
         type: 'line',

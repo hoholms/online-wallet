@@ -29,10 +29,10 @@ public class LoginTest {
 
     @Test
     public void contextLoads() throws Exception {
-    this.mockMvc.perform(get("/"))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("Here you can control your expenses.")));
+        this.mockMvc.perform(get("/"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Here you can control your expenses.")));
     }
 
     @Test

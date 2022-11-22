@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
     @GetMapping("/login")
     public String login(HttpServletRequest request, Model model) {
         model.addAttribute("error", getErrorMessage(request));

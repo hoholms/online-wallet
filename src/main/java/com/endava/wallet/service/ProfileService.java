@@ -28,10 +28,6 @@ public class ProfileService {
         return profileRepository.findByUser(user);
     }
 
-    public Boolean existsProfileByEmail(String email) {
-        return profileRepository.existsProfileByEmail(email);
-    }
-
     public void save(Profile profile) {
         profileRepository.save(profile);
     }

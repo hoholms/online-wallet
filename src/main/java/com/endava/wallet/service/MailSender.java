@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MailSender {
-    private final JavaMailSender javaMailSender;
     private static final Logger logger = LoggerFactory.getLogger(MailSender.class);
-
+    private final JavaMailSender javaMailSender;
     @Value("${spring.mail.username}")
     private String username;
 

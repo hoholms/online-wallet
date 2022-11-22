@@ -17,14 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequiredArgsConstructor
 public class ProfileController {
-    private final ProfileService profileService;
-
     private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
+    private final ProfileService profileService;
 
     @GetMapping("profile")
     public String getProfile(@AuthenticationPrincipal User user, Model model) {
 
-        logger.info("Call for profile info page");
+        logger.info("Call for profile info page by user id" + user.getId());
 
         Profile currentProfile = profileService.findProfileByUser(user);
 
@@ -45,15 +44,8 @@ public class ProfileController {
     ) {
         profileService.updateProfile(user, profile, password);
 
-        Profile currentProfile = profileService.findProfileByUser(user);
-
         logger.info("Profile with email: " + profile.getEmail() + " has been updated");
 
-        model.addAttribute("username", user.getUsername());
-        model.addAttribute("firstName", currentProfile.getFirstName());
-        model.addAttribute("lastName", currentProfile.getLastName());
-        model.addAttribute("email", currentProfile.getEmail());
-
-        return "profile";
+        return getProfile(user, model);
     }
 }

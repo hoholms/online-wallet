@@ -12,6 +12,7 @@ import java.util.Properties;
 
 @Configuration
 public class MailConfig {
+    private static final Logger logger = LoggerFactory.getLogger(MailConfig.class);
     @Value("${spring.mail.host}")
     private String host;
     @Value("${spring.mail.username}")
@@ -24,8 +25,6 @@ public class MailConfig {
     private String protocol;
     @Value("${mail.debug}")
     private String debug;
-
-    private static final Logger logger = LoggerFactory.getLogger(MailConfig.class);
 
     @Bean
     public JavaMailSender getMailSender() {

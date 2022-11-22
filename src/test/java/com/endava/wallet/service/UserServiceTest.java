@@ -38,6 +38,7 @@ public class UserServiceTest {
         Assert.assertTrue(CoreMatchers.is(user.getAuthority()).matches(Collections.singleton(Authority.USER)));
         Mockito.verify(userRepository, Mockito.times(1)).save(user);
     }
+
     @Test
     public void addFailTest() {
         User user = new User();

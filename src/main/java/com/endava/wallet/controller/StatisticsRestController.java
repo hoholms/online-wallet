@@ -29,26 +29,26 @@ public class StatisticsRestController {
 
         List<LocalDate> dates = transactionService.findTransactionsDates(currentProfile);
 
-        LineStatistics incomeStatistics = new LineStatistics(new ArrayList<String>(), new ArrayList<BigDecimal>());
-        LineStatistics expenseStatistics = new LineStatistics(new ArrayList<String>(), new ArrayList<BigDecimal>());
+        LineStatistics incomeStatistics = new LineStatistics(new ArrayList<>(), new ArrayList<>());
+        LineStatistics expenseStatistics = new LineStatistics(new ArrayList<>(), new ArrayList<>());
 
         for (LocalDate date : dates) {
-            BigDecimal IncSum = transactionService.findTranSumDateBetween(
+            BigDecimal incSum = transactionService.findTranSumDateBetween(
                     currentProfile,
                     true,
                     date,
                     date.withDayOfMonth(date.getMonth().length(LocalDate.now().isLeapYear()))
             );
-            incomeStatistics.getValues().add(IncSum);
+            incomeStatistics.getValues().add(incSum);
             incomeStatistics.getLabels().add(date.getMonth() + " " + date.getYear());
 
-            BigDecimal ExpSum = transactionService.findTranSumDateBetween(
+            BigDecimal expSum = transactionService.findTranSumDateBetween(
                     currentProfile,
                     false,
                     date,
                     date.withDayOfMonth(date.getMonth().length(LocalDate.now().isLeapYear()))
             );
-            expenseStatistics.getValues().add(ExpSum);
+            expenseStatistics.getValues().add(expSum);
             expenseStatistics.getLabels().add(date.getMonth() + " " + date.getYear());
         }
 

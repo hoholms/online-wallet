@@ -17,13 +17,13 @@ public class TransactionsCategoryService {
 
     public List<TransactionsCategory> findAllCategoriesByTransactionIdByIsIncome(Long transactionId) {
 
-        Transaction transaction =  transactionService.findTransactionById(transactionId);
+        Transaction transaction = transactionService.findTransactionById(transactionId);
 
         TransactionsCategory category = transaction.getCategory();
 
         return categoryRepository.findAll().stream()
-                    .filter(a -> a.getIsIncome().equals(category.getIsIncome()))
-                    .toList();
+                .filter(a -> a.getIsIncome().equals(category.getIsIncome()))
+                .toList();
     }
 
     public TransactionsCategory findByCategory(String category) {

@@ -21,11 +21,11 @@ import java.util.List;
 @RequestMapping("/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
+    private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
     private final TransactionService transactionService;
     private final TransactionsCategoryService categoryService;
     private final ProfileService profileService;
 
-    private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
     @GetMapping("{transactionID}")
     public String transactionEditForm(@AuthenticationPrincipal User user, @PathVariable Long transactionID, Model model) {
         logger.info("Call for transaction with id: " + transactionID + " edit page");

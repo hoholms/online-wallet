@@ -4,7 +4,7 @@
 
 <@c.page>
 <#--noinspection FtlReferencesInspection-->
-    <h1>${user.username}'s dashboard</h1>
+    <h1>${currentProfile.firstName} ${currentProfile.lastName} dashboard</h1>
 
     <div class="container-fluid my-3">
         <h3>Your balance is
