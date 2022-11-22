@@ -5,3 +5,64 @@
 [ INFO] 2022-11-22 11:44:50,114 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
 [ INFO] 2022-11-22 11:44:52,712 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 2.733 seconds (JVM running for 2.999)
 [ERROR] 2022-11-22 11:44:58,935 c.e.w.controller.LoginController [http-nio-8080-exec-4] Invalid username and password!
+[ INFO] 2022-11-22 13:03:24,160 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 3113 (/Users/vetroff/Documents/Java/online-wallet/target/classes started by vetroff in /Users/vetroff/Documents/Java/online-wallet)
+[ INFO] 2022-11-22 13:03:24,162 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 13:03:27,370 c.e.w.controller.LoginController [main] MailSender configured
+[ INFO] 2022-11-22 13:03:27,557 c.e.w.controller.LoginController [main] Added /login view into ViewControllerRegistry
+[ INFO] 2022-11-22 13:03:27,563 c.e.w.controller.LoginController [main] Added /static/** resources into ResourceHandlerRegistry
+[ INFO] 2022-11-22 13:03:27,657 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 3.658 seconds (JVM running for 4.157)
+[ INFO] 2022-11-22 13:03:40,616 c.e.w.controller.LoginController [http-nio-8080-exec-8] Call for dashboard page
+[ INFO] 2022-11-22 13:03:48,757 c.e.w.controller.LoginController [http-nio-8080-exec-10] Adding transaction on dashboard page
+[ INFO] 2022-11-22 13:03:49,416 c.e.w.controller.LoginController [http-nio-8080-exec-10] Call for dashboard page
+[ INFO] 2022-11-22 13:04:24,886 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 3140 (/Users/vetroff/Documents/Java/online-wallet/target/classes started by vetroff in /Users/vetroff/Documents/Java/online-wallet)
+[ INFO] 2022-11-22 13:04:24,887 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 13:04:27,149 c.e.w.controller.LoginController [main] MailSender configured
+[ INFO] 2022-11-22 13:04:27,326 c.e.w.controller.LoginController [main] Added /login view into ViewControllerRegistry
+[ INFO] 2022-11-22 13:04:27,332 c.e.w.controller.LoginController [main] Added /static/** resources into ResourceHandlerRegistry
+[ INFO] 2022-11-22 13:04:27,427 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 2.694 seconds (JVM running for 3.051)
+[ INFO] 2022-11-22 13:11:18,105 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 3254 (/Users/vetroff/Documents/Java/online-wallet/target/classes started by vetroff in /Users/vetroff/Documents/Java/online-wallet)
+[ INFO] 2022-11-22 13:11:18,106 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 13:11:20,986 com.endava.wallet.config.MailConfig [main] MailSender configured
+[ INFO] 2022-11-22 13:11:21,223 com.endava.wallet.config.MvcConfig [main] Added /login view into ViewControllerRegistry
+[ INFO] 2022-11-22 13:11:21,235 com.endava.wallet.config.MvcConfig [main] Added /static/** resources into ResourceHandlerRegistry
+[ INFO] 2022-11-22 13:11:21,361 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 3.375 seconds (JVM running for 3.813)
+[ INFO] 2022-11-22 13:12:21,267 c.e.w.c.DashboardController [http-nio-8080-exec-10] Call for dashboard page
+[ INFO] 2022-11-22 13:12:23,438 c.e.w.controller.ProfileController [http-nio-8080-exec-2] Call for transaction edit page
+[ INFO] 2022-11-22 13:12:25,986 c.e.w.controller.ProfileController [http-nio-8080-exec-4] Call for transaction edit page
+[ INFO] 2022-11-22 13:12:26,635 c.e.w.controller.ProfileController [http-nio-8080-exec-5] Call for transaction edit page
+[ INFO] 2022-11-22 13:12:26,912 c.e.w.c.DashboardController [http-nio-8080-exec-6] Call for dashboard page
+[ INFO] 2022-11-22 13:12:38,523 c.e.w.c.DashboardController [http-nio-8080-exec-9] Call for dashboard page
+[ INFO] 2022-11-22 13:12:41,833 c.e.w.controller.ProfileController [http-nio-8080-exec-10] Call for transaction edit page
+[ INFO] 2022-11-22 13:12:44,616 c.e.w.controller.ProfileController [http-nio-8080-exec-2] Call for transaction edit page
+[ INFO] 2022-11-22 13:12:44,909 c.e.w.controller.ProfileController [http-nio-8080-exec-3] Call for transaction edit page
+[ INFO] 2022-11-22 13:12:45,200 c.e.w.c.DashboardController [http-nio-8080-exec-4] Call for dashboard page
+[ INFO] 2022-11-22 13:12:52,758 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 3330 (/Users/vetroff/Documents/Java/online-wallet/target/classes started by vetroff in /Users/vetroff/Documents/Java/online-wallet)
+[ INFO] 2022-11-22 13:12:52,759 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 13:12:55,206 com.endava.wallet.config.MailConfig [main] MailSender configured
+[ INFO] 2022-11-22 13:12:55,383 com.endava.wallet.config.MvcConfig [main] Added /login view into ViewControllerRegistry
+[ INFO] 2022-11-22 13:12:55,389 com.endava.wallet.config.MvcConfig [main] Added /static/** resources into ResourceHandlerRegistry
+[ INFO] 2022-11-22 13:12:55,485 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 2.874 seconds (JVM running for 3.188)
+[ INFO] 2022-11-22 13:13:03,079 c.e.w.c.DashboardController [http-nio-8080-exec-5] Call for dashboard page
+[ INFO] 2022-11-22 13:13:04,921 c.e.w.controller.ProfileController [http-nio-8080-exec-7] Call for transaction edit page
+[ INFO] 2022-11-22 13:13:08,241 c.e.w.controller.ProfileController [http-nio-8080-exec-9] Call for transaction edit page
+[ INFO] 2022-11-22 13:13:08,567 c.e.w.controller.ProfileController [http-nio-8080-exec-10] Call for transaction edit page
+[ INFO] 2022-11-22 13:17:02,645 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 3528 (/Users/vetroff/Documents/Java/online-wallet/target/classes started by vetroff in /Users/vetroff/Documents/Java/online-wallet)
+[ INFO] 2022-11-22 13:17:02,647 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 13:17:04,964 com.endava.wallet.config.MailConfig [main] MailSender configured
+[ INFO] 2022-11-22 13:17:05,145 com.endava.wallet.config.MvcConfig [main] Added /login view into ViewControllerRegistry
+[ INFO] 2022-11-22 13:17:05,151 com.endava.wallet.config.MvcConfig [main] Added /static/** resources into ResourceHandlerRegistry
+[ INFO] 2022-11-22 13:17:05,246 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 2.819 seconds (JVM running for 3.55)
+[ INFO] 2022-11-22 13:17:17,828 c.e.w.c.DashboardController [http-nio-8080-exec-8] Call for dashboard page
+[ INFO] 2022-11-22 13:17:19,314 c.e.w.controller.ProfileController [http-nio-8080-exec-10] Call for transaction edit page
+[ INFO] 2022-11-22 13:17:21,703 c.e.w.controller.ProfileController [http-nio-8080-exec-2] Call for transaction edit page
+[ INFO] 2022-11-22 13:17:22,316 c.e.w.controller.ProfileController [http-nio-8080-exec-4] Call for transaction edit page
+[ INFO] 2022-11-22 13:23:32,659 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 3619 (/Users/vetroff/Documents/Java/online-wallet/target/classes started by vetroff in /Users/vetroff/Documents/Java/online-wallet)
+[ INFO] 2022-11-22 13:23:32,661 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 13:23:35,158 com.endava.wallet.config.MailConfig [main] MailSender configured
+[ INFO] 2022-11-22 13:23:35,336 com.endava.wallet.config.MvcConfig [main] Added /login view into ViewControllerRegistry
+[ INFO] 2022-11-22 13:23:35,341 com.endava.wallet.config.MvcConfig [main] Added /static/** resources into ResourceHandlerRegistry
+[ INFO] 2022-11-22 13:23:35,435 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 2.916 seconds (JVM running for 3.177)
+[ INFO] 2022-11-22 13:23:42,625 c.e.w.c.DashboardController [http-nio-8080-exec-8] Call for dashboard page
+[ INFO] 2022-11-22 13:23:46,372 c.e.w.controller.ProfileController [http-nio-8080-exec-10] Call for transaction edit page
+[ INFO] 2022-11-22 13:23:49,082 c.e.w.controller.ProfileController [http-nio-8080-exec-2] Call for transaction edit page
+[ INFO] 2022-11-22 13:23:49,267 c.e.w.controller.ProfileController [http-nio-8080-exec-3] Call for transaction edit page

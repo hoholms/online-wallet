@@ -68,8 +68,15 @@ public class TransactionService {
     }
 
     public Transaction findTransactionById(Long id) {
-        if (transactionRepository.findTransactionById(id) == null)
+        if (transactionRepository.findTransactionById(id) == null) {
             throw new ApiRequestException("Transaction with id: " + id + " not found");
+        }
+        return transactionRepository.findTransactionById(id);
+    }
+    public Transaction findTransactionByIdAndProfile(Long id, Profile profile) {
+        if (transactionRepository.findTransactionById(id).getProfile() != profile) {
+            throw new ApiRequestException("Transaction with id: " + id + " not found");
+        }
         return transactionRepository.findTransactionById(id);
     }
 
@@ -90,7 +97,7 @@ public class TransactionService {
 
     public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {
         Profile profile = profileService.findProfileByUser(user);
-        Transaction transaction = findTransactionById(id);
+        Transaction transaction = findTransactionByIdAndProfile(id, profile);
         if (amount != null && !amount.equals(transaction.getAmount())) {
             if (Boolean.TRUE.equals(transaction.getIsIncome())) {
                 profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
@@ -117,10 +124,10 @@ public class TransactionService {
     }
 
     public void deleteTransactionById(Long transactionID, User user) {
-        findTransactionById(transactionID);
+        Profile profile = profileService.findProfileByUser(user);
+        findTransactionByIdAndProfile(transactionID, profile);
         Transaction transaction = transactionRepository.findTransactionById(transactionID);
         transactionRepository.deleteById(transactionID);
-        Profile profile = profileService.findProfileByUser(user);
         if (Boolean.TRUE.equals(transaction.getIsIncome())) {
             profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
         } else {

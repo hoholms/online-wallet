@@ -7,6 +7,8 @@ import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.TransactionService;
 import com.endava.wallet.service.TransactionsCategoryService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,16 +25,16 @@ public class TransactionController {
     private final TransactionsCategoryService categoryService;
     private final ProfileService profileService;
 
+    private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
     @GetMapping("{transactionID}")
     public String transactionEditForm(@AuthenticationPrincipal User user, @PathVariable Long transactionID, Model model) {
+        logger.info("Call for transaction with id: " + transactionID + " edit page");
+
         Profile currentProfile = profileService.findProfileByUser(user);
-        Transaction transaction = transactionService.findTransactionById(transactionID);
-        if (currentProfile.getId() != transaction.getProfile().getId()) {
-            return "redirect:/dashboard";
-        }
+
+        Transaction transaction = transactionService.findTransactionByIdAndProfile(transactionID, currentProfile);
 
         model.addAttribute("transactionEdit", transaction);
-
         model.addAttribute("categories",
                 categoryService.findAllCategoriesByTransactionIdByIsIncome(transactionID));
 
@@ -41,6 +43,8 @@ public class TransactionController {
 
     @GetMapping("/delete/{transactionID}")
     public String transactionDelete(@PathVariable Long transactionID, @AuthenticationPrincipal User user, Model model) {
+
+        logger.info("Deleting transaction with id: " + transactionID);
 
         transactionService.deleteTransactionById(transactionID, user);
 
@@ -59,6 +63,7 @@ public class TransactionController {
             @RequestParam(required = false) BigDecimal amount,
             @RequestParam String transactionDate
     ) {
+        logger.info("Saving transaction with id: " + id);
         transactionService.save(user, id, message, category, amount, transactionDate);
 
         return "redirect:/dashboard";

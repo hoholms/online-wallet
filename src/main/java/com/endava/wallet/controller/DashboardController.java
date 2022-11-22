@@ -10,6 +10,8 @@ import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.TransactionService;
 import com.endava.wallet.service.TransactionsCategoryService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -29,11 +31,14 @@ public class DashboardController {
     private final TransactionsCategoryService categoryService;
     private final TransactionDtoConverter transactionDtoConverter;
 
+    private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
+
     @GetMapping("/dashboard")
     public String dashboard(
             @AuthenticationPrincipal User user,
             Model model
     ) {
+        logger.info("Call for dashboard page");
         Profile currentProfile = profileService.findProfileByUser(user);
         model.addAttribute("currentProfile", currentProfile);
 
@@ -89,6 +94,7 @@ public class DashboardController {
             TransactionDto transactionDto,
             Model model
     ) {
+        logger.info("Adding transaction on dashboard page");
         Profile currentProfile = profileService.findProfileByUser(user);
         Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
         transactionService.add(transaction, currentProfile);

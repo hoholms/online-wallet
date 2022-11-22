@@ -1,5 +1,7 @@
 package com.endava.wallet.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +25,8 @@ public class MailConfig {
     @Value("${mail.debug}")
     private String debug;
 
+    private static final Logger logger = LoggerFactory.getLogger(MailConfig.class);
+
     @Bean
     public JavaMailSender getMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -36,6 +40,8 @@ public class MailConfig {
 
         properties.setProperty("mail.transport.protocol", protocol);
         properties.setProperty("mail.debug", debug);
+
+        logger.info("MailSender configured");
 
         return mailSender;
     }
