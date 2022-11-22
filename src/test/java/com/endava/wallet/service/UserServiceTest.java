@@ -2,7 +2,6 @@ package com.endava.wallet.service;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.repository.UserRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
@@ -31,9 +30,6 @@ public class UserServiceTest {
     @MockBean
     private PasswordEncoder passwordEncoder;
 
-    @MockBean
-    private ApiRequestException apiRequestException;
-
     @Test
     public void addTest() {
         User user = new User();
@@ -60,8 +56,8 @@ public class UserServiceTest {
 
 //    @Test(expected = ApiRequestException.class)
 //    public void findUserById(){
-//        Mockito.when(userRepository.findUserById(0L)==null)
-//                 .thenThrow(apiRequestException);
+//        Mockito.when(userRepository.findUserById(Mockito.anyLong())==null)
+//                 .thenThrow(new ApiRequestException("There is no such user"));
 //    }
 
 }
