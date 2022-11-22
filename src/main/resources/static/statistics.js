@@ -1,20 +1,32 @@
-const ctx = document.getElementById('myChart');
+const ctx = document.getElementById('lineChart');
 
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: 'Spent',
-            data: [12, 19, 3, 5, 2, 3],
-            borderColor: 'rgb(75, 192, 192)'
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
+let statData,
+    statLabels;
+
+$.getJSON('/statistics/line', function(data) {
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data[0].labels,
+            datasets: [
+                {
+                    label: 'Earned',
+                    data: data[0].values,
+                    borderColor: 'rgb(25, 135, 84)'
+                },
+                {
+                    label: 'Spent',
+                    data: data[1].values,
+                    borderColor: 'rgb(165, 29, 42)'
+                }
+                ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
             }
         }
-    }
+    });
 });

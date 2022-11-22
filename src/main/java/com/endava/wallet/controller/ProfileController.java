@@ -33,10 +33,11 @@ public class ProfileController {
     public String updateProfile(
             @AuthenticationPrincipal User user,
             @RequestParam String password,
-            ProfileDto profile
+            ProfileDto profile,
+            Model model
     ) {
         profileService.updateProfile(user, profile, password);
 
-        return "profile";
+        return getProfile(user, model);
     }
 }
