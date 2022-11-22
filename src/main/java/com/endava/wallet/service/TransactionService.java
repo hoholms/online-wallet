@@ -1,5 +1,6 @@
 package com.endava.wallet.service;
 
+import com.endava.wallet.entity.CircleStatistics;
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.User;
@@ -27,6 +28,10 @@ public class TransactionService {
     private TransactionsCategoryRepository categoryRepository;
     private ProfileService profileService;
 
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
+    }
 
     public List<Transaction> findRecentTransactionsByUser(User user) {
         Profile profile = profileService.findProfileByUser(user);
@@ -51,10 +56,6 @@ public class TransactionService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Set<Object> seen = ConcurrentHashMap.newKeySet();
-        return t -> seen.add(keyExtractor.apply(t));
-    }
     public List<LocalDate> findTransactionsDates(Profile profile) {
         return profile.getTransactions().stream()
                 .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
@@ -143,5 +144,12 @@ public class TransactionService {
         }
         profileService.save(profile);
 
+    }
+
+    public CircleStatistics findCategoryAndSumByProfileAndIsIncome(Profile profile, Boolean isIncome) {
+        return new CircleStatistics(
+                transactionRepository.findCategoryByProfileAndIsIncome(profile, isIncome),
+                transactionRepository.findCategorySumByProfileAndIsIncome(profile, isIncome)
+        );
     }
 }
