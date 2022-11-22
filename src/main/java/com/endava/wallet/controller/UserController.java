@@ -21,6 +21,7 @@ public class UserController {
 
     @GetMapping
     public String userList(Model model) {
+        logger.info("Call for users list page");
         model.addAttribute("users", userService.findAllUsers());
         return "userList";
     }
@@ -39,15 +40,15 @@ public class UserController {
             @RequestParam Map<String, String> form,
             @RequestParam Long userID
     ) {
-        logger.info("Saving user with id: " + userID);
-        userService.add(username, form, userService.findUserById(userID));
+        userService.add(username, form, userID);
+        logger.info("Saved user with id: " + userID);
         return "redirect:/user";
     }
 
     @GetMapping("/delete/{userID}")
     public String userDelete(@PathVariable Long userID) {
-        logger.info("Deleting user with id: " + userID);
         userService.deleteUserById(userID);
+        logger.info("Deleted user with id: " + userID);
         return "redirect:/user";
     }
 }

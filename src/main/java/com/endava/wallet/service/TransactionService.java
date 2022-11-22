@@ -7,6 +7,8 @@ import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.repository.TransactionRepository;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
     private TransactionsCategoryRepository categoryRepository;
     private ProfileService profileService;
+
+    private static final Logger logger = LoggerFactory.getLogger(TransactionService.class);
+
 
 
     public List<Transaction> findRecentTransactionsByUser(User user) {
@@ -69,12 +74,14 @@ public class TransactionService {
 
     public Transaction findTransactionById(Long id) {
         if (transactionRepository.findTransactionById(id) == null) {
+            logger.error("Transaction with id: " + id + " not found");
             throw new ApiRequestException("Transaction with id: " + id + " not found");
         }
         return transactionRepository.findTransactionById(id);
     }
     public Transaction findTransactionByIdAndProfile(Long id, Profile profile) {
         if (transactionRepository.findTransactionById(id).getProfile() != profile) {
+            logger.error("Transaction with id: " + id + " not found");
             throw new ApiRequestException("Transaction with id: " + id + " not found");
         }
         return transactionRepository.findTransactionById(id);
@@ -89,11 +96,9 @@ public class TransactionService {
             profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
         }
         profileService.save(profile);
+        logger.error("Transaction with id: " + transaction.getId() + " was added");
     }
 
-    public void save(Transaction transaction) {
-        transactionRepository.save(transaction);
-    }
 
     public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {
         Profile profile = profileService.findProfileByUser(user);

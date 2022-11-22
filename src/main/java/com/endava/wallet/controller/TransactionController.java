@@ -44,9 +44,9 @@ public class TransactionController {
     @GetMapping("/delete/{transactionID}")
     public String transactionDelete(@PathVariable Long transactionID, @AuthenticationPrincipal User user, Model model) {
 
-        logger.info("Deleting transaction with id: " + transactionID);
 
         transactionService.deleteTransactionById(transactionID, user);
+        logger.info("Deleted transaction with id: " + transactionID);
 
         List<Transaction> transactionList = transactionService.findRecentTransactionsByUser(user);
         model.addAttribute("transactions", transactionList);
@@ -63,8 +63,8 @@ public class TransactionController {
             @RequestParam(required = false) BigDecimal amount,
             @RequestParam String transactionDate
     ) {
-        logger.info("Saving transaction with id: " + id);
         transactionService.save(user, id, message, category, amount, transactionDate);
+        logger.info("Saved transaction with id: " + id);
 
         return "redirect:/dashboard";
     }

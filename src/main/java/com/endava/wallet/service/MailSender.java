@@ -1,6 +1,8 @@
 package com.endava.wallet.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MailSender {
     private final JavaMailSender javaMailSender;
+    private static final Logger logger = LoggerFactory.getLogger(MailSender.class);
 
     @Value("${spring.mail.username}")
     private String username;
@@ -23,5 +26,6 @@ public class MailSender {
         mailMessage.setText(message);
 
         javaMailSender.send(mailMessage);
+        logger.info("Email to: " + emailTo + " was sent");
     }
 }

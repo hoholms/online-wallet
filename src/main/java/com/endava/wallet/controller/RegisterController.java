@@ -41,6 +41,7 @@ public class RegisterController {
 
         if (!userService.add(user) || !profileService.add(profile)) {
             model.addAttribute("error", "User already exists!");
+            logger.error("User not added, because he already exists");
             return "register";
         }
 

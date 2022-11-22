@@ -94,7 +94,6 @@ public class DashboardController {
             TransactionDto transactionDto,
             Model model
     ) {
-        logger.info("Adding transaction on dashboard page");
         Profile currentProfile = profileService.findProfileByUser(user);
         Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
         transactionService.add(transaction, currentProfile);

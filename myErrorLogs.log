@@ -1,1 +1,7 @@
 [ERROR] 2022-11-22 11:44:58,935 c.e.w.controller.LoginController [http-nio-8080-exec-4] Invalid username and password!
+[ERROR] 2022-11-22 18:43:13,364 c.e.w.service.TransactionService [http-nio-8080-exec-10] Transaction with id: 51 was added
+[ERROR] 2022-11-22 18:43:18,054 c.e.w.service.TransactionService [http-nio-8080-exec-2] Transaction with id: 52 was added
+[ERROR] 2022-11-22 19:01:38,673 c.e.w.service.TransactionService [http-nio-8080-exec-8] Transaction with id: 53 was added
+[ERROR] 2022-11-22 19:08:19,610 c.e.w.controller.LoginController [http-nio-8080-exec-6] Invalid username and password!
+[ERROR] 2022-11-22 19:08:25,510 c.e.w.controller.LoginController [http-nio-8080-exec-9] Invalid username and password!
+[ERROR] 2022-11-22 19:27:54,753 c.e.w.controller.LoginController [http-nio-8080-exec-6] Invalid username and password!

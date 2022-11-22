@@ -11,7 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -36,15 +35,23 @@ public class ProfileController {
         return "profile";
     }
 
-    @PostMapping("profile")
+    @GetMapping("profile")
     public String updateProfile(
             @AuthenticationPrincipal User user,
             @RequestParam String password,
-            ProfileDto profile
+            ProfileDto profile,
+            Model model
     ) {
-
-
         profileService.updateProfile(user, profile, password);
+
+        Profile currentProfile = profileService.findProfileByUser(user);
+
+        logger.info("Profile with email: " + profile.getEmail() + " has been updated");
+
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("firstName", currentProfile.getFirstName());
+        model.addAttribute("lastName", currentProfile.getLastName());
+        model.addAttribute("email", currentProfile.getEmail());
 
         return "profile";
     }
