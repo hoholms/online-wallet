@@ -1,5 +1,6 @@
 package com.endava.wallet.service;
 
+import com.endava.wallet.entity.CircleStatistics;
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.User;
@@ -16,6 +17,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Service
 @AllArgsConstructor
@@ -25,9 +30,12 @@ public class TransactionService {
     private TransactionsCategoryRepository categoryRepository;
     private ProfileService profileService;
 
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(TransactionService.class);
-
-
 
     public List<Transaction> findRecentTransactionsByUser(User user) {
         Profile profile = profileService.findProfileByUser(user);
@@ -50,6 +58,13 @@ public class TransactionService {
         return transactions.stream()
                 .map(Transaction::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public List<LocalDate> findTransactionsDates(Profile profile) {
+        return profile.getTransactions().stream()
+                .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
+                .filter(distinctByKey(LocalDate::getMonth))
+                .toList();
     }
 
     public Pair<String, BigDecimal> findMaxCategorySumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
@@ -140,5 +155,12 @@ public class TransactionService {
         }
         profileService.save(profile);
 
+    }
+
+    public CircleStatistics findCategoryAndSumByProfileAndIsIncome(Profile profile, Boolean isIncome) {
+        return new CircleStatistics(
+                transactionRepository.findCategoryByProfileAndIsIncome(profile, isIncome),
+                transactionRepository.findCategorySumByProfileAndIsIncome(profile, isIncome)
+        );
     }
 }

@@ -7,6 +7,7 @@
         <input type="hidden" value="${_csrf.token}" name="_csrf">
         <input type="hidden" value="${transactionEdit.id}" name="id">
 
+        <input type="hidden" value="${transactionEdit.id}" name="id">
         <div class="form-group row">
             <label for="transactionId" class="col-sm-2 col-form-label">Category</label>
             <div class="col-sm-10">
