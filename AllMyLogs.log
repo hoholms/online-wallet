@@ -210,3 +210,24 @@
 [ INFO] 2022-11-22 19:38:16,845 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 2.321 seconds (JVM running for 2.835)
 [ INFO] 2022-11-22 19:38:39,599 c.e.w.controller.ProfileController [http-nio-8080-exec-6] Call for profile info page
 [ INFO] 2022-11-22 19:38:45,889 c.e.w.controller.ProfileController [http-nio-8080-exec-8] Profile with email: miroslav.vetrov2003@gmail.com has been updated
+[ INFO] 2022-11-22 23:18:43,375 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 9614 (/Users/vetroff/IdeaProjects/online-wallet/target/classes started by vetroff in /Users/vetroff/IdeaProjects/online-wallet)
+[ INFO] 2022-11-22 23:18:43,376 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 23:18:45,157 com.endava.wallet.config.MailConfig [main] MailSender configured
+[ INFO] 2022-11-22 23:19:46,662 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 9643 (/Users/vetroff/IdeaProjects/online-wallet/target/classes started by vetroff in /Users/vetroff/IdeaProjects/online-wallet)
+[ INFO] 2022-11-22 23:19:46,664 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 23:19:48,456 com.endava.wallet.config.MailConfig [main] MailSender configured
+[ INFO] 2022-11-22 23:20:05,470 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 9651 (/Users/vetroff/IdeaProjects/online-wallet/target/classes started by vetroff in /Users/vetroff/IdeaProjects/online-wallet)
+[ INFO] 2022-11-22 23:20:05,471 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 23:20:07,271 com.endava.wallet.config.MailConfig [main] MailSender configured
+[ INFO] 2022-11-22 23:20:07,454 com.endava.wallet.config.MvcConfig [main] Added /login view into ViewControllerRegistry
+[ INFO] 2022-11-22 23:20:07,460 com.endava.wallet.config.MvcConfig [main] Added /static/** resources into ResourceHandlerRegistry
+[ INFO] 2022-11-22 23:20:07,558 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 2.241 seconds (JVM running for 2.521)
+[ INFO] 2022-11-22 23:20:21,637 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 9666 (/Users/vetroff/IdeaProjects/online-wallet/target/classes started by vetroff in /Users/vetroff/IdeaProjects/online-wallet)
+[ INFO] 2022-11-22 23:20:21,638 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 23:20:23,392 com.endava.wallet.config.MailConfig [main] MailSender configured
+[ INFO] 2022-11-22 23:20:39,029 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 9679 (/Users/vetroff/IdeaProjects/online-wallet/target/classes started by vetroff in /Users/vetroff/IdeaProjects/online-wallet)
+[ INFO] 2022-11-22 23:20:39,030 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 23:20:40,761 com.endava.wallet.config.MailConfig [main] MailSender configured
+[ INFO] 2022-11-22 23:20:40,949 com.endava.wallet.config.MvcConfig [main] Added /login view into ViewControllerRegistry
+[ INFO] 2022-11-22 23:20:40,955 com.endava.wallet.config.MvcConfig [main] Added /static/** resources into ResourceHandlerRegistry
+[ INFO] 2022-11-22 23:20:41,053 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 2.179 seconds (JVM running for 2.468)
