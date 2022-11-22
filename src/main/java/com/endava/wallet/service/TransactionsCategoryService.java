@@ -1,13 +1,12 @@
 package com.endava.wallet.service;
 
+import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.TransactionsCategory;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -18,22 +17,13 @@ public class TransactionsCategoryService {
 
     public List<TransactionsCategory> findAllCategoriesByTransactionIdByIsIncome(Long transactionId) {
 
-        Long id = transactionService.findTransactionById(transactionId).getCategory().getId();
+        Transaction transaction =  transactionService.findTransactionById(transactionId);
 
-        Optional<TransactionsCategory> categoryOptional = categoryRepository.findById(id);
-        TransactionsCategory category;
-        if (categoryOptional.isPresent()) {
-            category = categoryOptional.get();
-            return categoryRepository.findAll().stream()
-                    .filter(a -> {
-                        assert false;
+        TransactionsCategory category = transaction.getCategory();
 
-                        return a.getIsIncome().equals(category.getIsIncome());
-                    })
+        return categoryRepository.findAll().stream()
+                    .filter(a -> a.getIsIncome().equals(category.getIsIncome()))
                     .toList();
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     public TransactionsCategory findByCategory(String category) {

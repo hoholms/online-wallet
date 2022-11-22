@@ -6,9 +6,9 @@
         <input type="hidden" value="${_csrf.token}" name="_csrf">
 
         <div class="form-group row">
-            <label for="userId" class="col-sm-2 col-form-label">User ID</label>
+            <label for="userID" class="col-sm-2 col-form-label">User ID</label>
             <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" value="${user.id}" name="id" id="userId">
+                <input type="text" readonly class="form-control-plaintext" value="${user.id}" name="userID" id="userID">
             </div>
         </div>
 

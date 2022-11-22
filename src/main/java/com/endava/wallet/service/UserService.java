@@ -5,6 +5,8 @@ import com.endava.wallet.entity.User;
 import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,14 +24,19 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> {
+                    logger.error("User with username: " + username + " not found");
+                    return new UsernameNotFoundException("User not found");
+                });
     }
 
     public List<User> findAllUsers() {
-
         return this.userRepository.findAll();
     }
 
@@ -49,9 +56,11 @@ public class UserService implements UserDetailsService {
 
     public void add(@RequestParam String username,
                     @RequestParam Map<String, String> form,
-                    User user) {
+                    Long userId) {
+        User user = findUserById(userId);
 
         user.setUsername(username);
+
         Set<String> authorities = Arrays.stream(Authority.values())
                 .map(Authority::name)
                 .collect(Collectors.toSet());
@@ -68,8 +77,10 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserById(Long id) {
-        if (userRepository.findUserById(id) == null)
+        if (userRepository.findUserById(id) == null) {
+            logger.error("User with id: " + id + " not found");
             throw new ApiRequestException("User with id: " + id + " not found");
+        }
         return userRepository.findUserById(id);
     }
 

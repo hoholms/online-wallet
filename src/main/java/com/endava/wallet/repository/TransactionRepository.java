@@ -15,6 +15,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     Transaction findTransactionById(Long id);
 
+    Transaction findTransactionByIdAndProfile(Long id, Profile profile);
+
     List<Transaction> findByProfileAndIsIncomeAndTransactionDateBetween(Profile profile, Boolean isIncome, LocalDate from, LocalDate to);
 
     @Query(value = """

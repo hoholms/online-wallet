@@ -5,6 +5,8 @@ import com.endava.wallet.entity.User;
 import com.endava.wallet.entity.dto.ProfileDto;
 import com.endava.wallet.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -14,6 +16,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProfileService.class);
     private final ProfileRepository profileRepository;
     private final UserService userService;
     private final MailSender mailSender;
@@ -34,6 +38,7 @@ public class ProfileService {
 
     public boolean add(Profile profile) {
         if (profileRepository.existsProfileByEmail(profile.getEmail())) {
+            logger.error("Profile with email:" + profile.getEmail() + " already exists");
             return false;
         }
 

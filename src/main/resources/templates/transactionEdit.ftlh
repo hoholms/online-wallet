@@ -5,6 +5,7 @@
     <br>
     <form action="/transactions" method="post">
         <input type="hidden" value="${_csrf.token}" name="_csrf">
+        <input type="hidden" value="${transactionEdit.id}" name="id">
 
         <input type="hidden" value="${transactionEdit.id}" name="id">
         <div class="form-group row">
