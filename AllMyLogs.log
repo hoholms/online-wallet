@@ -1,0 +1,7 @@
+[ INFO] 2022-11-22 11:42:00,660 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 2485 (/Users/vetroff/Documents/Java/online-wallet/target/classes started by vetroff in /Users/vetroff/Documents/Java/online-wallet)
+[ INFO] 2022-11-22 11:42:00,661 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 11:42:04,768 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 4.267 seconds (JVM running for 4.575)
+[ INFO] 2022-11-22 11:44:50,113 c.e.wallet.OnlineWalletApplication [main] Starting OnlineWalletApplication using Java 17.0.5 on MacBook-Pro-Miroslav.local with PID 2527 (/Users/vetroff/Documents/Java/online-wallet/target/classes started by vetroff in /Users/vetroff/Documents/Java/online-wallet)
+[ INFO] 2022-11-22 11:44:50,114 c.e.wallet.OnlineWalletApplication [main] No active profile set, falling back to 1 default profile: "default"
+[ INFO] 2022-11-22 11:44:52,712 c.e.wallet.OnlineWalletApplication [main] Started OnlineWalletApplication in 2.733 seconds (JVM running for 2.999)
+[ERROR] 2022-11-22 11:44:58,935 c.e.w.controller.LoginController [http-nio-8080-exec-4] Invalid username and password!

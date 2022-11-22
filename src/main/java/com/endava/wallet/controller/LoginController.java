@@ -1,6 +1,8 @@
 package com.endava.wallet.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @GetMapping("/login")
     public String login(HttpServletRequest request, Model model) {
         model.addAttribute("error", getErrorMessage(request));
@@ -28,6 +32,7 @@ public class LoginController {
         Exception exception = (Exception) request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
         String error;
         if (exception instanceof BadCredentialsException) {
+            logger.error("Invalid username and password!");
             error = "Invalid username and password!";
         } else if (exception instanceof LockedException) {
             error = exception.getMessage();
