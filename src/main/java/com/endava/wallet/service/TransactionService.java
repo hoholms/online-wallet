@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,6 +64,7 @@ public class TransactionService {
         return profile.getTransactions().stream()
                 .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
                 .filter(distinctByKey(LocalDate::getMonth))
+                .sorted(Comparator.reverseOrder())
                 .toList();
     }
 
