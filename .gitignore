@@ -14,7 +14,6 @@ target/
 .springBeans
 .sts4-cache
 
-
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -34,4 +33,5 @@ build/
 ### VS Code ###
 .vscode/
 
+### Fleet ###
 .fleet

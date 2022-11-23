@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.endava</groupId>
-    <artifactId>online_wallet</artifactId>
+    <artifactId>online-wallet</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Online_Wallet</name>
     <properties>
