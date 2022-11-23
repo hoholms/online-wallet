@@ -9,4 +9,10 @@ values ('t', 'Other Income'),
        ('f', 'Clothes'),
        ('f', 'Entertainments'),
        ('f', 'Transport'),
-       ('f', 'Food');
+       ('f', 'Food'),
+       ('f', 'Rent'),
+       ('f', 'Travelling'),
+       ('t', 'Pension'),
+       ('f', 'To lend'),
+       ('t', 'To borrow'),
+       ('f', 'Taxes');
