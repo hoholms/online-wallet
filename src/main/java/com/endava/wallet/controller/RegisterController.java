@@ -37,11 +37,15 @@ public class RegisterController {
         User user = userDtoConverter.fromDto(userDto);
         Profile profile = profileDtoConverter.fromDto(profileDto, user);
 
-        if (!userService.add(user) || !profileService.add(profile)) {
+        if (userService.existsUserByUsername(user.getUsername()) ||
+                profileService.existsProfileByEmail(profile.getEmail())) {
             model.addAttribute("error", "User already exists!");
-            logger.error("User not added, because he already exists");
+            logger.error("User not added, because it already exists");
             return "register";
         }
+
+        userService.add(user);
+        profileService.add(profile);
 
         return "redirect:/login";
     }

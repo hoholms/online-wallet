@@ -36,6 +36,10 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
+    public boolean existsProfileByEmail(String email) {
+        return profileRepository.existsProfileByEmail(email);
+    }
+
     public boolean add(Profile profile) {
         if (profileRepository.existsProfileByEmail(profile.getEmail())) {
             logger.error("Profile with email:" + profile.getEmail() + " already exists");

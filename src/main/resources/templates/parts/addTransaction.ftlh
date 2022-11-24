@@ -13,7 +13,7 @@
 
         <div class="col-md-2 form-group">
             <label class="form-label" for="tAmount">Amount</label>
-            <input class="form-control" type="number" step="0.01" min="0" name="amount" placeholder="Amount"
+            <input class="form-control" type="number" step="0.01" min="0" max="1000000" name="amount" placeholder="Amount"
                    id="tAmount" required>
         </div>
 

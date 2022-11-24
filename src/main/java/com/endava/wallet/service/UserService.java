@@ -38,6 +38,10 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findAll();
     }
 
+    public boolean existsUserByUsername(String username) {
+        return userRepository.existsUserByUsername(username);
+    }
+
     public boolean add(User user) {
         if (userRepository.existsUserByUsername(user.getUsername())) {
             return false;
