@@ -27,22 +27,13 @@ public class ProfileService {
     @Value("${hostname}")
     private String hostname;
 
-
-    public Profile findProfileByUser(User user) {
-        return profileRepository.findByUser(user);
-    }
-
     public void save(Profile profile) {
         profileRepository.save(profile);
     }
 
-    public boolean existsProfileByEmail(String email) {
-        return profileRepository.existsProfileByEmail(email);
-    }
-
     public boolean add(Profile profile) {
         if (profileRepository.existsProfileByEmail(profile.getEmail())) {
-            logger.error("Profile with email:" + profile.getEmail() + " already exists");
+            logger.error("Profile with email: {} already exists", profile.getEmail());
             return false;
         }
 
@@ -53,22 +44,6 @@ public class ProfileService {
         profileRepository.save(profile);
 
         return true;
-    }
-
-    private void sendMail(Profile profile) {
-        if (!ObjectUtils.isEmpty(profile.getEmail())) {
-            String message = String.format(
-                    """
-                            Hello %s!
-                            Welcome to Online Wallet!
-                            Please visit this link: http://%s/activate/%s""",
-                    profile.getUser().getUsername(),
-                    hostname,
-                    profile.getActivationCode()
-            );
-
-            mailSender.send(profile.getEmail(), "Online Wallet activation code", message);
-        }
     }
 
     public boolean activateProfile(String code) {
@@ -124,5 +99,29 @@ public class ProfileService {
 
         userService.save(user);
         profileRepository.save(currentProfile);
+    }
+
+    public Profile findProfileByUser(User user) {
+        return profileRepository.findByUser(user);
+    }
+
+    public boolean existsProfileByEmail(String email) {
+        return profileRepository.existsProfileByEmail(email);
+    }
+
+    private void sendMail(Profile profile) {
+        if (!ObjectUtils.isEmpty(profile.getEmail())) {
+            String message = String.format(
+                    """
+                            Hello %s!
+                            Welcome to Online Wallet!
+                            Please visit this link: http://%s/activate/%s""",
+                    profile.getUser().getUsername(),
+                    hostname,
+                    profile.getActivationCode()
+            );
+
+            mailSender.send(profile.getEmail(), "Online Wallet activation code", message);
+        }
     }
 }

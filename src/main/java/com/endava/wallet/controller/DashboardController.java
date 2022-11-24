@@ -37,7 +37,7 @@ public class DashboardController {
             @AuthenticationPrincipal User user,
             Model model
     ) {
-        logger.info("Call for dashboard page by user id " + user.getId());
+        logger.info("Call for dashboard page by user id {}", user.getId());
         Profile currentProfile = profileService.findProfileByUser(user);
         model.addAttribute("currentProfile", currentProfile);
 

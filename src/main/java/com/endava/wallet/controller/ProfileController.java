@@ -23,7 +23,7 @@ public class ProfileController {
     @GetMapping("profile")
     public String getProfile(@AuthenticationPrincipal User user, Model model) {
 
-        logger.info("Call for profile info page by user id" + user.getId());
+        logger.info("Call for profile info page by user id {}", user.getId());
 
         Profile currentProfile = profileService.findProfileByUser(user);
 
@@ -44,7 +44,7 @@ public class ProfileController {
     ) {
         profileService.updateProfile(user, profile, password);
 
-        logger.info("Profile with email: " + profile.getEmail() + " has been updated");
+        logger.info("Profile with email: {} has been updated", profile.getEmail());
 
         return getProfile(user, model);
     }

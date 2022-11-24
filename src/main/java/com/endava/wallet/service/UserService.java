@@ -29,17 +29,13 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findUserByUsername(username)
                 .orElseThrow(() -> {
-                    logger.error("User with username: " + username + " not found");
+                    logger.error(String.format("User with username: %s not found", username));
                     return new UsernameNotFoundException("User not found");
                 });
     }
 
-    public List<User> findAllUsers() {
-        return this.userRepository.findAll();
-    }
-
-    public boolean existsUserByUsername(String username) {
-        return userRepository.existsUserByUsername(username);
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     public boolean add(User user) {
@@ -56,9 +52,9 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public void add(@RequestParam String username,
-                    @RequestParam Map<String, String> form,
-                    Long userId) {
+    public void updateUser(@RequestParam String username,
+                           @RequestParam Map<String, String> form,
+                           Long userId) {
         User user = findUserById(userId);
 
         user.setUsername(username);
@@ -78,20 +74,24 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public User findUserById(Long id) {
-        if (userRepository.findUserById(id) == null) {
-            logger.error("User with id: " + id + " not found");
-            throw new ApiRequestException("User with id: " + id + " not found");
-        }
-        return userRepository.findUserById(id);
-    }
-
     public void deleteUserById(Long userID) {
         findUserById(userID);
         userRepository.deleteById(userID);
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public List<User> findAllUsers() {
+        return this.userRepository.findAll();
+    }
+
+    public User findUserById(Long id) {
+        if (userRepository.findUserById(id) == null) {
+            logger.error("User with id: {} not found", id);
+            throw new ApiRequestException("User with id: " + id + " not found");
+        }
+        return userRepository.findUserById(id);
+    }
+
+    public boolean existsUserByUsername(String username) {
+        return userRepository.existsUserByUsername(username);
     }
 }

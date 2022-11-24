@@ -16,7 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @GetMapping
@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping("{userID}")
     public String userEditForm(@PathVariable Long userID, Model model) {
-        logger.info("Call for user with id: " + userID + " edit page");
+        logger.info("Call for user with id: {} edit page", userID);
         model.addAttribute("user", userService.findUserById(userID));
         model.addAttribute("authorities", Authority.values());
         return "userEdit";
@@ -40,15 +40,15 @@ public class UserController {
             @RequestParam Map<String, String> form,
             @RequestParam Long userID
     ) {
-        userService.add(username, form, userID);
-        logger.info("Saved user with id: " + userID);
+        userService.updateUser(username, form, userID);
+        logger.info("Saved user with id: {}", userID);
         return "redirect:/user";
     }
 
     @GetMapping("/delete/{userID}")
     public String userDelete(@PathVariable Long userID) {
         userService.deleteUserById(userID);
-        logger.info("Deleted user with id: " + userID);
+        logger.info("Deleted user with id: {}", userID);
         return "redirect:/user";
     }
 }

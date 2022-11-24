@@ -25,6 +25,6 @@ public class MailSender {
         mailMessage.setText(message);
 
         javaMailSender.send(mailMessage);
-        logger.info("Email to: " + emailTo + " was sent");
+        logger.info("Email to: {} was sent", emailTo);
     }
 }

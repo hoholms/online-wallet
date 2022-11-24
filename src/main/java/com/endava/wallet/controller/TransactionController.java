@@ -27,8 +27,12 @@ public class TransactionController {
     private final ProfileService profileService;
 
     @GetMapping("{transactionID}")
-    public String transactionEditForm(@AuthenticationPrincipal User user, @PathVariable Long transactionID, Model model) {
-        logger.info("Call for transaction with id: " + transactionID + " edit page");
+    public String transactionEditForm(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long transactionID,
+            Model model
+    ) {
+        logger.info("Call for transaction with id: {} edit page", transactionID);
 
         Profile currentProfile = profileService.findProfileByUser(user);
 
@@ -42,11 +46,11 @@ public class TransactionController {
     }
 
     @GetMapping("/delete/{transactionID}")
-    public String transactionDelete(@PathVariable Long transactionID, @AuthenticationPrincipal User user, Model model) {
+    public String transactionDelete(@AuthenticationPrincipal User user, @PathVariable Long transactionID, Model model) {
 
 
         transactionService.deleteTransactionById(transactionID, user);
-        logger.info("Deleted transaction with id: " + transactionID);
+        logger.info("Deleted transaction with id: {}", transactionID);
 
         List<Transaction> transactionList = transactionService.findRecentTransactionsByUser(user);
         model.addAttribute("transactions", transactionList);
@@ -64,7 +68,7 @@ public class TransactionController {
             @RequestParam String transactionDate
     ) {
         transactionService.save(user, id, message, category, amount, transactionDate);
-        logger.info("Saved transaction with id: " + id);
+        logger.info("Saved transaction with id: {}", id);
 
         return "redirect:/dashboard";
     }

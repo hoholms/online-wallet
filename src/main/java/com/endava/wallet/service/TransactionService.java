@@ -37,6 +37,63 @@ public class TransactionService {
         return t -> seen.add(keyExtractor.apply(t));
     }
 
+    public LocalDate parseDate(String transactionDate) {
+        return LocalDate.parse(transactionDate);
+    }
+
+    public void add(Transaction transaction, Profile profile) {
+        transactionRepository.save(transaction);
+
+        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
+            profile.setBalance(profile.getBalance().add(transaction.getAmount()));
+        } else {
+            profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
+        }
+        profileService.save(profile);
+        logger.error("Transaction with id: {} was added", transaction.getId());
+    }
+
+    public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {
+        Profile currentProfile = profileService.findProfileByUser(user);
+        Transaction transaction = findTransactionByIdAndProfile(id, currentProfile);
+
+        if (amount != null && !amount.equals(transaction.getAmount())) {
+            if (Boolean.TRUE.equals(transaction.getIsIncome())) {
+                currentProfile.setBalance(currentProfile.getBalance().subtract(transaction.getAmount()));
+                currentProfile.setBalance(currentProfile.getBalance().add(amount));
+            } else {
+                currentProfile.setBalance(currentProfile.getBalance().add(transaction.getAmount()));
+                currentProfile.setBalance(currentProfile.getBalance().subtract(amount));
+            }
+        }
+
+        if (amount != null) {
+            transaction.setAmount(amount);
+        }
+        transaction.setCategory(categoryRepository.findByCategory(category));
+        transaction.setTransactionDate(parseDate(transactionDate));
+        transaction.setMessage(message);
+
+        transactionRepository.save(transaction);
+        profileService.save(currentProfile);
+    }
+
+    public Transaction findTransactionById(Long id) {
+        if (transactionRepository.findTransactionById(id) == null) {
+            logger.error("Transaction with id: {} not found", id);
+            throw new ApiRequestException("Transaction with id: " + id + " not found");
+        }
+        return transactionRepository.findTransactionById(id);
+    }
+
+    public Transaction findTransactionByIdAndProfile(Long id, Profile profile) {
+        if (transactionRepository.findTransactionById(id).getProfile() != profile) {
+            logger.error("Transaction with id: {} not found", id);
+            throw new ApiRequestException("Transaction with id: " + id + " not found");
+        }
+        return transactionRepository.findTransactionById(id);
+    }
+
     public List<Transaction> findRecentTransactionsByUser(User user) {
         Profile profile = profileService.findProfileByUser(user);
         return findRecentTransactionsByProfile(profile);
@@ -60,15 +117,12 @@ public class TransactionService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public List<LocalDate> findTransactionsDates(Profile profile) {
-        return profile.getTransactions().stream()
-                .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
-                .filter(distinctByKey(LocalDate::getMonth))
-                .sorted(Comparator.reverseOrder())
-                .toList();
-    }
-
-    public Pair<String, BigDecimal> findMaxCategorySumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
+    public Pair<String, BigDecimal> findMaxCategorySumDateBetween(
+            Profile profile,
+            boolean isIncome,
+            LocalDate from,
+            LocalDate to
+    ) {
         String maxTranCategory = transactionRepository.findMaxCategoryDateBetween(
                 profile,
                 isIncome,
@@ -88,61 +142,19 @@ public class TransactionService {
         return Pair.of(maxTranCategory, maxTranSum);
     }
 
-    public Transaction findTransactionById(Long id) {
-        if (transactionRepository.findTransactionById(id) == null) {
-            logger.error("Transaction with id: " + id + " not found");
-            throw new ApiRequestException("Transaction with id: " + id + " not found");
-        }
-        return transactionRepository.findTransactionById(id);
+    public CircleStatistics findCategoryAndSumByProfileAndIsIncome(Profile profile, Boolean isIncome) {
+        return new CircleStatistics(
+                transactionRepository.findCategoryByProfileAndIsIncome(profile, isIncome),
+                transactionRepository.findCategorySumByProfileAndIsIncome(profile, isIncome)
+        );
     }
 
-    public Transaction findTransactionByIdAndProfile(Long id, Profile profile) {
-        if (transactionRepository.findTransactionById(id).getProfile() != profile) {
-            logger.error("Transaction with id: " + id + " not found");
-            throw new ApiRequestException("Transaction with id: " + id + " not found");
-        }
-        return transactionRepository.findTransactionById(id);
-    }
-
-    public void add(Transaction transaction, Profile profile) {
-        transactionRepository.save(transaction);
-
-        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
-            profile.setBalance(profile.getBalance().add(transaction.getAmount()));
-        } else {
-            profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
-        }
-        profileService.save(profile);
-        logger.error("Transaction with id: " + transaction.getId() + " was added");
-    }
-
-
-    public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {
-        Profile profile = profileService.findProfileByUser(user);
-        Transaction transaction = findTransactionByIdAndProfile(id, profile);
-        if (amount != null && !amount.equals(transaction.getAmount())) {
-            if (Boolean.TRUE.equals(transaction.getIsIncome())) {
-                profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
-                profile.setBalance(profile.getBalance().add(amount));
-            } else {
-                profile.setBalance(profile.getBalance().add(transaction.getAmount()));
-                profile.setBalance(profile.getBalance().subtract(amount));
-            }
-        }
-
-        if (amount != null) {
-            transaction.setAmount(amount);
-        }
-        transaction.setCategory(categoryRepository.findByCategory(category));
-        transaction.setTransactionDate(parseDate(transactionDate));
-        transaction.setMessage(message);
-
-        transactionRepository.save(transaction);
-        profileService.save(profile);
-    }
-
-    public LocalDate parseDate(String transactionDate) {
-        return LocalDate.parse(transactionDate);
+    public List<LocalDate> findTransactionsDates(Profile profile) {
+        return profile.getTransactions().stream()
+                .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
+                .filter(distinctByKey(LocalDate::getMonth))
+                .sorted(Comparator.reverseOrder())
+                .toList();
     }
 
     public void deleteTransactionById(Long transactionID, User user) {
@@ -157,12 +169,5 @@ public class TransactionService {
         }
         profileService.save(profile);
 
-    }
-
-    public CircleStatistics findCategoryAndSumByProfileAndIsIncome(Profile profile, Boolean isIncome) {
-        return new CircleStatistics(
-                transactionRepository.findCategoryByProfileAndIsIncome(profile, isIncome),
-                transactionRepository.findCategorySumByProfileAndIsIncome(profile, isIncome)
-        );
     }
 }

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 @RequiredArgsConstructor
 public class RegisterController {
-    private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
     private final UserDtoConverter userDtoConverter;
     private final UserService userService;
     private final ProfileService profileService;
