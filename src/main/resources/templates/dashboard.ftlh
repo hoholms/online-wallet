@@ -108,9 +108,19 @@
     </div>
 
     <div class="container-fluid my-4">
-        <h3>Your recent transactions:</h3>
+        <h3 class="mb-4">Your recent transactions:</h3>
         <div class="row row-cols-1 row-cols-md-3 g-4">
+            <#assign maxDate = recentTransactions[0].transactionDate>
+            <hr class="col-md-12 mb-1">
+            <h4 class="col-md-12"><span style="text-transform: lowercase">${maxDate.month}</span> ${maxDate.year}</h4>
             <#list recentTransactions as transaction>
+                <#if transaction.transactionDate.month != maxDate.month ||
+                transaction.transactionDate.year != maxDate.year>
+                    <#assign maxDate = transaction.transactionDate>
+                    <hr class="col-md-12 mt-5">
+                    <h4 class="col-md-12"><span
+                                style="text-transform: lowercase">${maxDate.month}</span> ${maxDate.year}</h4>
+                </#if>
                 <#if transaction.isIncome>
                     <div class="col">
                         <div class="card border-success">
@@ -154,6 +164,7 @@
                     </div>
                 </#if>
             </#list>
+            <hr class="col-md-12 mt-5">
         </div>
     </div>
 </@c.page>
