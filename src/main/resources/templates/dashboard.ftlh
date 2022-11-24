@@ -107,64 +107,69 @@
         </div>
     </div>
 
-    <div class="container-fluid my-4">
-        <h3 class="mb-4">Your recent transactions:</h3>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <#assign maxDate = recentTransactions[0].transactionDate>
-            <hr class="col-md-12 mb-1">
-            <h4 class="col-md-12"><span style="text-transform: lowercase">${maxDate.month}</span> ${maxDate.year}</h4>
-            <#list recentTransactions as transaction>
-                <#if transaction.transactionDate.month != maxDate.month ||
-                transaction.transactionDate.year != maxDate.year>
-                    <#assign maxDate = transaction.transactionDate>
-                    <hr class="col-md-12 mt-5">
-                    <h4 class="col-md-12"><span
-                                style="text-transform: lowercase">${maxDate.month}</span> ${maxDate.year}</h4>
-                </#if>
-                <#if transaction.isIncome>
-                    <div class="col">
-                        <div class="card border-success">
-                            <div class="card-body">
-                                <h5 class="card-title">${transaction.category.category}</h5>
-                                <#if transaction.message != "">
-                                    <p class="card-text">${transaction.message}</p>
-                                <#else>
-                                    <p class="card-text">
-                                        Got ${transaction.amount} from ${transaction.category.category}.
-                                    </p>
-                                </#if>
-                            </div>
-                            <div class="card-footer text-success">
-                                +${transaction.amount}
-                                <span class="text-muted float-end">${transaction.transactionDate}</span>
-                                <a href="/transactions/${transaction.id}" class="stretched-link"></a>
-                            </div>
-                            <a href="/transactions/${transaction.id}" class="stretched-link"></a>
-                        </div>
-                    </div>
-                <#else>
-                    <div class="col">
-                        <div class="card border-danger">
-                            <div class="card-body">
-                                <h5 class="card-title">${transaction.category.category}</h5>
-                                <#if transaction.message != "">
-                                    <p class="card-text">${transaction.message}</p>
-                                <#else>
-                                    <p class="card-text">
-                                        Spent ${transaction.amount} on ${transaction.category.category}.
-                                    </p>
-                                </#if>
-                            </div>
-                            <div class="card-footer text-danger">
-                                -${transaction.amount}
-                                <span class="text-muted float-end">${transaction.transactionDate}</span>
+    <#if recentTransactions[0]??>
+        <div class="container-fluid my-4">
+            <h3 class="mb-4">Your recent transactions:</h3>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+
+
+                <#assign maxDate = recentTransactions[0].transactionDate>
+                <hr class="col-md-12 mb-1">
+                <h4 class="col-md-12"><span style="text-transform: lowercase">${maxDate.month}</span> ${maxDate.year}
+                </h4>
+                <#list recentTransactions as transaction>
+                    <#if transaction.transactionDate.month != maxDate.month ||
+                    transaction.transactionDate.year != maxDate.year>
+                        <#assign maxDate = transaction.transactionDate>
+                        <hr class="col-md-12 mt-5">
+                        <h4 class="col-md-12"><span
+                                    style="text-transform: lowercase">${maxDate.month}</span> ${maxDate.year}</h4>
+                    </#if>
+                    <#if transaction.isIncome>
+                        <div class="col">
+                            <div class="card border-success">
+                                <div class="card-body">
+                                    <h5 class="card-title">${transaction.category.category}</h5>
+                                    <#if transaction.message != "">
+                                        <p class="card-text">${transaction.message}</p>
+                                    <#else>
+                                        <p class="card-text">
+                                            Got ${transaction.amount} from ${transaction.category.category}.
+                                        </p>
+                                    </#if>
+                                </div>
+                                <div class="card-footer text-success">
+                                    +${transaction.amount}
+                                    <span class="text-muted float-end">${transaction.transactionDate}</span>
+                                    <a href="/transactions/${transaction.id}" class="stretched-link"></a>
+                                </div>
                                 <a href="/transactions/${transaction.id}" class="stretched-link"></a>
                             </div>
                         </div>
-                    </div>
-                </#if>
-            </#list>
-            <hr class="col-md-12 mt-5">
+                    <#else>
+                        <div class="col">
+                            <div class="card border-danger">
+                                <div class="card-body">
+                                    <h5 class="card-title">${transaction.category.category}</h5>
+                                    <#if transaction.message != "">
+                                        <p class="card-text">${transaction.message}</p>
+                                    <#else>
+                                        <p class="card-text">
+                                            Spent ${transaction.amount} on ${transaction.category.category}.
+                                        </p>
+                                    </#if>
+                                </div>
+                                <div class="card-footer text-danger">
+                                    -${transaction.amount}
+                                    <span class="text-muted float-end">${transaction.transactionDate}</span>
+                                    <a href="/transactions/${transaction.id}" class="stretched-link"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </#if>
+                </#list>
+                <hr class="col-md-12 mt-5">
+            </div>
         </div>
-    </div>
+    </#if>
 </@c.page>
