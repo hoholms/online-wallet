@@ -7,6 +7,7 @@ import com.endava.wallet.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -22,6 +23,9 @@ public class ProfileService {
     private final UserService userService;
     private final MailSender mailSender;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${hostname}")
+    private String hostname;
 
 
     public Profile findProfileByUser(User user) {
@@ -53,8 +57,9 @@ public class ProfileService {
                     """
                             Hello %s!
                             Welcome to Online Wallet!
-                            Please visit this link: http://localhost:8080/activate/%s""",
+                            Please visit this link: http://%s/activate/%s""",
                     profile.getUser().getUsername(),
+                    hostname,
                     profile.getActivationCode()
             );
 
