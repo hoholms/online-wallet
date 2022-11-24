@@ -50,13 +50,25 @@ alter table if exists profiles
     add constraint profiles_user_id_key unique (user_id);
 
 alter table if exists authorities
-    add constraint authorities_user_id_fk foreign key (user_id) references users;
+    add constraint authorities_user_id_fk foreign key (user_id) references users on
+delete
+cascade on
+update cascade;
 
 alter table if exists profiles
-    add constraint profiles_user_id_fk foreign key (user_id) references users;
+    add constraint profiles_user_id_fk foreign key (user_id) references users on
+delete
+cascade on
+update cascade;
 
 alter table if exists transactions
-    add constraint transactions_category_id_fk foreign key (category_id) references transactions_categories;
+    add constraint transactions_category_id_fk foreign key (category_id) references transactions_categories on
+delete
+cascade on
+update cascade;
 
 alter table if exists transactions
-    add constraint transactions_profile_id_fk foreign key (profile_id) references profiles;
+    add constraint transactions_profile_id_fk foreign key (profile_id) references profiles on
+delete
+cascade on
+update cascade;
