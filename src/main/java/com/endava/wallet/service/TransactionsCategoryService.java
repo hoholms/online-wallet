@@ -3,17 +3,17 @@ package com.endava.wallet.service;
 import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.TransactionsCategory;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TransactionsCategoryService {
-    public final TransactionsCategoryRepository categoryRepository;
+    private final TransactionsCategoryRepository categoryRepository;
 
-    public final TransactionService transactionService;
+    private final TransactionService transactionService;
 
     public List<TransactionsCategory> findAllCategoriesByTransactionIdByIsIncome(Long transactionId) {
 

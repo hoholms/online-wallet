@@ -7,7 +7,7 @@ import com.endava.wallet.entity.User;
 import com.endava.wallet.exception.ApiRequestException;
 import com.endava.wallet.repository.TransactionRepository;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
@@ -24,13 +24,13 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TransactionService {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionService.class);
-    private TransactionRepository transactionRepository;
-    private TransactionsCategoryRepository categoryRepository;
-    private ProfileService profileService;
+    private final TransactionRepository transactionRepository;
+    private final TransactionsCategoryRepository categoryRepository;
+    private final ProfileService profileService;
 
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
@@ -153,7 +153,7 @@ public class TransactionService {
         return profile.getTransactions().stream()
                 .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
                 .filter(distinctByKey(LocalDate::getMonth))
-                .sorted(Comparator.reverseOrder())
+                .sorted(Comparator.naturalOrder())
                 .toList();
     }
 
