@@ -9,11 +9,14 @@ import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findTransactionByProfileOrderByTransactionDateAsc(Profile profile);
 
-    Transaction findTransactionById(Long id);
+    Optional<Transaction> findTransactionById(Long id);
+
+    Optional<Transaction> findTransactionByIdAndProfile(Long id, Profile profile);
 
     List<Transaction> findByProfileAndIsIncomeAndTransactionDateBetween(Profile profile, Boolean isIncome, LocalDate from, LocalDate to);
 

@@ -22,7 +22,6 @@ public class ProfileController {
 
     @GetMapping("profile")
     public String getProfile(@AuthenticationPrincipal User user, Model model) {
-
         logger.info("Call for profile info page by user id {}", user.getId());
 
         Profile currentProfile = profileService.findProfileByUser(user);

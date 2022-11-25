@@ -4,7 +4,8 @@ import com.endava.wallet.entity.CircleStatistics;
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.exception.ApiRequestException;
+import com.endava.wallet.exception.TransactionCategoryNotFoundException;
+import com.endava.wallet.exception.TransactionNotFoundException;
 import com.endava.wallet.repository.TransactionRepository;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,7 @@ public class TransactionService {
             profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
         }
         profileService.save(profile);
-        logger.error("Transaction with id: {} was added", transaction.getId());
+        logger.info("Transaction with id: {} was added", transaction.getId());
     }
 
     public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {
@@ -70,7 +71,8 @@ public class TransactionService {
         if (amount != null) {
             transaction.setAmount(amount);
         }
-        transaction.setCategory(categoryRepository.findByCategory(category));
+        transaction.setCategory(categoryRepository.findByCategory(category)
+                .orElseThrow(() -> new TransactionCategoryNotFoundException("Transaction category not found!")));
         transaction.setTransactionDate(parseDate(transactionDate));
         transaction.setMessage(message);
 
@@ -79,19 +81,13 @@ public class TransactionService {
     }
 
     public Transaction findTransactionById(Long id) {
-        if (transactionRepository.findTransactionById(id) == null) {
-            logger.error("Transaction with id: {} not found", id);
-            throw new ApiRequestException("Transaction with id: " + id + " not found");
-        }
-        return transactionRepository.findTransactionById(id);
+        return transactionRepository.findTransactionById(id)
+                .orElseThrow(() -> new TransactionNotFoundException("Transaction with id: " + id + " not found"));
     }
 
     public Transaction findTransactionByIdAndProfile(Long id, Profile profile) {
-        if (transactionRepository.findTransactionById(id).getProfile() != profile) {
-            logger.error("Transaction with id: {} not found", id);
-            throw new ApiRequestException("Transaction with id: " + id + " not found");
-        }
-        return transactionRepository.findTransactionById(id);
+        return transactionRepository.findTransactionByIdAndProfile(id, profile)
+                .orElseThrow(() -> new TransactionNotFoundException("Transaction with id: " + id + " not found"));
     }
 
     public List<Transaction> findRecentTransactionsByUser(User user) {
@@ -158,16 +154,18 @@ public class TransactionService {
     }
 
     public void deleteTransactionById(Long transactionID, User user) {
-        Profile profile = profileService.findProfileByUser(user);
-        findTransactionByIdAndProfile(transactionID, profile);
-        Transaction transaction = transactionRepository.findTransactionById(transactionID);
+        Profile currentProfile = profileService.findProfileByUser(user);
+
+        Transaction transaction = findTransactionByIdAndProfile(transactionID, currentProfile);
+
         transactionRepository.deleteById(transactionID);
+
         if (Boolean.TRUE.equals(transaction.getIsIncome())) {
-            profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
+            currentProfile.setBalance(currentProfile.getBalance().subtract(transaction.getAmount()));
         } else {
-            profile.setBalance(profile.getBalance().add(transaction.getAmount()));
+            currentProfile.setBalance(currentProfile.getBalance().add(transaction.getAmount()));
         }
-        profileService.save(profile);
+        profileService.save(currentProfile);
 
     }
 }

@@ -10,6 +10,11 @@
         </div>
         <#if isRegisterForm>
             <div class="form-floating mb-3">
+                <input type="password" class="form-control" name="passwordConfirm" id="passwdConf"
+                       placeholder="Password" required/>
+                <label for="passwdConf">Confirm Password</label>
+            </div>
+            <div class="form-floating mb-3">
                 <input type="text" class="form-control" name="firstName" id="fname" placeholder="First Name" required/>
                 <label for="fname">First Name</label>
             </div>

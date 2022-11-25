@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequiredArgsConstructor
 public class StatisticsController {
-
     @GetMapping("statistics")
     public String statistics() {
         return "statistics";

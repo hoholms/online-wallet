@@ -2,11 +2,9 @@ package com.endava.wallet.service;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.exception.ApiRequestException;
+import com.endava.wallet.exception.UserNotFoundException;
 import com.endava.wallet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,18 +18,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
-
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findUserByUsername(username)
-                .orElseThrow(() -> {
-                    logger.error(String.format("User with username: %s not found", username));
-                    return new UsernameNotFoundException("User not found");
-                });
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(String.format("User with username: %s not found", username)));
     }
 
     public void save(User user) {
@@ -84,11 +78,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserById(Long id) {
-        if (userRepository.findUserById(id) == null) {
-            logger.error("User with id: {} not found", id);
-            throw new ApiRequestException("User with id: " + id + " not found");
-        }
-        return userRepository.findUserById(id);
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found"));
     }
 
     public boolean existsUserByUsername(String username) {

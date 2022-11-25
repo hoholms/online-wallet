@@ -1,13 +1,10 @@
 package com.endava.wallet.controller;
 
-import com.endava.wallet.entity.Profile;
-import com.endava.wallet.entity.User;
 import com.endava.wallet.entity.dto.ProfileDto;
-import com.endava.wallet.entity.dto.ProfileDtoConverter;
 import com.endava.wallet.entity.dto.UserDto;
-import com.endava.wallet.entity.dto.UserDtoConverter;
+import com.endava.wallet.exception.RegisterException;
 import com.endava.wallet.service.ProfileService;
-import com.endava.wallet.service.UserService;
+import com.endava.wallet.service.RegisterService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
 public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
-    private final UserDtoConverter userDtoConverter;
-    private final UserService userService;
     private final ProfileService profileService;
-    private final ProfileDtoConverter profileDtoConverter;
+    private final RegisterService registerService;
 
     @GetMapping("/register")
     public String register() {
@@ -33,20 +29,18 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String addUser(UserDto userDto, ProfileDto profileDto, Model model) {
-        User user = userDtoConverter.fromDto(userDto);
-        Profile profile = profileDtoConverter.fromDto(profileDto, user);
-
-        if (userService.existsUserByUsername(user.getUsername()) ||
-                profileService.existsProfileByEmail(profile.getEmail())) {
-            model.addAttribute("error", "User already exists!");
-            logger.error("User not added, because it already exists");
+    public String addUser(
+            UserDto userDto,
+            ProfileDto profileDto,
+            @RequestParam String passwordConfirm,
+            Model model
+    ) {
+        try {
+            registerService.registerUser(userDto, profileDto, passwordConfirm);
+        } catch (RegisterException e) {
+            model.addAttribute("error", e.getMessage());
             return "register";
         }
-
-        userService.add(user);
-        profileService.add(profile);
-
         return "redirect:/login";
     }
 

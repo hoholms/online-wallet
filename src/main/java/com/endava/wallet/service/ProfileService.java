@@ -3,6 +3,7 @@ package com.endava.wallet.service;
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.User;
 import com.endava.wallet.entity.dto.ProfileDto;
+import com.endava.wallet.exception.ProfileNotFoundException;
 import com.endava.wallet.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -65,7 +66,10 @@ public class ProfileService {
     }
 
     public void updateProfile(User user, ProfileDto profileDto, String password) {
-        Profile currentProfile = profileRepository.findByUser(user);
+        Profile currentProfile = profileRepository.findByUser(user)
+                .orElseThrow(() -> new ProfileNotFoundException(
+                        String.format("Profile for user %s not found!", user.getId())
+                ));
 
         String userEmail = currentProfile.getEmail();
         boolean isEmailChanged = (profileDto.getEmail() != null && !profileDto.getEmail().equals(userEmail) ||
@@ -102,7 +106,10 @@ public class ProfileService {
     }
 
     public Profile findProfileByUser(User user) {
-        return profileRepository.findByUser(user);
+        return profileRepository.findByUser(user)
+                .orElseThrow(() -> new ProfileNotFoundException(
+                        String.format("Profile for user %s not found!", user.getId())
+                ));
     }
 
     public boolean existsProfileByEmail(String email) {
