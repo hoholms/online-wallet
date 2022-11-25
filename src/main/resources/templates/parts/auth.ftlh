@@ -32,12 +32,12 @@
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit" class="btn btn-primary">
             <#if isRegisterForm>
-                Sign Up
+                Register
             <#else>
-                Sign In
+                Login
             </#if>
         </button>
-        <#if !isRegisterForm><a href="/register">Sign Up</a><#else><a href="/login">Sign In</a></#if>
+        <#if !isRegisterForm><a href="/register">Register</a><#else><a href="/login">Login</a></#if>
     </form>
 </#macro>
 
