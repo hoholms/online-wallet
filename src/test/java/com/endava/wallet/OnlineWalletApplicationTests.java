@@ -40,6 +40,9 @@ class OnlineWalletApplicationTests {
     private StatisticsService statisticsService;
 
     @MockBean
+    private RegisterService registerService;
+
+    @MockBean
     private TransactionDtoConverter transactionDtoConverter;
 
     @MockBean
