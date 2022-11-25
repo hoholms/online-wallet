@@ -5,12 +5,12 @@ import com.endava.wallet.entity.User;
 import com.endava.wallet.exception.UserNotFoundException;
 import com.endava.wallet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,12 +46,16 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public void updateUser(@RequestParam String username,
-                           @RequestParam Map<String, String> form,
-                           Long userId) {
+    public void updateUser(
+            Long userId,
+            String username,
+            Boolean enabled,
+            Map<String, String> form
+    ) {
         User user = findUserById(userId);
 
         user.setUsername(username);
+        user.setEnabled(enabled);
 
         Set<String> authorities = Arrays.stream(Authority.values())
                 .map(Authority::name)
@@ -74,7 +78,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> findAllUsers() {
-        return this.userRepository.findAll();
+        return userRepository.findAll(Sort.by(Sort.Order.by("id")));
     }
 
     public User findUserById(Long id) {

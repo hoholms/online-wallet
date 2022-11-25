@@ -4,7 +4,7 @@
 <@c.page>
     <div class="mb-1">
         <h2>Login</h2>
-        <p class="text-success">${success!""}</p>
+        <p class="text-info">${message!""}</p>
         <p class="text-danger">${error!""}</p>
     </div>
     <@l.auth "/login" false/>

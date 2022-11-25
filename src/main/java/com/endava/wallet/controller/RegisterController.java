@@ -41,22 +41,25 @@ public class RegisterController {
             model.addAttribute("error", e.getMessage());
             return "register";
         }
-        return "redirect:/login";
+        model.addAttribute("message", "Now confirm your email!");
+
+        return "login";
     }
 
     @GetMapping("/activate/{code}")
     public String activate(Model model, @PathVariable String code) {
         boolean isActivated = profileService.activateProfile(code);
+        model.addAttribute("isActivated", isActivated);
 
         if (isActivated) {
-            model.addAttribute("success", "Your account is now activated!");
+            model.addAttribute("message", "Your account is now activated!");
             logger.info("Account is now activated");
 
         } else {
-            model.addAttribute("error", "Activation code is not found!");
+            model.addAttribute("message", "Activation code is not found!");
             logger.warn("Account was not activated");
         }
 
-        return "login";
+        return "info";
     }
 }

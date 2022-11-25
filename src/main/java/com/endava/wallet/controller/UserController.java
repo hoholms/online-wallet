@@ -35,11 +35,13 @@ public class UserController {
 
     @PostMapping
     public String userSave(
+            @RequestParam Long userID,
             @RequestParam String username,
-            @RequestParam Map<String, String> form,
-            @RequestParam Long userID
+            @RequestParam(defaultValue = "false") Boolean enabled,
+            @RequestParam Map<String, String> form
+
     ) {
-        userService.updateUser(username, form, userID);
+        userService.updateUser(userID, username, enabled, form);
         logger.info("Saved user with id: {}", userID);
         return "redirect:/user";
     }

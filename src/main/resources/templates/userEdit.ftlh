@@ -13,6 +13,14 @@
         </div>
 
         <div class="form-group row">
+            <label for="enabled" class="col-sm-2 col-form-label">Enabled</label>
+            <div class="col-sm-10">
+                <input type="checkbox" id="enabled" name="enabled"
+                       class="form-check-input" ${user.isEnabled()?string("checked", "")}>
+            </div>
+        </div>
+
+        <div class="form-group row mb-3">
             <label for="username" class="col-sm-2 col-form-label">Username</label>
             <div class="col-sm-10">
                 <input type="text" id="username" name="username" class="form-control" value="${user.username}"
