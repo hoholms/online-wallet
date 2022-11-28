@@ -1,12 +1,12 @@
-package com.endava.wallet.service;
+package com.endava.wallet.controller;
 
-import com.endava.wallet.controller.WalletController;
-import org.junit.Ignore;
+import com.endava.wallet.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,13 +20,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LoginTest {
+public class LoginControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private WalletController walletController;
+
+    PasswordEncoder passwordEncoder;
+    UserService userService;
 
     @Test
     public void contextLoads() throws Exception {
@@ -44,10 +47,14 @@ public class LoginTest {
                 .andExpect((redirectedUrl("http://localhost/login")));
     }
 
-    @Ignore
+
     @Test
     public void correctLoginTest() throws Exception {
-        this.mockMvc.perform(formLogin().user("e").password("e"))
+
+        this.mockMvc.perform(formLogin().user("admin")
+                        .password(passwordEncoder
+                                .encode(userService.loadUserByUsername("admin")
+                                        .getPassword())))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect((redirectedUrl("/")));

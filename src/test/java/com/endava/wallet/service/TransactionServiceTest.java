@@ -4,6 +4,7 @@ import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.User;
 import com.endava.wallet.repository.TransactionRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -30,9 +31,11 @@ public class TransactionServiceTest {
     @MockBean
     private ProfileService profileService;
 
-    @Test
-    public void add() {
-        Profile profile = Profile.builder()
+    Profile profile;
+    Transaction transaction;
+    @Before
+    public void setUp(){
+        profile = Profile.builder()
                 .id(1L)
                 .transactions((Set<Transaction>) Mockito.mock(Set.class))
                 .balance(BigDecimal.valueOf(200))
@@ -44,7 +47,7 @@ public class TransactionServiceTest {
                 .activationCode("Code")
                 .build();
 
-        Transaction transaction = Transaction.builder()
+        transaction = Transaction.builder()
                 .id(1L)
                 .amount(BigDecimal.valueOf(200))
                 .transactionDate(LocalDate.now())
@@ -52,9 +55,11 @@ public class TransactionServiceTest {
                 .message("message")
                 .isIncome(true)
                 .build();
+    }
 
+    @Test
+    public void add() {
         transactionService.add(transaction, profile);
-
         Mockito.verify(transactionRepository, Mockito.times(1)).save(transaction);
         Mockito.verify(profileService, Mockito.times(1)).save(profile);
     }

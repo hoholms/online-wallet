@@ -12,7 +12,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
@@ -27,12 +26,10 @@ public class UserServiceTest {
     @MockBean
     private UserRepository userRepository;
 
-    @MockBean
-    private PasswordEncoder passwordEncoder;
+    User user = new User();
 
     @Test
     public void addTest() {
-        User user = new User();
         boolean isUserCreated = userService.add(user);
         Assert.assertTrue(isUserCreated);
         Assert.assertTrue(CoreMatchers.is(user.getAuthority()).matches(Collections.singleton(Authority.USER)));
@@ -41,7 +38,6 @@ public class UserServiceTest {
 
     @Test
     public void addFailTest() {
-        User user = new User();
         user.setUsername("Ivan");
 
         Mockito.when(userRepository.existsUserByUsername(user.getUsername()))
@@ -49,16 +45,8 @@ public class UserServiceTest {
 
         boolean isUserCreated = userService.add(user);
 
-
         Assert.assertFalse(isUserCreated);
 
         Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(User.class));
     }
-
-//    @Test(expected = ApiRequestException.class)
-//    public void findUserById(){
-//        Mockito.when(userRepository.findUserById(Mockito.anyLong())==null)
-//                 .thenThrow(new ApiRequestException("There is no such user"));
-//    }
-
 }
