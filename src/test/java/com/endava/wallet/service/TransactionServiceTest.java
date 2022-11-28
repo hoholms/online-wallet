@@ -1,9 +1,8 @@
 package com.endava.wallet.service;
 
-import com.endava.wallet.entity.Profile;
-import com.endava.wallet.entity.Transaction;
-import com.endava.wallet.entity.User;
+import com.endava.wallet.entity.*;
 import com.endava.wallet.repository.TransactionRepository;
+import com.endava.wallet.repository.TransactionsCategoryRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 @RunWith(SpringRunner.class)
@@ -31,10 +32,21 @@ public class TransactionServiceTest {
     @MockBean
     private ProfileService profileService;
 
+    @MockBean
+    private TransactionsCategoryRepository categoryRepository;
+
     Profile profile;
     Transaction transaction;
+    TransactionsCategory category;
+    User user;
     @Before
     public void setUp(){
+        user = new User(1L,
+                "username",
+                "password",
+                true,
+                Collections.singleton(Authority.USER));
+
         profile = Profile.builder()
                 .id(1L)
                 .transactions((Set<Transaction>) Mockito.mock(Set.class))
@@ -47,8 +59,11 @@ public class TransactionServiceTest {
                 .activationCode("Code")
                 .build();
 
+        category = new TransactionsCategory();
+
         transaction = Transaction.builder()
                 .id(1L)
+                .category(category)
                 .amount(BigDecimal.valueOf(200))
                 .transactionDate(LocalDate.now())
                 .profile(profile)
@@ -60,6 +75,25 @@ public class TransactionServiceTest {
     @Test
     public void add() {
         transactionService.add(transaction, profile);
+        Mockito.verify(transactionRepository, Mockito.times(1)).save(transaction);
+        Mockito.verify(profileService, Mockito.times(1)).save(profile);
+    }
+
+    @Test
+    public void saveTest(){
+        Mockito.when(profileService.findProfileByUser(user)).thenReturn(profile);
+        Mockito.when(transactionRepository.findTransactionByIdAndProfile(user.getId(), profile))
+                .thenReturn(Optional.of(transaction));
+        Mockito.when(categoryRepository.findByCategory(transaction.getCategory().toString()))
+                .thenReturn(Optional.of(transaction.getCategory()));
+
+        transactionService.save(user,
+                transaction.getId(),
+                "message",
+                transaction.getCategory().toString(),
+                BigDecimal.valueOf(Mockito.anyInt()),
+                LocalDate.now().toString());
+
         Mockito.verify(transactionRepository, Mockito.times(1)).save(transaction);
         Mockito.verify(profileService, Mockito.times(1)).save(profile);
     }
