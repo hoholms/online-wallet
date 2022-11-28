@@ -1,10 +1,12 @@
 package com.endava.wallet.service;
 
 import com.endava.wallet.entity.*;
+import com.endava.wallet.repository.ProfileRepository;
 import com.endava.wallet.repository.TransactionRepository;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class TransactionServiceTest {
 
     @MockBean
     private ProfileService profileService;
+
+    @MockBean
+    private ProfileRepository profileRepository;
 
     @MockBean
     private TransactionsCategoryRepository categoryRepository;
@@ -81,8 +86,9 @@ public class TransactionServiceTest {
 
     @Test
     public void saveTest(){
-        Mockito.when(profileService.findProfileByUser(user)).thenReturn(profile);
-        Mockito.when(transactionRepository.findTransactionByIdAndProfile(user.getId(), profile))
+        Mockito.when(profileService.findProfileByUser(user))
+                .thenReturn(profile);
+        Mockito.when(transactionRepository.findTransactionByIdAndProfile(transaction.getId(), profile))
                 .thenReturn(Optional.of(transaction));
         Mockito.when(categoryRepository.findByCategory(transaction.getCategory().toString()))
                 .thenReturn(Optional.of(transaction.getCategory()));
@@ -96,5 +102,25 @@ public class TransactionServiceTest {
 
         Mockito.verify(transactionRepository, Mockito.times(1)).save(transaction);
         Mockito.verify(profileService, Mockito.times(1)).save(profile);
+    }
+
+    @Test
+    public void saveFailTest(){
+        Mockito.when(profileRepository.findByUser(user))
+                .thenReturn(Optional.empty());
+        Mockito.when(transactionRepository.findTransactionByIdAndProfile(user.getId(), profile))
+                .thenReturn(Optional.empty());
+        Mockito.when(categoryRepository.findByCategory(transaction.getCategory().toString()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThrows(Exception.class, () -> transactionService.save(user,
+                transaction.getId(),
+                "message",
+                transaction.getCategory().toString(),
+                BigDecimal.valueOf(Mockito.anyInt()),
+                LocalDate.now().toString()));
+
+        Mockito.verify(transactionRepository, Mockito.times(0)).save(transaction);
+        Mockito.verify(profileService, Mockito.times(0)).save(profile);
     }
 }
