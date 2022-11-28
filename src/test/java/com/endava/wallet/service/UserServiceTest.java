@@ -2,11 +2,13 @@ package com.endava.wallet.service;
 
 import com.endava.wallet.entity.Authority;
 import com.endava.wallet.entity.User;
+import com.endava.wallet.exception.UserNotFoundException;
 import com.endava.wallet.repository.UserRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -16,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -57,5 +60,18 @@ public class UserServiceTest {
         Assert.assertFalse(isUserCreated);
 
         Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(User.class));
+    }
+
+    @Test
+    public void deleteUserByIdTest(){
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        userService.deleteUserById(user.getId());
+        Mockito.verify(userRepository, Mockito.times(1)).deleteById(user.getId());
+    }
+    @Test
+    public void deleteUserByIdFailTest(){
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
+       Assertions.assertThrows(UserNotFoundException.class, () -> userService.deleteUserById(user.getId()));
+        Mockito.verify(userRepository, Mockito.times(0)).deleteById(user.getId());
     }
 }
