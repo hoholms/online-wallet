@@ -5,6 +5,7 @@ import com.endava.wallet.entity.User;
 import com.endava.wallet.repository.UserRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -26,8 +27,16 @@ public class UserServiceTest {
     @MockBean
     private UserRepository userRepository;
 
-    User user = new User();
+    User user;
 
+    @Before
+    public void setUp(){
+        user = new User(1L,
+                "username",
+                "password",
+                true,
+                Collections.singleton(Authority.USER));
+    }
     @Test
     public void addTest() {
         boolean isUserCreated = userService.add(user);
