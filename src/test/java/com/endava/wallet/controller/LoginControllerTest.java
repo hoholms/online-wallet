@@ -34,11 +34,11 @@ public class LoginControllerTest {
 
     User user;
 
-    private MockMvc mvc;
+    private MockMvc mockMvc;
 
     @Before
     public void setup() {
-        mvc = MockMvcBuilders
+        mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
@@ -47,14 +47,14 @@ public class LoginControllerTest {
 
     @Test
     public void contextLoads() throws Exception {
-        mvc.perform(get("/"))
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Here you can control your expenses.")));
     }
 
     @Test
     public void loginTest() throws Exception {
-        mvc.perform(get("/index"))
+        mockMvc.perform(get("/index"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect((redirectedUrl("http://localhost/login")));
@@ -64,14 +64,14 @@ public class LoginControllerTest {
     @Test
     public void correctLoginTest() throws Exception {
 
-        mvc.perform(formLogin("/login").user(user.getUsername()).password(user.getUsername()))
+        mockMvc.perform(formLogin("/login").user(user.getUsername()).password(user.getUsername()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect((redirectedUrl("/")));
     }
 
     @Test
     public void failedLoginTest() throws Exception {
-        mvc.perform(post("/login").param("noSuchLogin", "noSuchPassword"))
+        mockMvc.perform(post("/login").param("noSuchLogin", "noSuchPassword"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
