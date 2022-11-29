@@ -4,6 +4,7 @@ import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.User;
 import com.endava.wallet.entity.dto.ProfileDto;
 import com.endava.wallet.exception.ProfileNotFoundException;
+import com.endava.wallet.exception.RegisterException;
 import com.endava.wallet.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -95,10 +96,12 @@ public class ProfileService {
             user.setPassword(passwordEncoder.encode(password));
         }
 
-        if (isEmailChanged) {
+        if (isEmailChanged && !existsProfileByEmail(profileDto.getEmail())) {
             currentProfile.setEmail(profileDto.getEmail());
             currentProfile.setActivationCode(UUID.randomUUID().toString());
             sendMail(currentProfile);
+        } else if (isEmailChanged && existsProfileByEmail(profileDto.getEmail())) {
+            throw new RegisterException("Email already registered!");
         }
 
         userService.save(user);

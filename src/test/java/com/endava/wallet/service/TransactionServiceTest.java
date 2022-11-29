@@ -25,27 +25,23 @@ import java.util.Set;
 @SpringBootTest
 public class TransactionServiceTest {
 
-    @Autowired
-    private TransactionService transactionService;
-
-    @MockBean
-    private TransactionRepository transactionRepository;
-
-    @MockBean
-    private ProfileService profileService;
-
-    @MockBean
-    private ProfileRepository profileRepository;
-
-    @MockBean
-    private TransactionsCategoryRepository categoryRepository;
-
     Profile profile;
     Transaction transaction;
     TransactionsCategory category;
     User user;
+    @Autowired
+    private TransactionService transactionService;
+    @MockBean
+    private TransactionRepository transactionRepository;
+    @MockBean
+    private ProfileService profileService;
+    @MockBean
+    private ProfileRepository profileRepository;
+    @MockBean
+    private TransactionsCategoryRepository categoryRepository;
+
     @Before
-    public void setUp(){
+    public void setUp() {
         user = new User(1L,
                 "username",
                 "password",
@@ -85,7 +81,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    public void saveTest(){
+    public void saveTest() {
         Mockito.when(profileService.findProfileByUser(user))
                 .thenReturn(profile);
         Mockito.when(transactionRepository.findTransactionByIdAndProfile(transaction.getId(), profile))
@@ -105,7 +101,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    public void saveFailTest(){
+    public void saveFailTest() {
         Mockito.when(profileRepository.findByUser(user))
                 .thenReturn(Optional.empty());
         Mockito.when(transactionRepository.findTransactionByIdAndProfile(user.getId(), profile))

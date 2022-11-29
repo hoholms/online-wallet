@@ -4,6 +4,8 @@
     <div class="mb-1">
         <h2>${username}</h2>
     </div>
+    <p class="text-success">${message!""}</p>
+    <p class="text-danger">${error!""}</p>
     <form method="post">
         <div class="form-floating mb-3">
             <input type="password" class="form-control" name="password" id="passwd" placeholder="Password"/>

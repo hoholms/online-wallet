@@ -26,14 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class LoginControllerTest {
 
+    User user;
     @Autowired
     private WebApplicationContext context;
-
     @Autowired
     private UserService userService;
-
-    User user;
-
     private MockMvc mockMvc;
 
     @Before

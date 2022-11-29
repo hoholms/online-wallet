@@ -9,16 +9,17 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 @TestConfiguration
 public class SpringSecurityWebAuxTestConfig {
     @Autowired
     UserService userService;
+
     @Bean
     @Primary
     public UserDetailsService userDetailsService() {
         User admin = userService.findUserById(1L);
-        return new InMemoryUserDetailsManager(Arrays.asList(admin));
+        return new InMemoryUserDetailsManager(Collections.singletonList(admin));
     }
 }

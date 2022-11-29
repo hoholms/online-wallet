@@ -24,22 +24,21 @@ import java.util.Optional;
 @SpringBootTest
 public class UserServiceTest {
 
+    User user;
     @Autowired
     private UserService userService;
-
     @MockBean
     private UserRepository userRepository;
 
-    User user;
-
     @Before
-    public void setUp(){
+    public void setUp() {
         user = new User(1L,
                 "username",
                 "password",
                 true,
                 Collections.singleton(Authority.USER));
     }
+
     @Test
     public void addTest() {
         boolean isUserCreated = userService.add(user);
@@ -63,15 +62,16 @@ public class UserServiceTest {
     }
 
     @Test
-    public void deleteUserByIdTest(){
+    public void deleteUserByIdTest() {
         Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         userService.deleteUserById(user.getId());
         Mockito.verify(userRepository, Mockito.times(1)).deleteById(user.getId());
     }
+
     @Test
-    public void deleteUserByIdFailTest(){
+    public void deleteUserByIdFailTest() {
         Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
-       Assertions.assertThrows(UserNotFoundException.class, () -> userService.deleteUserById(user.getId()));
+        Assertions.assertThrows(UserNotFoundException.class, () -> userService.deleteUserById(user.getId()));
         Mockito.verify(userRepository, Mockito.times(0)).deleteById(user.getId());
     }
 }

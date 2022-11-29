@@ -18,9 +18,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class RegisterServiceTest {
+    User user = User.builder()
+            .id(1L)
+            .username("username")
+            .password("password")
+            .enabled(true)
+            .authority(Collections.singleton(Authority.USER))
+            .build();
+    Profile profile = Profile.builder()
+            .user(user)
+            .email("w@w")
+            .build();
     @Autowired
     private RegisterService registerService;
     @MockBean
@@ -28,23 +40,10 @@ class RegisterServiceTest {
     @MockBean
     private ProfileService profileService;
     @MockBean
-            private UserDtoConverter userDtoConverter;
-
-
-    User user = User.builder()
-            .id(1L)
-                .username("username")
-                .password("password")
-                .enabled(true)
-                .authority(Collections.singleton(Authority.USER))
-            .build();
-    Profile profile = Profile.builder()
-            .user(user)
-                .email("w@w")
-                .build();
+    private UserDtoConverter userDtoConverter;
 
     @Test
-     void registerTest(){
+    void registerTest() {
         UserDto userDto = Mockito.mock(UserDto.class);
         ProfileDto profileDto = Mockito.mock(ProfileDto.class);
         Mockito.when(userDtoConverter.fromDto(userDto)).thenReturn(user);
@@ -53,7 +52,7 @@ class RegisterServiceTest {
     }
 
     @Test()
-    void failedRegisterTest(){
+    void failedRegisterTest() {
         UserDto userDto = Mockito.mock(UserDto.class);
         ProfileDto profileDto = Mockito.mock(ProfileDto.class);
         Mockito.when(userDtoConverter.fromDto(userDto)).thenReturn(user);

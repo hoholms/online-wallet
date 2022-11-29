@@ -3,6 +3,7 @@ package com.endava.wallet.controller;
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.User;
 import com.endava.wallet.entity.dto.ProfileDto;
+import com.endava.wallet.exception.RegisterException;
 import com.endava.wallet.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -41,7 +42,14 @@ public class ProfileController {
             ProfileDto profile,
             Model model
     ) {
-        profileService.updateProfile(user, profile, password);
+        try {
+            profileService.updateProfile(user, profile, password);
+            logger.info("Profile with email: {} has been updated", profile.getEmail());
+            model.addAttribute("message", "Profile successfully updated!");
+        } catch (RegisterException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+
 
         logger.info("Profile with email: {} has been updated", profile.getEmail());
 
