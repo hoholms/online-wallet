@@ -20,7 +20,10 @@
                 </li>
                 <#if isAdmin>
                     <li class="nav-item">
-                        <a class="nav-link" href="/user">User list</a>
+                        <a class="nav-link" href="/users">User list</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/categories">Category list</a>
                     </li>
                 </#if>
             </ul>
