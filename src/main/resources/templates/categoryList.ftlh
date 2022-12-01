@@ -15,15 +15,18 @@
         <tbody>
         <#list categories as category>
             <tr class="table-<#if category.isIncome>success<#else>danger</#if>">
-                <form>
-                    <input type="hidden" name="categoryId" value="${category.id}">
-                    <td><input type="text" name="categoryName" value="${category.category}" class="form-control form-control-sm"></td>
-                    <td><input type="checkbox" name="categoryIsIncome" id="isIncomeCheck"
-                               class="form-check-input" ${category.isIncome?string("checked", "")}>
+                    <td>${category.category}</td>
+                    <td><input type="checkbox" name="isIncome" id="isIncomeCheck"
+                               class="form-check-input" ${category.isIncome?string("checked", "")} disabled>
                     </td>
-                    <td><button class="btn btn-primary btn-sm" type="submit">Save</button></td>
-                </form>
-                    <td>Delete</td>
+                    <td>
+                        <a class="btn btn-outline-primary btn-sm" href="/categories/${category.id}"
+                           role="button">Edit</a>
+                    </td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" href="/categories/delete/${category.id}"
+                       role="button">Delete</a>
+                </td>
             </tr>
         </#list>
         </tbody>

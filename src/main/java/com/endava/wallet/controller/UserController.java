@@ -43,13 +43,13 @@ public class UserController {
     ) {
         userService.updateUser(userID, username, enabled, form);
         logger.info("Saved user with id: {}", userID);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
     @GetMapping("/delete/{userID}")
     public String userDelete(@PathVariable Long userID) {
         userService.deleteUserById(userID);
         logger.info("Deleted user with id: {}", userID);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 }
