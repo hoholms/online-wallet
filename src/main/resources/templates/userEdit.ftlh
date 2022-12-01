@@ -2,7 +2,7 @@
 
 <@c.page>
     <h4>User editor</h4>
-    <form action="/user" method="post">
+    <form action="/users" method="post">
         <input type="hidden" value="${_csrf.token}" name="_csrf">
 
         <div class="form-group row">

@@ -36,7 +36,7 @@
             <div class="col-sm-10">
                 <input type="number" id="tAmount" name="amount" class="form-control"
                        placeholder="${transactionEdit.amount}"
-                       step="0.01" min="0" value="${transactionEdit.amount}">
+                       step="0.01" min="0.01" max="1000000" value="${transactionEdit.amount}">
             </div>
         </div>
         <br>
@@ -44,7 +44,7 @@
             <label for="tDate" class="col-sm-2 col-form-label">Date</label>
             <div class="col-sm-10">
                 <input type="date" id="tDate" name="transactionDate" class="form-control" placeholder="Date"
-                       value="${transactionEdit.transactionDate}">
+                       value="${transactionEdit.transactionDate}" required>
             </div>
         </div>
 

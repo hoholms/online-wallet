@@ -20,6 +20,16 @@ public class TransactionsCategoryController {
         return "categoryList";
     }
 
+    @PostMapping
+    public String addCategory(
+            @RequestParam String category,
+            @RequestParam(defaultValue = "false") Boolean isIncome
+    ) {
+        transactionsCategoryService.addCategory(category, isIncome);
+
+        return "redirect:/categories";
+    }
+
     @GetMapping("{categoryID}")
     public String categoryEditForm(@PathVariable Long categoryID, Model model) {
         model.addAttribute("category", transactionsCategoryService.findById(categoryID));
@@ -27,7 +37,7 @@ public class TransactionsCategoryController {
         return "categoryEdit";
     }
 
-    @PostMapping
+    @PostMapping("/edit")
     public String updateCategory(TransactionsCategoryDto categoryDto) {
         transactionsCategoryService.updateCategory(categoryDto);
 

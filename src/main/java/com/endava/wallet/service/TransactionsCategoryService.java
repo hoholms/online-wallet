@@ -45,10 +45,9 @@ public class TransactionsCategoryService {
     public void updateCategory(TransactionsCategoryDto categoryDto) {
         TransactionsCategory categoryFromDB = categoryRepository.findById(categoryDto.getId()).orElseThrow(() -> new TransactionCategoryNotFoundException("Transaction categoryDto not found!"));
         categoryFromDB.setCategory(categoryDto.getCategory());
-        if (categoryDto.getIsIncome() !=  null) {
+        if (categoryDto.getIsIncome() != null) {
             categoryFromDB.setIsIncome(categoryDto.getIsIncome());
-        }
-        else {
+        } else {
             categoryFromDB.setIsIncome(Boolean.FALSE);
         }
     }
@@ -59,5 +58,13 @@ public class TransactionsCategoryService {
 
     public TransactionsCategory findById(Long categoryID) {
         return categoryRepository.findById(categoryID).orElseThrow(() -> new TransactionCategoryNotFoundException("Transaction category not found!"));
+    }
+
+    public void addCategory(String category, Boolean isIncome) {
+        TransactionsCategory transactionsCategory = TransactionsCategory.builder()
+                .category(category)
+                .isIncome(isIncome)
+                .build();
+        categoryRepository.save(transactionsCategory);
     }
 }

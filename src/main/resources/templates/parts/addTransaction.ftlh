@@ -21,7 +21,7 @@
         <div class="col-md-2 form-group">
             <label class="form-label" for="tDate">Date</label>
             <input class="form-control" type="date" value="${today}" min="1970-01-01" name="transactionDate" id="tDate"
-                   style="height: 2.4rem">
+                   style="height: 2.4rem" required>
         </div>
 
         <div class="col-md-6 form-group">

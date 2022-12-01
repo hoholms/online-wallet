@@ -2,13 +2,14 @@
 
 <@c.page>
     <h4>Category editor</h4>
-    <form action="/categories" method="post">
+    <form action="/categories/edit" method="post">
         <input type="hidden" value="${_csrf.token}" name="_csrf">
 
         <div class="form-group row">
             <label for="categoryID" class="col-sm-2 col-form-label">Category ID</label>
             <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" value="${category.id}" name="id" id="categoryID">
+                <input type="text" readonly class="form-control-plaintext" value="${category.id}" name="id"
+                       id="categoryID">
             </div>
         </div>
 
