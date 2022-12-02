@@ -11,7 +11,7 @@
         <div class="form-group row">
             <label for="transactionId" class="col-sm-2 col-form-label">Category</label>
             <div class="col-sm-10">
-                <select class="form-select" name="category" id="transactionId">
+                <select class="form-select" name="category" id="transactionId" required>
                     <#list categories as category>
                         <#if category == transactionEdit.category>
                             <option selected="selected">${category.category}</option>
@@ -44,7 +44,7 @@
             <label for="tDate" class="col-sm-2 col-form-label">Date</label>
             <div class="col-sm-10">
                 <input type="date" id="tDate" name="transactionDate" class="form-control" placeholder="Date"
-                       value="${transactionEdit.transactionDate}" required>
+                       style="height: 2.4rem" value="${transactionEdit.transactionDate}" required>
             </div>
         </div>
 

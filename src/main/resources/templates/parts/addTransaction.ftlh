@@ -4,7 +4,7 @@
 
         <div class="col-md-2 form-group">
             <label class="form-label" for="tSelect">Category</label>
-            <select class="form-select" name="category" id="tSelect">
+            <select class="form-select" name="category" id="tSelect" required>
                 <#list categories as category>
                     <option>${category.category}</option>
                 </#list>
