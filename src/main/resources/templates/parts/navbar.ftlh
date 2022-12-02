@@ -56,7 +56,9 @@
                     </#if>
                 </ul>
 
-                <@l.logout />
+                <#if user??>
+                    <@l.logout />
+                </#if>
             </div>
         </div>
     </nav>

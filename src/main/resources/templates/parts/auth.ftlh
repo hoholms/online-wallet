@@ -1,5 +1,8 @@
 <#macro auth path isRegisterForm>
     <form action="${path}" method="post">
+        <#--noinspection FtlReferencesInspection-->
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+
         <div class="form-floating mb-3">
             <input type="text" class="form-control" name="username" id="uname" placeholder="Username" required/>
             <label for="uname">Username</label>
@@ -28,8 +31,6 @@
                 <div id="emailHelp" class="form-text">We'll send you an activation link</div>
             </div>
         </#if>
-        <#--noinspection FtlReferencesInspection-->
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit" class="btn btn-primary">
             <#if isRegisterForm>
                 Register

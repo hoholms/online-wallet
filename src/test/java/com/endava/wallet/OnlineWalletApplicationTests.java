@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest
 @AutoConfigureMockMvc(addFilters = false)
 class OnlineWalletApplicationTests {
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -56,7 +55,7 @@ class OnlineWalletApplicationTests {
         this.mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Online Wallet")));
+                .andExpect(content().string(containsString("Here you can control your expenses.")));
     }
 
 }
