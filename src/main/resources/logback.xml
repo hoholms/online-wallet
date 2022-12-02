@@ -10,7 +10,7 @@
 
     <appender name="FILE_INFO"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>myInfoLogs.log</file>
+        <file>logs/infoLogs.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>${format}</Pattern>
         </encoder>
@@ -35,7 +35,7 @@
 
     <appender name="FILE_ERROR"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>myErrorLogs.log</file>
+        <file>logs/errorLogs.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>${format}</Pattern>
         </encoder>
@@ -59,7 +59,7 @@
 
     <appender name="FILE_ALL_LOGS"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>AllMyLogs.log</file>
+        <file>logs/allLogs.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>${format}</Pattern>
         </encoder>

@@ -115,19 +115,18 @@
 
                 <#assign maxDate = recentTransactions[0].transactionDate>
                 <hr class="col-md-12 mb-1">
-                <h4 class="col-md-12"><span style="text-transform: lowercase">${maxDate.month}</span> ${maxDate.year}
+                <h4 class="col-md-12 text-lowercase">${maxDate.month} ${maxDate.year}
                 </h4>
                 <#list recentTransactions as transaction>
                     <#if transaction.transactionDate.month != maxDate.month ||
                     transaction.transactionDate.year != maxDate.year>
                         <#assign maxDate = transaction.transactionDate>
                         <hr class="col-md-12 mt-5">
-                        <h4 class="col-md-12"><span
-                                    style="text-transform: lowercase">${maxDate.month}</span> ${maxDate.year}</h4>
+                        <h4 class="col-md-12 text-lowercase">${maxDate.month} ${maxDate.year}</h4>
                     </#if>
                     <#if transaction.isIncome>
                         <div class="col">
-                            <div class="card border-success">
+                            <div class="card tran-card border-success">
                                 <div class="card-body">
                                     <h5 class="card-title">${transaction.category.category}</h5>
                                     <#if transaction.message != "">
@@ -148,7 +147,7 @@
                         </div>
                     <#else>
                         <div class="col">
-                            <div class="card border-danger">
+                            <div class="card tran-card border-danger">
                                 <div class="card-body">
                                     <h5 class="card-title">${transaction.category.category}</h5>
                                     <#if transaction.message != "">

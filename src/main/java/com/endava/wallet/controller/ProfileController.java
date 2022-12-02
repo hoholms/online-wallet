@@ -53,6 +53,6 @@ public class ProfileController {
 
         logger.info("Profile with email: {} has been updated", profile.getEmail());
 
-        return getProfile(user, model);
+        return "redirect:/profile";
     }
 }

@@ -97,6 +97,6 @@ public class DashboardController {
         Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
         transactionService.add(transaction, currentProfile);
 
-        return dashboard(user, model);
+        return "redirect:/dashboard";
     }
 }

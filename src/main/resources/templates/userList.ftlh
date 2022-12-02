@@ -18,9 +18,9 @@
                 <td>${user.id}</td>
                 <td>${user.username}</td>
                 <td><#list user.authority as authority>${authority}<#sep>, </#list></td>
-                <td><a class="btn btn-outline-primary btn-sm" href="/user/${user.id}"
+                <td><a class="btn btn-outline-primary btn-sm" href="/users/${user.id}"
                        role="button">Edit</a></td>
-                <td><a class="btn btn-outline-danger btn-sm" href="/user/delete/${user.id}"
+                <td><a class="btn btn-outline-danger btn-sm" href="/users/delete/${user.id}"
                        role="button">Delete</a></td>
             </tr>
         </#list>
