@@ -93,6 +93,7 @@
                 </a>
                 <ul class="dropdown-menu text-small shadow mb-sm-1 ms-sm-1">
                     <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                    <li><a class="dropdown-item" href="https://github.com/hoholms/online-wallet" target="_blank">GitHub Repo</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

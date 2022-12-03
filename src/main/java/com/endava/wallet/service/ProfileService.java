@@ -100,7 +100,9 @@ public class ProfileService {
             currentProfile.setEmail(profileDto.getEmail());
             currentProfile.setActivationCode(UUID.randomUUID().toString());
             sendMail(currentProfile);
+            logger.info("Profile id {} has been updated", currentProfile.getId());
         } else if (isEmailChanged && existsProfileByEmail(profileDto.getEmail())) {
+            logger.error("Profile id {} failed to update", currentProfile.getId());
             throw new RegisterException("Email already registered!");
         }
 
