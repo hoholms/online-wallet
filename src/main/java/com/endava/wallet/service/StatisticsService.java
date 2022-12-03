@@ -6,6 +6,7 @@ import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -34,7 +35,8 @@ public class StatisticsService {
                     date.withDayOfMonth(date.getMonth().length(LocalDate.now().isLeapYear()))
             );
             incomeStatistics.getValues().add(incSum);
-            incomeStatistics.getLabels().add(date.getMonth() + " " + date.getYear());
+            incomeStatistics.getLabels().add(StringUtils.capitalize(date.getMonth().toString().toLowerCase())
+                    + " " + date.getYear());
 
             BigDecimal expSum = transactionService.findTranSumDateBetween(
                     currentProfile,
@@ -43,7 +45,8 @@ public class StatisticsService {
                     date.withDayOfMonth(date.getMonth().length(LocalDate.now().isLeapYear()))
             );
             expenseStatistics.getValues().add(expSum);
-            expenseStatistics.getLabels().add(date.getMonth() + " " + date.getYear());
+            expenseStatistics.getLabels().add(StringUtils.capitalize(date.getMonth().toString().toLowerCase())
+                    + " " + date.getYear());
         }
 
         List<LineStatistics> statistics = new ArrayList<>();
