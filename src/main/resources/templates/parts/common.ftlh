@@ -15,15 +15,21 @@
         <link rel="icon" href="/static/favicon.svg">
 
         <link rel="stylesheet" href="/static/style.css">
+        <link rel="stylesheet" href="/static/sidebar.css">
     </head>
     <body>
-    <#include "navbar.ftlh">
-    <div class="container mt-5">
-        <#nested>
+    <div class="container-fluid">
+        <div class="row">
+            <#include "sidebar.ftlh">
+            <div class="col-md-main col-lg-main ms-sm-6 px-md-4 mt-4" style="z-index: 1">
+                <#nested>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
             crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/sidebar.js"></script>
     </body>
     </html>
 </#macro>
