@@ -2,8 +2,8 @@
 <#import "parts/auth.ftlh" as l>
 
 <@c.page>
-    <div class="container-fluid">
-        <h2>Statistics</h2>
+    <div class="container-fluid mb-4">
+        <h2 id="statTitle">Statistics</h2>
         <div class="row">
             <div class="col-md-6 float-start">
                 <canvas id="lineChart"></canvas>

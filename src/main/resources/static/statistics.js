@@ -11,8 +11,7 @@ var redGradient = lineStatistics.createLinearGradient(0, 25, 0, document.getElem
 redGradient.addColorStop(0, 'rgba(165, 29, 42,1)');
 redGradient.addColorStop(1, 'rgba(165, 29, 42,0)');
 
-Chart.defaults.font.weight = "bold";
-Chart.defaults.font.family = "Segoe UI";
+Chart.defaults.font.family = document.getElementById('statTitle').style.fontFamily;
 
 $.getJSON('/statistics/line', function (data) {
     new Chart(lineStatistics, {
