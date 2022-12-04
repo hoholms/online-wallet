@@ -1,0 +1,11 @@
+{
+  "name": "Online Wallet",
+  "short_name": "Wallet",
+  "icons": [{
+    "src": "favicon-google.png",
+    "sizes": "512x512"
+  }],
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "display": "fullscreen"
+}

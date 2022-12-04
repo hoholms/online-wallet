@@ -50,9 +50,11 @@ public class ProfileController {
             model.addAttribute("error", e.getMessage());
         }
 
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("firstName", profile.getFirstName());
+        model.addAttribute("lastName", profile.getLastName());
+        model.addAttribute("email", profile.getEmail());
 
-        logger.info("Profile with email: {} has been updated", profile.getEmail());
-
-        return "redirect:/profile";
+        return "profile";
     }
 }

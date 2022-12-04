@@ -2,16 +2,16 @@
 <#import "parts/auth.ftlh" as l>
 
 <@c.page>
-    <div class="container-fluid">
-        <h2>Statistics</h2>
-        <div class="row">
-            <div class="col-md-6 float-start">
+    <div class="container-fluid mb-4">
+        <h2 id="statTitle">Statistics</h2>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-9 float-start">
                 <canvas id="lineChart"></canvas>
             </div>
-            <div class="col-md-3 float-end">
+            <div class="col-md-4 float-end">
                 <canvas id="incomeCircleChart" class="col-md-2"></canvas>
             </div>
-            <div class="col-md-3 float-end">
+            <div class="col-md-4 float-end">
                 <canvas id="expenseCircleChart" class="col-md-2"></canvas>
             </div>
         </div>

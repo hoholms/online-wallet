@@ -3,16 +3,15 @@ const incomeCircleStatistics = document.getElementById('incomeCircleChart');
 const expenseCircleStatistics = document.getElementById('expenseCircleChart');
 
 /*** Gradient ***/
-var greenGradient = lineStatistics.createLinearGradient(0, 25, 0, 300);
-greenGradient.addColorStop(0, 'rgba(25, 135, 84,0.7)');
+var greenGradient = lineStatistics.createLinearGradient(0, 25, 0, document.getElementById('lineChart').offsetHeight * 4);
+greenGradient.addColorStop(0, 'rgba(25, 135, 84,1)');
 greenGradient.addColorStop(1, 'rgba(25, 135, 84,0)');
 
-var redGradient = lineStatistics.createLinearGradient(0, 25, 0, 300);
-redGradient.addColorStop(0, 'rgba(165, 29, 42,0.7)');
+var redGradient = lineStatistics.createLinearGradient(0, 25, 0, document.getElementById('lineChart').offsetHeight * 4);
+redGradient.addColorStop(0, 'rgba(165, 29, 42,1)');
 redGradient.addColorStop(1, 'rgba(165, 29, 42,0)');
 
-Chart.defaults.font.weight = "bold";
-Chart.defaults.font.family = "Segoe UI";
+Chart.defaults.font.family = document.getElementById('statTitle').style.fontFamily;
 
 $.getJSON('/statistics/line', function (data) {
     new Chart(lineStatistics, {

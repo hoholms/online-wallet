@@ -40,7 +40,7 @@
 
             <ul class="navbar-nav flex-wrap ms-md-auto">
                 <li class="nav-item col-6 col-lg-auto">
-                    <a class="nav-link me-3" href="https://github.com/VetrovMilka/online-wallet" target="_blank">
+                    <a class="nav-link me-3" href="https://github.com/hoholms/online-wallet" target="_blank">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-github"
                              viewBox="0 0 16 16">

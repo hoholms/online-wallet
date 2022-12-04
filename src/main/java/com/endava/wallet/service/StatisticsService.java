@@ -35,7 +35,7 @@ public class StatisticsService {
                     date.withDayOfMonth(date.getMonth().length(LocalDate.now().isLeapYear()))
             );
             incomeStatistics.getValues().add(incSum);
-            incomeStatistics.getLabels().add(StringUtils.capitalize(date.getMonth().toString().toLowerCase())
+            incomeStatistics.getLabels().add(StringUtils.capitalize(date.getMonth().toString().toLowerCase()).substring(0, 3)
                     + " " + date.getYear());
 
             BigDecimal expSum = transactionService.findTranSumDateBetween(
@@ -45,7 +45,7 @@ public class StatisticsService {
                     date.withDayOfMonth(date.getMonth().length(LocalDate.now().isLeapYear()))
             );
             expenseStatistics.getValues().add(expSum);
-            expenseStatistics.getLabels().add(StringUtils.capitalize(date.getMonth().toString().toLowerCase())
+            expenseStatistics.getLabels().add(StringUtils.capitalize(date.getMonth().toString().toLowerCase()).substring(0, 3)
                     + " " + date.getYear());
         }
 
