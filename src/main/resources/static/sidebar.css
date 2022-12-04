@@ -189,20 +189,24 @@ main {
     color: black;
 }
 
-/*TODO Make sidebar hide on small displays*/
+.border-profile {
+    border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+}
+
 @media (max-width: 767.98px) {
     .sidebar {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0;
+        position: fixed !important;
+        top: initial;
+        bottom: 0;
         display: flex;
         justify-content: center;
         width: 100%;
         min-width: 360px;
+        box-shadow: none;
     }
 
     .sidebar-sticky {
-        height: 3.9rem;
+        height: 3.78rem;
     }
 
     .col-lg-sidebar {
@@ -237,5 +241,9 @@ main {
 
     .border-sidebar {
         border-bottom: none !important;
+    }
+
+    .border-profile {
+        border-top: none;
     }
 }

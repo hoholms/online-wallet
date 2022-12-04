@@ -83,7 +83,7 @@
             </#if>
         </ul>
         <#if user??>
-            <div class="dropdown border-top">
+            <div class="dropdown border-profile">
                 <a href="#"
                    class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown" aria-expanded="false">
