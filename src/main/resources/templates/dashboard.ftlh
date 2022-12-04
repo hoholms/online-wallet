@@ -52,8 +52,8 @@
     <div class="container-fluid my-4">
         <h3>In <span style="text-transform: lowercase">${today.month}</span> you:</h3>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                <div class="card">
+            <div class="col-sm">
+                <div class="card" style="height: 100%;">
                     <div class="card-body">
                         <h5 class="card-title"><span class="text-success">Earned ${monthIncome}</span></h5>
                         <h6 class="card-subtitle mb-2">
@@ -74,8 +74,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card">
+            <div class="col-sm">
+                <div class="card" style="height: 100%;">
                     <div class="card-body">
                         <h5 class="card-title"><span
                                     class="text-success">Earned the most money (${maxIncomeCategory.second!"0"})</span>
@@ -89,8 +89,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card">
+            <div class="col-sm">
+                <div class="card" style="height: 100%;">
                     <div class="card-body">
                         <h5 class="card-title"><span
                                     class="text-danger">Spent the most money (${maxExpenseCategory.second!"0"})</span>
@@ -111,8 +111,6 @@
         <div class="container-fluid my-4">
             <h3 class="mb-4">Your recent transactions:</h3>
             <div class="row row-cols-1 row-cols-md-4 g-4">
-
-
                 <#assign maxDate = recentTransactions[0].transactionDate>
                 <hr class="col-md-12 mb-1">
                 <h4 class="col-md-12 text-lowercase">${maxDate.month} ${maxDate.year}
@@ -125,8 +123,8 @@
                         <h4 class="col-md-12 text-lowercase">${maxDate.month} ${maxDate.year}</h4>
                     </#if>
                     <#if transaction.isIncome>
-                        <div class="col">
-                            <div class="card tran-card border-success">
+                        <div class="col-sm-3">
+                            <div class="card tran-card border-success" style="height: 100%;">
                                 <div class="card-body">
                                     <h5 class="card-title">${transaction.category.category}</h5>
                                     <#if transaction.message != "">
@@ -146,8 +144,8 @@
                             </div>
                         </div>
                     <#else>
-                        <div class="col">
-                            <div class="card tran-card border-danger">
+                        <div class="col-sm-3">
+                            <div class="card tran-card border-danger" style="height: 100%;">
                                 <div class="card-body">
                                     <h5 class="card-title">${transaction.category.category}</h5>
                                     <#if transaction.message != "">
