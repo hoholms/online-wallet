@@ -4,15 +4,43 @@
 <@c.page>
     <div class="container-fluid mb-4">
         <h2 id="statTitle">Statistics</h2>
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-9 float-start">
+        <div class="container d-flex justify-content-center mb-3">
+            <form action="/statistics/line" method="post" class="row g-3">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+
+                <div class="col-6 form-floating">
+                    <select class="form-select statForm" id="from" name="from">
+                        <#list dates as date>
+                            <option>${date.label}</option>
+                        </#list>
+                    </select>
+                    <label class="form-label" for="from">From</label>
+                </div>
+
+                <div class="col-6 form-floating">
+                    <select class="form-select statForm" id="to" name="to">
+                        <#list dates as date>
+                            <option <#if !date_has_next>selected="selected"</#if>>${date.label}</option>
+                        </#list>
+                    </select>
+                    <label class="form-label" for="to">To</label>
+                </div>
+            </form>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div class="col-md-10 float-start">
                 <canvas id="lineChart"></canvas>
             </div>
-            <div class="col-md-4 float-end">
-                <canvas id="incomeCircleChart" class="col-md-2"></canvas>
+
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-5 float-end">
+                <canvas id="incomeCircleChart" class="col-sm"></canvas>
+
             </div>
-            <div class="col-md-4 float-end">
-                <canvas id="expenseCircleChart" class="col-md-2"></canvas>
+            <div class="col-md-5 float-end">
+                <canvas id="expenseCircleChart" class="col-sm"></canvas>
             </div>
         </div>
     </div>

@@ -1,9 +1,6 @@
 package com.endava.wallet.service;
 
-import com.endava.wallet.entity.CircleStatistics;
-import com.endava.wallet.entity.Profile;
-import com.endava.wallet.entity.Transaction;
-import com.endava.wallet.entity.User;
+import com.endava.wallet.entity.*;
 import com.endava.wallet.exception.TransactionCategoryNotFoundException;
 import com.endava.wallet.exception.TransactionNotFoundException;
 import com.endava.wallet.repository.TransactionRepository;
@@ -145,11 +142,46 @@ public class TransactionService {
         );
     }
 
+    public CircleStatistics findCategoryAndSumByProfileAndIsIncome(Profile profile, Boolean isIncome, DateWithLabel from, DateWithLabel to) {
+        return new CircleStatistics(
+                transactionRepository.findCategoryByProfileAndIsIncomeDateBetween(profile, isIncome, from.getDate(), to.getDate()),
+                transactionRepository.findCategorySumByProfileAndIsIncomeDateBetween(profile, isIncome, from.getDate(), to.getDate())
+        );
+    }
+
     public List<LocalDate> findTransactionsDates(Profile profile) {
         return profile.getTransactions().stream()
                 .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
                 .filter(distinctByKey(LocalDate::getMonth))
                 .sorted(Comparator.naturalOrder())
+                .toList();
+    }
+
+    public List<DateWithLabel> findTransactionsDatesWithLabels(User user) {
+        Profile profile = profileService.findProfileByUser(user);
+
+        List<LocalDate> dates = profile.getTransactions().stream()
+                .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
+                .filter(distinctByKey(LocalDate::getMonth))
+                .sorted(Comparator.naturalOrder())
+                .toList();
+
+        return dates.stream()
+                .map(DateWithLabel::new)
+                .toList();
+    }
+
+    public List<DateWithLabel> findTransactionsDatesWithLabels(Profile profile, DateWithLabel from, DateWithLabel to) {
+        List<LocalDate> dates = profile.getTransactions().stream()
+                .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
+                .filter(distinctByKey(LocalDate::getMonth))
+                .filter(date -> (date.isAfter(from.getDate()) || date.isEqual(from.getDate())) &&
+                        (date.isBefore(to.getDate()) || date.isEqual(to.getDate())))
+                .sorted(Comparator.naturalOrder())
+                .toList();
+
+        return dates.stream()
+                .map(DateWithLabel::new)
                 .toList();
     }
 

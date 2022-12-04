@@ -1,6 +1,11 @@
+/*** Charts html elements ***/
 const lineStatistics = document.getElementById('lineChart').getContext("2d");
 const incomeCircleStatistics = document.getElementById('incomeCircleChart');
 const expenseCircleStatistics = document.getElementById('expenseCircleChart');
+
+/*** Dates selection ***/
+var fromData = document.getElementById("from");
+var toData = document.getElementById("to");
 
 /*** Gradient ***/
 var greenGradient = lineStatistics.createLinearGradient(0, 25, 0, document.getElementById('lineChart').offsetHeight * 4);
@@ -11,10 +16,57 @@ var redGradient = lineStatistics.createLinearGradient(0, 25, 0, document.getElem
 redGradient.addColorStop(0, 'rgba(165, 29, 42,1)');
 redGradient.addColorStop(1, 'rgba(165, 29, 42,0)');
 
+/*** Font ***/
 Chart.defaults.font.family = document.getElementById('statTitle').style.fontFamily;
 
+
+/*** Charts ***/
+var lineChart, incomeCircleChart, expenseCircleChart;
 $.getJSON('/statistics/line', function (data) {
-    new Chart(lineStatistics, {
+    drawLineStatistics(data)
+});
+$.getJSON('/statistics/circle', function (data) {
+    drawCircleStatistics(data)
+});
+$('.statForm').change(function () {
+    var token = $("meta[name='_csrf']").attr("content");
+
+    lineChart.destroy();
+    incomeCircleChart.destroy();
+    expenseCircleChart.destroy();
+
+    $.ajax({
+        url: '/statistics/line',
+        type: 'post',
+        data: {
+            _csrf: token,
+            from: fromData.options[fromData.selectedIndex].text,
+            to: toData.options[toData.selectedIndex].text
+        },
+        dataType: 'json',
+        success: function (data) {
+            drawLineStatistics(data)
+        }
+    });
+
+    $.ajax({
+        url: '/statistics/circle',
+        type: 'post',
+        data: {
+            _csrf: token,
+            from: fromData.options[fromData.selectedIndex].text,
+            to: toData.options[toData.selectedIndex].text
+        },
+        dataType: 'json',
+        success: function (data) {
+            drawCircleStatistics(data)
+        }
+    });
+});
+
+/*** Draw chart functions ***/
+function drawLineStatistics(data) {
+    lineChart = new Chart(lineStatistics, {
         type: 'line',
         data: {
             labels: data[0].labels,
@@ -85,10 +137,10 @@ $.getJSON('/statistics/line', function (data) {
             }
         },
     });
-});
+}
 
-$.getJSON('/statistics/circle', function (data) {
-    new Chart(incomeCircleStatistics, {
+function drawCircleStatistics(data) {
+    incomeCircleChart = new Chart(incomeCircleStatistics, {
         type: 'doughnut',
         data: {
             labels: data[0].categories,
@@ -97,8 +149,8 @@ $.getJSON('/statistics/circle', function (data) {
                     label: 'Earned',
                     data: data[0].values,
                     backgroundColor: [
-                        'rgb(0,255,127)',
-                        'rgb(46,139,87)',
+                        'rgb(25, 135, 84)',
+                        'rgb(13,96,0)',
                         'rgb(143,188,143)',
                         'rgb(0,250,154)',
                         'rgb(50,205,50)',
@@ -108,10 +160,17 @@ $.getJSON('/statistics/circle', function (data) {
                     borderColor: 'rgb(20, 20, 20)'
                 },
             ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
         }
     });
 
-    new Chart(expenseCircleStatistics, {
+    expenseCircleChart = new Chart(expenseCircleStatistics, {
         type: 'doughnut',
         data: {
             labels: data[1].categories,
@@ -120,10 +179,10 @@ $.getJSON('/statistics/circle', function (data) {
                     label: 'Spent',
                     data: data[1].values,
                     backgroundColor: [
+                        'rgb(165, 29, 42)',
                         'rgb(128, 0, 32)',
                         'rgb(170, 74, 68)',
                         'rgb(210, 4, 45)',
-                        'rgb(165, 29, 42)',
                         'rgb(227, 66, 52)',
                         'rgb(129, 65, 65)',
                         'rgb(119, 7, 55)'
@@ -131,6 +190,13 @@ $.getJSON('/statistics/circle', function (data) {
                     borderColor: 'rgb(20, 20, 20)'
                 },
             ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
         }
     });
-});
+}
