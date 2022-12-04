@@ -22,8 +22,12 @@ Chart.defaults.font.family = document.getElementById('statTitle').style.fontFami
 
 /*** Charts ***/
 var lineChart, incomeCircleChart, expenseCircleChart;
-$.getJSON('/statistics/line', function (data) {drawLineStatistics(data)});
-$.getJSON('/statistics/circle', function (data) {drawCircleStatistics(data)});
+$.getJSON('/statistics/line', function (data) {
+    drawLineStatistics(data)
+});
+$.getJSON('/statistics/circle', function (data) {
+    drawCircleStatistics(data)
+});
 $('.statForm').change(function () {
     var token = $("meta[name='_csrf']").attr("content");
 
@@ -35,24 +39,28 @@ $('.statForm').change(function () {
         url: '/statistics/line',
         type: 'post',
         data: {
-            _csrf:token,
-            from:fromData.options[fromData.selectedIndex].text,
-            to:toData.options[toData.selectedIndex].text
+            _csrf: token,
+            from: fromData.options[fromData.selectedIndex].text,
+            to: toData.options[toData.selectedIndex].text
         },
         dataType: 'json',
-        success: function (data) {drawLineStatistics(data)}
+        success: function (data) {
+            drawLineStatistics(data)
+        }
     });
 
     $.ajax({
         url: '/statistics/circle',
         type: 'post',
         data: {
-            _csrf:token,
-            from:fromData.options[fromData.selectedIndex].text,
-            to:toData.options[toData.selectedIndex].text
+            _csrf: token,
+            from: fromData.options[fromData.selectedIndex].text,
+            to: toData.options[toData.selectedIndex].text
         },
         dataType: 'json',
-        success: function (data) {drawCircleStatistics(data)}
+        success: function (data) {
+            drawCircleStatistics(data)
+        }
     });
 });
 
@@ -130,7 +138,8 @@ function drawLineStatistics(data) {
         },
     });
 }
-function drawCircleStatistics (data) {
+
+function drawCircleStatistics(data) {
     incomeCircleChart = new Chart(incomeCircleStatistics, {
         type: 'doughnut',
         data: {
@@ -141,7 +150,7 @@ function drawCircleStatistics (data) {
                     data: data[0].values,
                     backgroundColor: [
                         'rgb(25, 135, 84)',
-                        'rgb(46,139,87)',
+                        'rgb(13,96,0)',
                         'rgb(143,188,143)',
                         'rgb(0,250,154)',
                         'rgb(50,205,50)',

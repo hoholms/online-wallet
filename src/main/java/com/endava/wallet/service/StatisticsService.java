@@ -3,12 +3,10 @@ package com.endava.wallet.service;
 import com.endava.wallet.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,34 +20,7 @@ public class StatisticsService {
 
         List<DateWithLabel> dates = transactionService.findTransactionsDatesWithLabels(currentProfile);
 
-        LineStatistics incomeStatistics = new LineStatistics(new ArrayList<>(), new ArrayList<>());
-        LineStatistics expenseStatistics = new LineStatistics(new ArrayList<>(), new ArrayList<>());
-
-        for (DateWithLabel date : dates) {
-            BigDecimal incSum = transactionService.findTranSumDateBetween(
-                    currentProfile,
-                    true,
-                    date.getDate(),
-                    date.getDate().withDayOfMonth(date.getDate().getMonth().length(LocalDate.now().isLeapYear()))
-            );
-            incomeStatistics.getValues().add(incSum);
-            incomeStatistics.getLabels().add(date.getLabel());
-
-            BigDecimal expSum = transactionService.findTranSumDateBetween(
-                    currentProfile,
-                    false,
-                    date.getDate(),
-                    date.getDate().withDayOfMonth(date.getDate().getMonth().length(LocalDate.now().isLeapYear()))
-            );
-            expenseStatistics.getValues().add(expSum);
-            expenseStatistics.getLabels().add(date.getLabel());
-        }
-
-        List<LineStatistics> statistics = new ArrayList<>();
-        statistics.add(incomeStatistics);
-        statistics.add(expenseStatistics);
-
-        return statistics;
+        return getLineStatistics(currentProfile, dates);
     }
 
     public List<LineStatistics> findLineStatistics(User user, DateWithLabel from, DateWithLabel to) {
@@ -63,6 +34,10 @@ public class StatisticsService {
 
         List<DateWithLabel> dates = transactionService.findTransactionsDatesWithLabels(currentProfile, from, to);
 
+        return getLineStatistics(currentProfile, dates);
+    }
+
+    private List<LineStatistics> getLineStatistics(Profile currentProfile, List<DateWithLabel> dates) {
         LineStatistics incomeStatistics = new LineStatistics(new ArrayList<>(), new ArrayList<>());
         LineStatistics expenseStatistics = new LineStatistics(new ArrayList<>(), new ArrayList<>());
 
