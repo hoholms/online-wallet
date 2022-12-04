@@ -18,7 +18,7 @@ public class StatisticsService {
     public List<LineStatistics> findLineStatistics(User user) {
         Profile currentProfile = profileService.findProfileByUser(user);
 
-        List<DateWithLabel> dates = transactionService.findTransactionsDatesWithLabels(currentProfile);
+        List<DateWithLabel> dates = transactionService.findTransactionsDatesWithLabels(user);
 
         return getLineStatistics(currentProfile, dates);
     }

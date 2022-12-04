@@ -1,9 +1,7 @@
 package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.DateWithLabel;
-import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.User;
-import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,13 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StatisticsController {
     private final TransactionService transactionService;
-    private final ProfileService profileService;
 
     @GetMapping("statistics")
     public String statistics(@AuthenticationPrincipal User user, Model model) {
-        Profile currentProfile = profileService.findProfileByUser(user);
-
-        List<DateWithLabel> dates = transactionService.findTransactionsDatesWithLabels(currentProfile);
+        List<DateWithLabel> dates = transactionService.findTransactionsDatesWithLabels(user);
 
         model.addAttribute("dates", dates);
 

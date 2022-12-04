@@ -157,7 +157,9 @@ public class TransactionService {
                 .toList();
     }
 
-    public List<DateWithLabel> findTransactionsDatesWithLabels(Profile profile) {
+    public List<DateWithLabel> findTransactionsDatesWithLabels(User user) {
+        Profile profile = profileService.findProfileByUser(user);
+
         List<LocalDate> dates = profile.getTransactions().stream()
                 .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
                 .filter(distinctByKey(LocalDate::getMonth))
