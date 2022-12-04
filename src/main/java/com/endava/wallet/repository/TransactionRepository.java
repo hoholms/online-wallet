@@ -63,4 +63,34 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             WHERE profile_id = :cur_profile AND transactions.is_income = :isIncome
             GROUP BY category""", nativeQuery = true)
     List<BigDecimal> findCategorySumByProfileAndIsIncome(@Param("cur_profile") Profile profile, @Param("isIncome") Boolean isIncome);
+
+    @Query(value = """
+            SELECT category
+            FROM transactions INNER JOIN transactions_categories tc on tc.id = transactions.category_id
+            WHERE profile_id = :cur_profile
+            AND transactions.is_income = :isIncome
+            AND transaction_date >= :d_from
+            AND transaction_date <= :d_to
+            GROUP BY category""", nativeQuery = true)
+    List<String> findCategoryByProfileAndIsIncomeDateBetween(
+            @Param("cur_profile") Profile profile,
+            @Param("isIncome") Boolean isIncome,
+            @Param("d_from") LocalDate from,
+            @Param("d_to") LocalDate to
+    );
+
+    @Query(value = """
+            SELECT sum(amount)
+            FROM transactions INNER JOIN transactions_categories tc on tc.id = transactions.category_id
+            WHERE profile_id = :cur_profile
+            AND transactions.is_income = :isIncome
+            AND transaction_date >= :d_from
+            AND transaction_date <= :d_to
+            GROUP BY category""", nativeQuery = true)
+    List<BigDecimal> findCategorySumByProfileAndIsIncomeDateBetween(
+            @Param("cur_profile") Profile profile,
+            @Param("isIncome") Boolean isIncome,
+            @Param("d_from") LocalDate from,
+            @Param("d_to") LocalDate to
+    );
 }
