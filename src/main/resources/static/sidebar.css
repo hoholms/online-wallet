@@ -5,13 +5,6 @@ body {
 
 html {
     height: -webkit-fill-available;
-    min-width: 360px;
-}
-
-main {
-    height: 100vh;
-    height: -webkit-fill-available;
-    max-height: 100vh;
     overflow-x: auto;
     overflow-y: auto;
 }
@@ -131,8 +124,8 @@ main {
 
 .sidebar-sticky {
     height: calc(100vh);
-    overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    overflow-x: auto;
+    overflow-y: hidden; /* Scrollable contents if viewport is shorter than content. */
 }
 
 .flex-sidebar {
@@ -195,19 +188,30 @@ main {
 }
 
 @media (max-width: 767.98px) {
+    .flex-wrapper {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
     .sidebar {
-        position: fixed !important;
+        position: -webkit-sticky !important;
+        position: sticky !important;
         top: initial;
         bottom: 0;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        min-width: 360px;
         box-shadow: none;
+        display: flex;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        height: 3.78rem;
     }
 
     .sidebar-sticky {
         height: 3.78rem;
+        margin: auto;
     }
 
     .col-lg-sidebar {

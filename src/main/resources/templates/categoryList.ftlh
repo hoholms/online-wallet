@@ -3,7 +3,7 @@
 <@c.page>
     <h4 class="pb-4">List of transaction categories</h4>
 
-    <form action="/categories" method="post" class="pb-4 row g-4 align-items-center border rounded">
+    <form action="/categories" method="post" class="pb-4 mb-4 row g-4 align-items-center border-bottom">
         <input type="hidden" value="${_csrf.token}" name="_csrf">
 
         <div class="form-group col-auto">
@@ -28,7 +28,7 @@
         </div>
     </form>
 
-    <div class="card mt-3">
+    <div class="mb-4 table-responsive">
         <table class="table table-hover">
             <thead>
             <tr>

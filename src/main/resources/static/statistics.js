@@ -23,10 +23,20 @@ Chart.defaults.font.family = document.getElementById('statTitle').style.fontFami
 /*** Charts ***/
 var lineChart, incomeCircleChart, expenseCircleChart;
 $.getJSON('/statistics/line', function (data) {
-    drawLineStatistics(data)
+    drawLineStatistics(data);
+    var sum = 0;
+    $.each(data[0].values, function () {
+        sum += parseFloat(this) || 0;
+    });
+    $('#totalEarned').text('Total earned: ' + sum.toFixed(2));
 });
 $.getJSON('/statistics/circle', function (data) {
-    drawCircleStatistics(data)
+    drawCircleStatistics(data);
+    var sum = 0;
+    $.each(data[1].values, function () {
+        sum += parseFloat(this) || 0;
+    });
+    $('#totalSpent').text('Total spent: ' + sum.toFixed(2));
 });
 $('.statForm').change(function () {
     var token = $("meta[name='_csrf']").attr("content");
@@ -45,7 +55,12 @@ $('.statForm').change(function () {
         },
         dataType: 'json',
         success: function (data) {
-            drawLineStatistics(data)
+            drawLineStatistics(data);
+            var sum = 0;
+            $.each(data[0].values, function () {
+                sum += parseFloat(this) || 0;
+            });
+            $('#totalEarned').text('Total earned: ' + sum.toFixed(2));
         }
     });
 
@@ -59,7 +74,12 @@ $('.statForm').change(function () {
         },
         dataType: 'json',
         success: function (data) {
-            drawCircleStatistics(data)
+            drawCircleStatistics(data);
+            var sum = 0;
+            $.each(data[1].values, function () {
+                sum += parseFloat(this) || 0;
+            });
+            $('#totalSpent').text('Total spent: ' + sum.toFixed(2));
         }
     });
 });
@@ -164,7 +184,7 @@ function drawCircleStatistics(data) {
         options: {
             plugins: {
                 legend: {
-                    position: 'right'
+                    position: 'bottom'
                 }
             }
         }
@@ -194,7 +214,7 @@ function drawCircleStatistics(data) {
         options: {
             plugins: {
                 legend: {
-                    position: 'right'
+                    position: 'bottom'
                 }
             }
         }
