@@ -24,7 +24,7 @@
     </head>
     <body>
     <div class="container-fluid">
-        <div class="row flex-wrapper">
+        <div class="row min-vh-100 d-flex flex-column">
             <div class="col-md-main col-lg-main ms-sm-6 px-md-4 mt-4">
                 <#nested>
             </div>
