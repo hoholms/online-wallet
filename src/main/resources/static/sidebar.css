@@ -171,12 +171,13 @@ html {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-    background-color: var(--bs-gray-300);
-    color: black;
+    background-color: var(--bs-white);
+    color: var(--bs-primary);
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
 .nav-link {
-    color: #41464b;
+    color: var(--bs-gray-600);
 }
 
 .nav-link:hover, .nav-link:focus {
@@ -193,7 +194,7 @@ html {
         position: sticky !important;
         top: initial;
         bottom: 0;
-        box-shadow: none;
+        box-shadow: 0px 1px 0px rgba(34, 60, 80, 0.1) inset;
         display: flex;
         flex-wrap: nowrap;
         white-space: nowrap;
@@ -235,6 +236,11 @@ html {
 
     .nav {
         flex-wrap: nowrap;
+    }
+
+    .nav-pills .nav-link.active,
+    .nav-pills .show > .nav-link {
+        box-shadow: 0px 1px 0px rgba(34, 60, 80, 0.1) inset;
     }
 
     .border-sidebar {

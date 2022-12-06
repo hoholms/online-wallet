@@ -1,7 +1,7 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    <h4>List of users</h4>
+    <h2 class="mb-4">List of users</h2>
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>

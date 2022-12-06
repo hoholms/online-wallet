@@ -1,32 +1,33 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    <h4 class="pb-4">List of transaction categories</h4>
+    <h2>List of transaction categories</h2>
 
-    <form action="/categories" method="post" class="pb-4 mb-4 row g-4 align-items-center border-bottom">
-        <input type="hidden" value="${_csrf.token}" name="_csrf">
+    <div class="col-md-10 mx-auto col-lg-8">
+        <form action="/categories" method="post" class="m-4 row align-items-center p-4 border rounded-3 bg-light">
+            <input type="hidden" value="${_csrf.token}" name="_csrf">
 
-        <div class="form-group col-auto">
-            <label class="form-label" for="category">Name</label>
-            <input class="form-control" type="text" name="category" placeholder="Category name"
-                   id="category" required>
-        </div>
-
-        <div class="form-group col-auto">
-            <label for="isIncome" class="col-sm-4 form-label">Income</label>
-            <div class="col-sm-8">
-                <input type="checkbox" id="isIncome" name="isIncome"
-                       class="form-check-input">
+            <div class="mt-0 col">
+                <label class="form-label" for="category">Name</label>
+                <input class="form-control" type="text" name="category" placeholder="Category name"
+                       id="category" required>
             </div>
-        </div>
 
-        <div class="form-group col-auto">
-            <label class="col-sm-4 form-label" for="subm"></label>
-            <div class="col-sm-8">
-                <input type="submit" class="btn btn-success" name="subbtn" value="Add category" id="subm">
+            <div class="mt-0 col-2">
+                <label for="isIncome" class="col-sm-4 form-label">Income</label>
+                <div class="col-sm-8">
+                    <input type="checkbox" id="isIncome" name="isIncome"
+                           class="form-check-input">
+                </div>
             </div>
-        </div>
-    </form>
+
+            <div class="mt-0 col-4">
+                <label class="col-sm-4 form-label" for="subm"></label>
+                <input type="submit" class="btn btn-success mx-auto col-12" name="subbtn" value="Add category"
+                       id="subm">
+            </div>
+        </form>
+    </div>
 
     <div class="mb-4 table-responsive">
         <table class="table table-hover">

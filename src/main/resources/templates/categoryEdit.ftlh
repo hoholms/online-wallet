@@ -23,7 +23,7 @@
 
         <div class="form-group row mb-3">
             <label for="category" class="col-sm-2 col-form-label">Category name</label>
-            <div class="col-sm-10">
+            <div class="col-4">
                 <input type="text" id="category" name="category" class="form-control" value="${category.category}"
                        placeholder="Category name" required>
             </div>
