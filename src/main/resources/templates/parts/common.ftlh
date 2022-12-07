@@ -4,7 +4,6 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="theme-color" content="#ffffff">
         <meta name="_csrf" content="${_csrf.token}"/>
         <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
@@ -19,8 +18,11 @@
         <link rel="manifest" href="/static/favicon/manifest.json">
         <link rel="shortcut icon" href="/static/favicon/favicon-32.png" sizes="any">
 
+        <meta name="theme-color" content="#ffffff">
+
         <link rel="stylesheet" href="/static/style.css">
         <link rel="stylesheet" href="/static/sidebar.css">
+        <link rel="stylesheet" href="/static/heroes.css">
     </head>
     <body>
     <div class="container-fluid">

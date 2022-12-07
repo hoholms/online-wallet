@@ -4,7 +4,6 @@ import com.endava.wallet.entity.dto.ProfileDtoConverter;
 import com.endava.wallet.entity.dto.TransactionDtoConverter;
 import com.endava.wallet.entity.dto.UserDtoConverter;
 import com.endava.wallet.service.*;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

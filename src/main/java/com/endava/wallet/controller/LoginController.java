@@ -26,7 +26,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String loginPost() {
-        return "redirect:/index";
+        return "redirect:/dashboard";
     }
 
     private String getErrorMessage(HttpServletRequest request) {
