@@ -28,7 +28,7 @@
         </div>
         <br>
         <img src="/static/img/spiderman.gif" class="mx-auto col-4 img-fluid"
-             alt="404" loading="lazy">
+             alt="error" loading="lazy">
     </div>
 </div>
 
