@@ -2,52 +2,44 @@ package com.endava.wallet.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 
-// API Exception Handler
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    public static final String ERROR_404 = "error/error-404";
+    public static final String DEFAULT_ERROR = "error/error";
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(TransactionNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlerTransactionNotFoundException(TransactionNotFoundException e) {
+    public String handlerTransactionNotFoundException(TransactionNotFoundException e) {
         logger.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+        return ERROR_404;
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlerUserNotFoundException(UserNotFoundException e) {
+    public String handlerUserNotFoundException(UserNotFoundException e) {
         logger.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+        return ERROR_404;
     }
 
     @ExceptionHandler(TransactionCategoryNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlerTransactionCategoryNotFoundException(TransactionCategoryNotFoundException e) {
+    public String handlerTransactionCategoryNotFoundException(TransactionCategoryNotFoundException e) {
         logger.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+        return ERROR_404;
     }
 
     @ExceptionHandler(ProfileNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlerProfileNotFoundException(ProfileNotFoundException e) {
+    public String handlerProfileNotFoundException(ProfileNotFoundException e) {
         logger.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+        return ERROR_404;
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> globalExceptionHandling(Exception e, HttpServletRequest request) {
+    public String globalExceptionHandling(Exception e, HttpServletRequest request) {
         logger.error(e.getMessage());
-        e.printStackTrace();
-        System.out.println(request.getServletPath());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        return DEFAULT_ERROR;
     }
 }
