@@ -124,7 +124,8 @@
                     </#if>
                     <#if transaction.isIncome>
                         <div class="col-sm-3">
-                            <div class="card tran-card border-<#if transaction.transactionDate.isAfter(today)>secondary<#else>success</#if>" style="height: 100%;">
+                            <div class="card tran-card border-<#if transaction.transactionDate.isAfter(today)>secondary<#else>success</#if>"
+                                 style="height: 100%;">
                                 <div class="card-body <#if transaction.transactionDate.isAfter(today)>text-muted</#if>">
                                     <h5 class="card-title">${transaction.category.category}</h5>
                                     <#if transaction.message != "">
@@ -145,7 +146,8 @@
                         </div>
                     <#else>
                         <div class="col-sm-3">
-                            <div class="card tran-card border-<#if transaction.transactionDate.isAfter(today)>secondary<#else>danger</#if>" style="height: 100%;">
+                            <div class="card tran-card border-<#if transaction.transactionDate.isAfter(today)>secondary<#else>danger</#if>"
+                                 style="height: 100%;">
                                 <div class="card-body <#if transaction.transactionDate.isAfter(today)>text-muted</#if>">
                                     <h5 class="card-title">${transaction.category.category}</h5>
                                     <#if transaction.message != "">

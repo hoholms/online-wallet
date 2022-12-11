@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/transactions")
@@ -46,13 +45,10 @@ public class TransactionController {
     }
 
     @GetMapping("/delete/{transactionID}")
-    public String transactionDelete(@AuthenticationPrincipal User user, @PathVariable Long transactionID, Model model) {
+    public String transactionDelete(@AuthenticationPrincipal User user, @PathVariable Long transactionID) {
         transactionService.deleteTransactionById(transactionID, user);
         profileService.calcBalance(user);
         logger.info("Deleted transaction with id: {}", transactionID);
-
-        List<Transaction> transactionList = transactionService.findRecentTransactionsByUser(user);
-        model.addAttribute("transactions", transactionList);
 
         return "redirect:/dashboard";
     }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -43,12 +44,20 @@ public class DashboardController {
 
         model.addAttribute("currentProfile", currentProfile);
 
-        model.addAttribute("recentTransactions", transactionService.findRecentTransactionsByProfile(currentProfile));
+        model.addAttribute("recentTransactions", currentProfile.getTransactions()
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getTransactionDate)
+                        .thenComparing(Transaction::getId).reversed())
+                .toList());
 
-        List<TransactionsCategory> incomeCategories = categoryService.findByIsIncome(true);
+        List<TransactionsCategory> incomeCategories = categoryService.findByIsIncome(true).stream()
+                .sorted(Comparator.comparing(TransactionsCategory::getId))
+                .toList();
         model.addAttribute("incomeCategories", incomeCategories);
 
-        List<TransactionsCategory> expenseCategories = categoryService.findByIsIncome(false);
+        List<TransactionsCategory> expenseCategories = categoryService.findByIsIncome(false).stream()
+                .sorted(Comparator.comparing(TransactionsCategory::getId))
+                .toList();
         model.addAttribute("expenseCategories", expenseCategories);
 
         BigDecimal monthIncome = transactionService.findTranSumDateBetween(
