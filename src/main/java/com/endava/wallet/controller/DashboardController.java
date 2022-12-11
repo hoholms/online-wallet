@@ -41,6 +41,7 @@ public class DashboardController {
         logger.info("Call for dashboard page by user id {}", user.getId());
         profileService.calcBalance(user);
         Profile currentProfile = profileService.findProfileByUser(user);
+        currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
 
         model.addAttribute("currentProfile", currentProfile);
 
@@ -64,7 +65,7 @@ public class DashboardController {
                 currentProfile,
                 true,
                 LocalDate.now().withDayOfMonth(1),
-                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()))
+                LocalDate.now()
         );
         model.addAttribute("monthIncome", monthIncome);
 
@@ -72,7 +73,7 @@ public class DashboardController {
                 currentProfile,
                 false,
                 LocalDate.now().withDayOfMonth(1),
-                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()))
+                LocalDate.now()
         );
         model.addAttribute("monthExpense", monthExpense);
 
@@ -81,7 +82,7 @@ public class DashboardController {
                 currentProfile,
                 true,
                 LocalDate.now().withDayOfMonth(1),
-                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()))
+                LocalDate.now()
         );
         model.addAttribute("maxIncomeCategory", maxIncomeCategory);
 
@@ -89,7 +90,7 @@ public class DashboardController {
                 currentProfile,
                 false,
                 LocalDate.now().withDayOfMonth(1),
-                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()))
+                LocalDate.now()
         );
         model.addAttribute("maxExpenseCategory", maxExpenseCategory);
 

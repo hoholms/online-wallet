@@ -5,7 +5,7 @@ create or replace function calc_balance(current_profile bigint)
 $$
 begin
     return
-            (select sum(amount)
+            coalesce((select sum(amount)
              from transactions
              where profile_id = current_profile
                and is_income = true
@@ -15,7 +15,7 @@ begin
              from transactions
              where profile_id = current_profile
                and is_income = false
-               and transaction_date <= CURRENT_DATE);
+               and transaction_date <= CURRENT_DATE), 0);
 end;
 $$;
 

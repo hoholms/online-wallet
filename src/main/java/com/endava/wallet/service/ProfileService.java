@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
@@ -112,6 +113,10 @@ public class ProfileService {
 
     public void calcBalance(User user) {
         profileRepository.calcBalance(findProfileByUser(user).getId());
+    }
+
+    public BigDecimal getCalcBalance(Profile profile) {
+        return profileRepository.getCalcBalance(profile.getId());
     }
 
     public Profile findProfileByUser(User user) {
