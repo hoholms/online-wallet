@@ -124,18 +124,18 @@
                     </#if>
                     <#if transaction.isIncome>
                         <div class="col-sm-3">
-                            <div class="card tran-card border-success" style="height: 100%;">
-                                <div class="card-body">
+                            <div class="card tran-card border-<#if transaction.transactionDate.isAfter(today)>secondary<#else>success</#if>" style="height: 100%;">
+                                <div class="card-body <#if transaction.transactionDate.isAfter(today)>text-muted</#if>">
                                     <h5 class="card-title">${transaction.category.category}</h5>
                                     <#if transaction.message != "">
-                                        <p class="card-text">${transaction.message}</p>
+                                        <p class="card-text ">${transaction.message}</p>
                                     <#else>
                                         <p class="card-text">
                                             Got ${transaction.amount} from ${transaction.category.category}.
                                         </p>
                                     </#if>
                                 </div>
-                                <div class="card-footer text-success">
+                                <div class="card-footer text-<#if transaction.transactionDate.isAfter(today)>muted<#else>success</#if>">
                                     +${transaction.amount}
                                     <span class="text-muted float-end">${transaction.transactionDate}</span>
                                     <a href="/transactions/${transaction.id}" class="stretched-link"></a>
@@ -145,8 +145,8 @@
                         </div>
                     <#else>
                         <div class="col-sm-3">
-                            <div class="card tran-card border-danger" style="height: 100%;">
-                                <div class="card-body">
+                            <div class="card tran-card border-<#if transaction.transactionDate.isAfter(today)>secondary<#else>danger</#if>" style="height: 100%;">
+                                <div class="card-body <#if transaction.transactionDate.isAfter(today)>text-muted</#if>">
                                     <h5 class="card-title">${transaction.category.category}</h5>
                                     <#if transaction.message != "">
                                         <p class="card-text">${transaction.message}</p>
@@ -156,7 +156,7 @@
                                         </p>
                                     </#if>
                                 </div>
-                                <div class="card-footer text-danger">
+                                <div class="card-footer text-<#if transaction.transactionDate.isAfter(today)>muted<#else>danger</#if>">
                                     -${transaction.amount}
                                     <span class="text-muted float-end">${transaction.transactionDate}</span>
                                     <a href="/transactions/${transaction.id}" class="stretched-link"></a>

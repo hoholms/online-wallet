@@ -38,7 +38,9 @@ public class DashboardController {
             Model model
     ) {
         logger.info("Call for dashboard page by user id {}", user.getId());
+        profileService.calcBalance(user);
         Profile currentProfile = profileService.findProfileByUser(user);
+
         model.addAttribute("currentProfile", currentProfile);
 
         model.addAttribute("recentTransactions", transactionService.findRecentTransactionsByProfile(currentProfile));
@@ -90,12 +92,12 @@ public class DashboardController {
     @PostMapping("/dashboard")
     public String addTransaction(
             @AuthenticationPrincipal User user,
-            TransactionDto transactionDto,
-            Model model
+            TransactionDto transactionDto
     ) {
         Profile currentProfile = profileService.findProfileByUser(user);
         Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
         transactionService.add(transaction, currentProfile);
+        profileService.calcBalance(user);
 
         return "redirect:/dashboard";
     }

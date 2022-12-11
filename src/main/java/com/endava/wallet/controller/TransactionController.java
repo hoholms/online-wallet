@@ -48,6 +48,7 @@ public class TransactionController {
     @GetMapping("/delete/{transactionID}")
     public String transactionDelete(@AuthenticationPrincipal User user, @PathVariable Long transactionID, Model model) {
         transactionService.deleteTransactionById(transactionID, user);
+        profileService.calcBalance(user);
         logger.info("Deleted transaction with id: {}", transactionID);
 
         List<Transaction> transactionList = transactionService.findRecentTransactionsByUser(user);
@@ -66,6 +67,7 @@ public class TransactionController {
             @RequestParam String transactionDate
     ) {
         transactionService.save(user, id, message, category, amount, transactionDate);
+        profileService.calcBalance(user);
         logger.info("Saved transaction with id: {}", id);
 
         return "redirect:/dashboard";

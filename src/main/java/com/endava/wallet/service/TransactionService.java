@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -42,11 +43,11 @@ public class TransactionService {
     public void add(Transaction transaction, Profile profile) {
         transactionRepository.save(transaction);
 
-        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
+        /*if (Boolean.TRUE.equals(transaction.getIsIncome())) {
             profile.setBalance(profile.getBalance().add(transaction.getAmount()));
         } else {
             profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
-        }
+        }*/
         profileService.save(profile);
         logger.info("Transaction with id: {} was added", transaction.getId());
     }
@@ -55,7 +56,7 @@ public class TransactionService {
         Profile currentProfile = profileService.findProfileByUser(user);
         Transaction transaction = findTransactionByIdAndProfile(id, currentProfile);
 
-        if (amount != null && !amount.equals(transaction.getAmount())) {
+        /*if (amount != null && !amount.equals(transaction.getAmount())) {
             if (Boolean.TRUE.equals(transaction.getIsIncome())) {
                 currentProfile.setBalance(currentProfile.getBalance().subtract(transaction.getAmount()));
                 currentProfile.setBalance(currentProfile.getBalance().add(amount));
@@ -63,7 +64,7 @@ public class TransactionService {
                 currentProfile.setBalance(currentProfile.getBalance().add(transaction.getAmount()));
                 currentProfile.setBalance(currentProfile.getBalance().subtract(amount));
             }
-        }
+        }*/
 
         if (amount != null) {
             transaction.setAmount(amount);
@@ -192,11 +193,11 @@ public class TransactionService {
 
         transactionRepository.deleteById(transactionID);
 
-        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
+        /*if (Boolean.TRUE.equals(transaction.getIsIncome())) {
             currentProfile.setBalance(currentProfile.getBalance().subtract(transaction.getAmount()));
         } else {
             currentProfile.setBalance(currentProfile.getBalance().add(transaction.getAmount()));
-        }
+        }*/
         profileService.save(currentProfile);
 
     }
