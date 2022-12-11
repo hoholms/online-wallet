@@ -8,21 +8,24 @@
                 <p class="text-success">${message!""}</p>
                 <p class="text-danger">${error!""}</p>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control" name="password" id="passwd" placeholder="Password"/>
+                    <input type="password" class="form-control" name="password" id="passwd" maxlength="500"
+                           placeholder="Password"/>
                     <label for="passwd">Password</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="firstName" id="fname" placeholder="First Name"
+                    <input type="text" class="form-control" name="firstName" id="fname" maxlength="50"
+                           placeholder="First Name"
                            value="${firstName}" required/>
                     <label for="fname">First Name</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="lastName" id="lname" placeholder="Last Name"
+                    <input type="text" class="form-control" name="lastName" id="lname" maxlength="50"
+                           placeholder="Last Name"
                            value="${lastName}" required/>
                     <label for="lname">Last Name</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Email"
+                    <input type="email" class="form-control" name="email" id="email" maxlength="255" placeholder="Email"
                            value="${email}"
                            required/>
                     <label for="email">Email</label>

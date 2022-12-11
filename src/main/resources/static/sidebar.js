@@ -20,3 +20,4 @@ $('.dropup').on('hidden.bs.dropdown', function () {
         position: false, left: false, top: false
     }).detach());
 });
+

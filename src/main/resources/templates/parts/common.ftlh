@@ -30,7 +30,9 @@
             <div class="col-md-main col-lg-main ms-sm-6 px-md-4 mt-4">
                 <#nested>
             </div>
-            <#include "sidebar.ftlh">
+            <div class="nav-wrapper" style="height:3.78rem;">
+                <#include "sidebar.ftlh">
+            </div>
         </div>
     </div>
 

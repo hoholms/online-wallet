@@ -1,7 +1,6 @@
 package com.endava.wallet.service;
 
 import com.endava.wallet.entity.*;
-import com.endava.wallet.exception.TransactionNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

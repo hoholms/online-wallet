@@ -26,7 +26,8 @@
         <div class="form-group row">
             <label for="message" class="col-sm-2 col-form-label">Message</label>
             <div class="col-sm-10">
-                <input type="text" id="message" name="message" class="form-control" value="${transactionEdit.message}"
+                <input type="text" id="message" name="message" maxlength="255" class="form-control"
+                       value="${transactionEdit.message}"
                        placeholder="Message">
             </div>
         </div>

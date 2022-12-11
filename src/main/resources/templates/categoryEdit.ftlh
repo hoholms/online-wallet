@@ -24,7 +24,8 @@
         <div class="form-group row mb-3">
             <label for="category" class="col-sm-2 col-form-label">Category name</label>
             <div class="col-4">
-                <input type="text" id="category" name="category" class="form-control" value="${category.category}"
+                <input type="text" id="category" name="category" class="form-control" maxlength="50"
+                       value="${category.category}"
                        placeholder="Category name" required>
             </div>
         </div>

@@ -26,7 +26,8 @@
 
         <div class="col-md-6 form-group">
             <label class="form-label" for="tMessage">Message</label>
-            <input class="form-control" type="text" name="message" placeholder="Type message if you want" id="tMessage">
+            <input class="form-control" type="text" maxlength="255" name="message"
+                   placeholder="Type message if you want" id="tMessage">
         </div>
 
         <#if isIncome>

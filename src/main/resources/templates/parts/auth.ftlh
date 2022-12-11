@@ -12,32 +12,37 @@
                 </#if>
             </h1>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="username" id="uname" placeholder="Username" required/>
+                <input type="text" class="form-control" name="username" id="uname" maxlength="50" placeholder="Username"
+                       required/>
                 <label for="uname">Username</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" name="password" id="passwd" placeholder="Password"
+                <input type="password" class="form-control" name="password" id="passwd" maxlength="500"
+                       placeholder="Password"
                        required/>
                 <label for="passwd">Password</label>
             </div>
             <#if isRegisterForm>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control" name="passwordConfirm" id="passwdConf"
+                    <input type="password" class="form-control" name="passwordConfirm" maxlength="500" id="passwdConf"
                            placeholder="Password" required/>
                     <label for="passwdConf">Confirm Password</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="firstName" id="fname" placeholder="First Name"
+                    <input type="text" class="form-control" name="firstName" maxlength="50" id="fname"
+                           placeholder="First Name"
                            required/>
                     <label for="fname">First Name</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="lastName" id="lname" placeholder="Last Name"
+                    <input type="text" class="form-control" name="lastName" maxlength="50" id="lname"
+                           placeholder="Last Name"
                            required/>
                     <label for="lname">Last Name</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" required/>
+                    <input type="email" class="form-control" name="email" id="email" maxlength="255" placeholder="Email"
+                           required/>
                     <label for="email">Email</label>
                     <div id="emailHelp" class="form-text">We'll send you an activation link</div>
                 </div>
