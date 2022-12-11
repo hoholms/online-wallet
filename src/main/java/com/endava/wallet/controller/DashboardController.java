@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -38,22 +39,33 @@ public class DashboardController {
             Model model
     ) {
         logger.info("Call for dashboard page by user id {}", user.getId());
+        profileService.calcBalance(user);
         Profile currentProfile = profileService.findProfileByUser(user);
+        currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
+
         model.addAttribute("currentProfile", currentProfile);
 
-        model.addAttribute("recentTransactions", transactionService.findRecentTransactionsByProfile(currentProfile));
+        model.addAttribute("recentTransactions", currentProfile.getTransactions()
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getTransactionDate)
+                        .thenComparing(Transaction::getId).reversed())
+                .toList());
 
-        List<TransactionsCategory> incomeCategories = categoryService.findByIsIncome(true);
+        List<TransactionsCategory> incomeCategories = categoryService.findByIsIncome(true).stream()
+                .sorted(Comparator.comparing(TransactionsCategory::getId))
+                .toList();
         model.addAttribute("incomeCategories", incomeCategories);
 
-        List<TransactionsCategory> expenseCategories = categoryService.findByIsIncome(false);
+        List<TransactionsCategory> expenseCategories = categoryService.findByIsIncome(false).stream()
+                .sorted(Comparator.comparing(TransactionsCategory::getId))
+                .toList();
         model.addAttribute("expenseCategories", expenseCategories);
 
         BigDecimal monthIncome = transactionService.findTranSumDateBetween(
                 currentProfile,
                 true,
                 LocalDate.now().withDayOfMonth(1),
-                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()))
+                LocalDate.now()
         );
         model.addAttribute("monthIncome", monthIncome);
 
@@ -61,7 +73,7 @@ public class DashboardController {
                 currentProfile,
                 false,
                 LocalDate.now().withDayOfMonth(1),
-                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()))
+                LocalDate.now()
         );
         model.addAttribute("monthExpense", monthExpense);
 
@@ -70,7 +82,7 @@ public class DashboardController {
                 currentProfile,
                 true,
                 LocalDate.now().withDayOfMonth(1),
-                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()))
+                LocalDate.now()
         );
         model.addAttribute("maxIncomeCategory", maxIncomeCategory);
 
@@ -78,7 +90,7 @@ public class DashboardController {
                 currentProfile,
                 false,
                 LocalDate.now().withDayOfMonth(1),
-                LocalDate.now().withDayOfMonth(LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()))
+                LocalDate.now()
         );
         model.addAttribute("maxExpenseCategory", maxExpenseCategory);
 
@@ -90,12 +102,12 @@ public class DashboardController {
     @PostMapping("/dashboard")
     public String addTransaction(
             @AuthenticationPrincipal User user,
-            TransactionDto transactionDto,
-            Model model
+            TransactionDto transactionDto
     ) {
         Profile currentProfile = profileService.findProfileByUser(user);
         Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
         transactionService.add(transaction, currentProfile);
+        profileService.calcBalance(user);
 
         return "redirect:/dashboard";
     }

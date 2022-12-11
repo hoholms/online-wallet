@@ -1,12 +1,14 @@
 package com.endava.wallet.service;
 
 import com.endava.wallet.entity.*;
+import com.endava.wallet.exception.TransactionNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -42,11 +44,18 @@ public class StatisticsService {
         LineStatistics expenseStatistics = new LineStatistics(new ArrayList<>(), new ArrayList<>());
 
         for (DateWithLabel date : dates) {
+            LocalDate lastDay;
+            if (date.getDate().getMonthValue() == LocalDate.now().getMonthValue() &&
+                    date.getDate().getYear() == LocalDate.now().getYear()) {
+                lastDay = LocalDate.now();
+            } else {
+                lastDay = date.getDate().withDayOfMonth(date.getDate().getMonth().length(LocalDate.now().isLeapYear()));
+            }
             BigDecimal incSum = transactionService.findTranSumDateBetween(
                     currentProfile,
                     true,
                     date.getDate(),
-                    date.getDate().withDayOfMonth(date.getDate().getMonth().length(LocalDate.now().isLeapYear()))
+                    lastDay
             );
             incomeStatistics.getValues().add(incSum);
             incomeStatistics.getLabels().add(date.getLabel());
@@ -55,7 +64,7 @@ public class StatisticsService {
                     currentProfile,
                     false,
                     date.getDate(),
-                    date.getDate().withDayOfMonth(date.getDate().getMonth().length(LocalDate.now().isLeapYear()))
+                    lastDay
             );
             expenseStatistics.getValues().add(expSum);
             expenseStatistics.getLabels().add(date.getLabel());
@@ -71,8 +80,16 @@ public class StatisticsService {
     public List<CircleStatistics> findCircleStatistics(User user) {
         Profile currentProfile = profileService.findProfileByUser(user);
 
-        CircleStatistics incomeStatistics = transactionService.findCategoryAndSumByProfileAndIsIncome(currentProfile, true);
-        CircleStatistics expenseStatistics = transactionService.findCategoryAndSumByProfileAndIsIncome(currentProfile, false);
+        DateWithLabel from = new DateWithLabel(currentProfile.getTransactions()
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getTransactionDate))
+                .reduce((first, second) -> first)
+                .orElse(null)
+                .getTransactionDate());
+        DateWithLabel to = new DateWithLabel(LocalDate.now());
+
+        CircleStatistics incomeStatistics = transactionService.findCategoryAndSumByProfileAndIsIncome(currentProfile, true, from, to);
+        CircleStatistics expenseStatistics = transactionService.findCategoryAndSumByProfileAndIsIncome(currentProfile, false, from, to);
 
         List<CircleStatistics> statistics = new ArrayList<>();
         statistics.add(incomeStatistics);
@@ -90,7 +107,13 @@ public class StatisticsService {
             to = tmp;
         }
 
-        to.setDate(to.getDate().withDayOfMonth(to.getDate().getMonth().length(LocalDate.now().isLeapYear())));
+        if (to.getDate().getMonthValue() == LocalDate.now().getMonthValue() &&
+                to.getDate().getYear() == LocalDate.now().getYear()) {
+            to.setDate(LocalDate.now());
+        } else {
+            to.setDate(to.getDate().withDayOfMonth(to.getDate().getMonth().length(LocalDate.now().isLeapYear())));
+        }
+
 
         CircleStatistics incomeStatistics = transactionService.findCategoryAndSumByProfileAndIsIncome(currentProfile, true, from, to);
         CircleStatistics expenseStatistics = transactionService.findCategoryAndSumByProfileAndIsIncome(currentProfile, false, from, to);

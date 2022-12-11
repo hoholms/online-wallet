@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -41,12 +40,6 @@ public class TransactionService {
 
     public void add(Transaction transaction, Profile profile) {
         transactionRepository.save(transaction);
-
-        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
-            profile.setBalance(profile.getBalance().add(transaction.getAmount()));
-        } else {
-            profile.setBalance(profile.getBalance().subtract(transaction.getAmount()));
-        }
         profileService.save(profile);
         logger.info("Transaction with id: {} was added", transaction.getId());
     }
@@ -54,16 +47,6 @@ public class TransactionService {
     public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {
         Profile currentProfile = profileService.findProfileByUser(user);
         Transaction transaction = findTransactionByIdAndProfile(id, currentProfile);
-
-        if (amount != null && !amount.equals(transaction.getAmount())) {
-            if (Boolean.TRUE.equals(transaction.getIsIncome())) {
-                currentProfile.setBalance(currentProfile.getBalance().subtract(transaction.getAmount()));
-                currentProfile.setBalance(currentProfile.getBalance().add(amount));
-            } else {
-                currentProfile.setBalance(currentProfile.getBalance().add(transaction.getAmount()));
-                currentProfile.setBalance(currentProfile.getBalance().subtract(amount));
-            }
-        }
 
         if (amount != null) {
             transaction.setAmount(amount);
@@ -85,17 +68,6 @@ public class TransactionService {
     public Transaction findTransactionByIdAndProfile(Long id, Profile profile) {
         return transactionRepository.findTransactionByIdAndProfile(id, profile)
                 .orElseThrow(() -> new TransactionNotFoundException("Transaction with id: " + id + " not found"));
-    }
-
-    public List<Transaction> findRecentTransactionsByUser(User user) {
-        Profile profile = profileService.findProfileByUser(user);
-        return findRecentTransactionsByProfile(profile);
-    }
-
-    public List<Transaction> findRecentTransactionsByProfile(Profile profile) {
-        List<Transaction> transactions = transactionRepository.findTransactionByProfileOrderByTransactionDateAsc(profile);
-        Collections.reverse(transactions);
-        return transactions;
     }
 
     public BigDecimal findTranSumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
@@ -149,14 +121,7 @@ public class TransactionService {
         );
     }
 
-    public List<LocalDate> findTransactionsDates(Profile profile) {
-        return profile.getTransactions().stream()
-                .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
-                .filter(distinctByKey(LocalDate::getMonth))
-                .sorted(Comparator.naturalOrder())
-                .toList();
-    }
-
+    // TODO Fix future dates
     public List<DateWithLabel> findTransactionsDatesWithLabels(User user) {
         Profile profile = profileService.findProfileByUser(user);
 
@@ -188,16 +153,8 @@ public class TransactionService {
     public void deleteTransactionById(Long transactionID, User user) {
         Profile currentProfile = profileService.findProfileByUser(user);
 
-        Transaction transaction = findTransactionByIdAndProfile(transactionID, currentProfile);
-
         transactionRepository.deleteById(transactionID);
 
-        if (Boolean.TRUE.equals(transaction.getIsIncome())) {
-            currentProfile.setBalance(currentProfile.getBalance().subtract(transaction.getAmount()));
-        } else {
-            currentProfile.setBalance(currentProfile.getBalance().add(transaction.getAmount()));
-        }
         profileService.save(currentProfile);
-
     }
 }
