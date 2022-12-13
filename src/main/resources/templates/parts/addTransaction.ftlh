@@ -13,9 +13,13 @@
 
         <div class="col-md-2 form-group">
             <label class="form-label" for="tAmount">Amount</label>
-            <input class="form-control" type="number" step="0.01" min="0.01" max="1000000" name="amount"
-                   placeholder="Amount"
-                   id="tAmount" required>
+            <div class="input-group">
+                <input class="form-control" type="number" step="0.01" min="0.01" max="1000000" name="amount"
+                       placeholder="Amount"
+                       id="tAmount" required>
+                <span class="input-group-text"
+                      id="basic-addon2">${0?string[",###¤;; currencyCode=${currentProfile.currency}"]?substring(1)}</span>
+            </div>
         </div>
 
         <div class="col-md-2 form-group">

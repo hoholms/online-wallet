@@ -19,7 +19,6 @@ redGradient.addColorStop(1, 'rgba(165, 29, 42,0)');
 /*** Font ***/
 Chart.defaults.font.family = document.getElementById('statTitle').style.fontFamily;
 
-
 /*** Charts ***/
 var lineChart, incomeCircleChart, expenseCircleChart;
 $.getJSON('/statistics/line', function (data) {
@@ -118,6 +117,12 @@ function drawLineStatistics(data) {
             ]
         },
         options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            stacked: false,
             plugins: {
                 tooltip: {
                     callbacks: {
@@ -128,9 +133,9 @@ function drawLineStatistics(data) {
                                 label += ': ';
                             }
                             if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('en-US', {
+                                label += new Intl.NumberFormat('ru-RU', {
                                     style: 'currency',
-                                    currency: 'MDL'
+                                    currency: 'USD'
                                 }).format(context.parsed.y);
                             }
                             return label;
@@ -141,19 +146,21 @@ function drawLineStatistics(data) {
             layout: {
                 padding: 10
             },
-            responsive: true,
             scales: {
                 x: {
                     grid: {
-                        display: false
+                        display: true,
                     }
                 },
                 y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+
                     grid: {
                         display: true,
                     }
-                }
-
+                },
             }
         },
     });
@@ -185,7 +192,7 @@ function drawCircleStatistics(data) {
             plugins: {
                 legend: {
                     position: 'bottom'
-                }
+                },
             }
         }
     });
@@ -215,7 +222,7 @@ function drawCircleStatistics(data) {
             plugins: {
                 legend: {
                     position: 'bottom'
-                }
+                },
             }
         }
     });

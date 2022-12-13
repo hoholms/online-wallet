@@ -4,6 +4,8 @@
     <div class="row align-items-center">
         <div class="col-md-10 mx-auto col-lg-8">
             <form method="post" class="p-4 border rounded-3 bg-light text-center">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+
                 <h1 class="h2 mb-3 fw-normal text-center">${username}</h1>
                 <p class="text-success">${message!""}</p>
                 <p class="text-danger">${error!""}</p>
@@ -31,7 +33,14 @@
                     <label for="email">Email</label>
                     <div id="emailHelp" class="form-text">We'll send you an activation link</div>
                 </div>
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="currency" name="currency" required>
+                        <#list currencies as enumCurrency>
+                            <option <#if enumCurrency.toString() == currency>selected="selected"</#if>>${enumCurrency.toString()}</option>
+                        </#list>
+                    </select>
+                    <label class="form-label" for="currency">Currency</label>
+                </div>
                 <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
             </form>
         </div>

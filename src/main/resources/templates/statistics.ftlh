@@ -1,5 +1,4 @@
 <#import "parts/common.ftlh" as c>
-<#import "parts/auth.ftlh" as l>
 
 <@c.page>
     <div class="container-fluid mb-4">

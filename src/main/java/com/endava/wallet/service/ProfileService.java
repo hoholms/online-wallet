@@ -107,6 +107,8 @@ public class ProfileService {
             throw new RegisterException("Email already registered!");
         }
 
+        currentProfile.setCurrency(profileDto.getCurrency());
+
         userService.save(user);
         profileRepository.save(currentProfile);
     }

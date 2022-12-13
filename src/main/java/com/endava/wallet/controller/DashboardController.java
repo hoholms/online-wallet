@@ -39,7 +39,6 @@ public class DashboardController {
             Model model
     ) {
         logger.info("Call for dashboard page by user id {}", user.getId());
-        profileService.calcBalance(user);
         Profile currentProfile = profileService.findProfileByUser(user);
         currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
 
@@ -107,7 +106,7 @@ public class DashboardController {
         Profile currentProfile = profileService.findProfileByUser(user);
         Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
         transactionService.add(transaction, currentProfile);
-        profileService.calcBalance(user);
+//        profileService.calcBalance(user);
 
         return "redirect:/dashboard";
     }

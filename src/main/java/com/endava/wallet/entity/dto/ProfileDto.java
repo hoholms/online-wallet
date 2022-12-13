@@ -17,4 +17,5 @@ public class ProfileDto implements Serializable {
     private final String email;
     private final BigDecimal balance;
     private final Instant createdDate;
+    private final String currency;
 }

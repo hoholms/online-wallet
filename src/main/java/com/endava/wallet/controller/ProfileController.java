@@ -1,5 +1,6 @@
 package com.endava.wallet.controller;
 
+import com.endava.wallet.entity.Currency;
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.User;
 import com.endava.wallet.entity.dto.ProfileDto;
@@ -31,6 +32,8 @@ public class ProfileController {
         model.addAttribute("firstName", currentProfile.getFirstName());
         model.addAttribute("lastName", currentProfile.getLastName());
         model.addAttribute("email", currentProfile.getEmail());
+        model.addAttribute("currency", currentProfile.getCurrency());
+        model.addAttribute("currencies", Currency.values());
 
         return "profile";
     }
@@ -39,21 +42,23 @@ public class ProfileController {
     public String updateProfile(
             @AuthenticationPrincipal User user,
             @RequestParam String password,
-            ProfileDto profile,
+            ProfileDto profileDto,
             Model model
     ) {
         try {
-            profileService.updateProfile(user, profile, password);
-            logger.info("Profile with email: {} has been updated", profile.getEmail());
+            profileService.updateProfile(user, profileDto, password);
+            logger.info("Profile with email: {} has been updated", profileDto.getEmail());
             model.addAttribute("message", "Profile successfully updated!");
         } catch (RegisterException e) {
             model.addAttribute("error", e.getMessage());
         }
 
         model.addAttribute("username", user.getUsername());
-        model.addAttribute("firstName", profile.getFirstName());
-        model.addAttribute("lastName", profile.getLastName());
-        model.addAttribute("email", profile.getEmail());
+        model.addAttribute("firstName", profileDto.getFirstName());
+        model.addAttribute("lastName", profileDto.getLastName());
+        model.addAttribute("email", profileDto.getEmail());
+        model.addAttribute("currency", profileDto.getCurrency());
+        model.addAttribute("currencies", Currency.values());
 
         return "profile";
     }

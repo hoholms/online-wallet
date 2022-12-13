@@ -20,6 +20,7 @@ public class ProfileDtoConverter {
                 .email(profile.getEmail())
                 .balance(BigDecimal.ZERO)
                 .createdDate(Instant.now())
+                .currency(profile.getCurrency())
                 .build();
     }
 }
