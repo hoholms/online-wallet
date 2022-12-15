@@ -26,7 +26,9 @@
                     Add Income Transaction
                 </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+            <div id="collapseOne"
+                 class="accordion-collapse collapse <#if errorsMap?? && transactionDto.isIncome>show</#if>"
+                 aria-labelledby="headingOne"
                  data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     <@at.addTransaction incomeCategories true today />
@@ -40,7 +42,9 @@
                     Add Expense Transaction
                 </button>
             </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+            <div id="collapseTwo"
+                 class="accordion-collapse collapse <#if errorsMap?? && !transactionDto.isIncome>show</#if>"
+                 aria-labelledby="headingTwo"
                  data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     <@at.addTransaction expenseCategories false today />

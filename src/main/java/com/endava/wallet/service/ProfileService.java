@@ -40,10 +40,9 @@ public class ProfileService {
             return false;
         }
 
+        profile.setCurrency("USD");
         profile.setActivationCode(UUID.randomUUID().toString());
-
         sendMail(profile);
-
         profileRepository.save(profile);
 
         return true;

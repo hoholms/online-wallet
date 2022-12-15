@@ -16,13 +16,16 @@ import org.springframework.data.util.Pair;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,6 +45,38 @@ public class DashboardController {
         Profile currentProfile = profileService.findProfileByUser(user);
         currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
 
+        setModel(model, currentProfile);
+
+        return "dashboard";
+    }
+
+    @PostMapping("/dashboard")
+    public String addTransaction(
+            @AuthenticationPrincipal User user,
+            @Valid TransactionDto transactionDto,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        Profile currentProfile = profileService.findProfileByUser(user);
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.addAttribute("errorsMap", errorsMap);
+            model.addAttribute("transactionDto", transactionDto);
+        } else {
+            Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
+            transactionService.add(transaction, currentProfile);
+            currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
+        }
+
+        setModel(model, currentProfile);
+
+        profileService.calcBalance(user);
+
+        return "dashboard";
+    }
+
+    private void setModel(Model model, Profile currentProfile) {
         model.addAttribute("currentProfile", currentProfile);
 
         model.addAttribute("recentTransactions", currentProfile.getTransactions()
@@ -94,20 +129,5 @@ public class DashboardController {
         model.addAttribute("maxExpenseCategory", maxExpenseCategory);
 
         model.addAttribute("today", LocalDate.now());
-
-        return "dashboard";
-    }
-
-    @PostMapping("/dashboard")
-    public String addTransaction(
-            @AuthenticationPrincipal User user,
-            TransactionDto transactionDto
-    ) {
-        Profile currentProfile = profileService.findProfileByUser(user);
-        Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
-        transactionService.add(transaction, currentProfile);
-//        profileService.calcBalance(user);
-
-        return "redirect:/dashboard";
     }
 }

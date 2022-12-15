@@ -2,7 +2,9 @@ package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.dto.ProfileDto;
 import com.endava.wallet.entity.dto.UserDto;
-import com.endava.wallet.exception.RegisterException;
+import com.endava.wallet.exception.EmailAlreadyExistsException;
+import com.endava.wallet.exception.PasswordsDontMatchException;
+import com.endava.wallet.exception.UsernameAlreadyExistsException;
 import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.RegisterService;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,20 +36,43 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String addUser(
-            UserDto userDto,
-            ProfileDto profileDto,
             @RequestParam String passwordConfirm,
+            @Valid UserDto userDto,
+            BindingResult userBindingResult,
+            @Valid ProfileDto profileDto,
+            BindingResult profileBindingResult,
             Model model
     ) {
-        try {
-            registerService.registerUser(userDto, profileDto, passwordConfirm);
-        } catch (RegisterException e) {
-            model.addAttribute("error", e.getMessage());
-            return "register";
-        }
-        model.addAttribute("message", "Now confirm your email!");
+        if (profileBindingResult.hasErrors() || userBindingResult.hasErrors()) {
+            Map<String, String> profileErrorsMap = ControllerUtils.getErrors(profileBindingResult);
+            Map<String, String> userErrorsMap = ControllerUtils.getErrors(userBindingResult);
+            model.mergeAttributes(profileErrorsMap);
+            model.mergeAttributes(userErrorsMap);
+            model.addAttribute("userDto", userDto);
+            model.addAttribute("profileDto", profileDto);
+        } else {
+            try {
+                registerService.registerUser(userDto, profileDto, passwordConfirm);
+            } catch (RuntimeException e) {
+                if (e.getClass() == UsernameAlreadyExistsException.class) {
+                    model.addAttribute("usernameError", e.getMessage());
+                } else if (e.getClass() == EmailAlreadyExistsException.class) {
+                    model.addAttribute("emailError", e.getMessage());
+                } else if (e.getClass() == PasswordsDontMatchException.class) {
+                    model.addAttribute("passwordConfirmError", e.getMessage());
+                }
 
-        return "login";
+                model.addAttribute("userDto", userDto);
+                model.addAttribute("profileDto", profileDto);
+
+                return "register";
+            }
+
+            model.addAttribute("message", "Now confirm your email!");
+            return "login";
+        }
+
+        return "register";
     }
 
     @GetMapping("/activate/{code}")
