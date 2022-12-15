@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -66,7 +68,7 @@ public class ProfileService {
         return true;
     }
 
-    public void updateProfile(User user, ProfileDto profileDto, String password) {
+    public String updateProfile(HttpServletRequest request, User user, ProfileDto profileDto, String password) {
         Profile currentProfile = profileRepository.findByUser(user)
                 .orElseThrow(() -> new ProfileNotFoundException(
                         String.format("Profile for user %s not found!", user.getId())
@@ -100,6 +102,7 @@ public class ProfileService {
             currentProfile.setEmail(profileDto.getEmail());
             currentProfile.setActivationCode(UUID.randomUUID().toString());
             sendMail(currentProfile);
+            user.setEnabled(false);
             logger.info("Profile id {} has been updated", currentProfile.getId());
         } else if (isEmailChanged && existsProfileByEmail(profileDto.getEmail())) {
             logger.error("Profile id {} failed to update", currentProfile.getId());
@@ -110,6 +113,18 @@ public class ProfileService {
 
         userService.save(user);
         profileRepository.save(currentProfile);
+
+        if (isEmailChanged || !ObjectUtils.isEmpty(password)) {
+            try {
+                request.logout();
+                return "redirect:/login";
+            }
+            catch (ServletException e) {
+                logger.error(e.getMessage());
+            }
+        }
+
+        return "profile";
     }
 
     public void calcBalance(User user) {

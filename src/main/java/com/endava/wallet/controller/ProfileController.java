@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequiredArgsConstructor
 public class ProfileController {
@@ -40,13 +43,16 @@ public class ProfileController {
 
     @PostMapping("profile")
     public String updateProfile(
+            HttpServletRequest request,
             @AuthenticationPrincipal User user,
             @RequestParam String password,
             ProfileDto profileDto,
             Model model
     ) {
+        String response = "profile";
+
         try {
-            profileService.updateProfile(user, profileDto, password);
+            response = profileService.updateProfile(request, user, profileDto, password);
             logger.info("Profile with email: {} has been updated", profileDto.getEmail());
             model.addAttribute("message", "Profile successfully updated!");
         } catch (RegisterException e) {
@@ -60,6 +66,6 @@ public class ProfileController {
         model.addAttribute("currency", profileDto.getCurrency());
         model.addAttribute("currencies", Currency.values());
 
-        return "profile";
+        return response;
     }
 }
