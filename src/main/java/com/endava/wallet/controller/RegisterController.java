@@ -4,6 +4,7 @@ import com.endava.wallet.entity.dto.ProfileDto;
 import com.endava.wallet.entity.dto.UserDto;
 import com.endava.wallet.exception.EmailAlreadyExistsException;
 import com.endava.wallet.exception.PasswordsDontMatchException;
+import com.endava.wallet.exception.RegisterException;
 import com.endava.wallet.exception.UsernameAlreadyExistsException;
 import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.RegisterService;
@@ -53,7 +54,7 @@ public class RegisterController {
         } else {
             try {
                 registerService.registerUser(userDto, profileDto, passwordConfirm);
-            } catch (RuntimeException e) {
+            } catch (RegisterException e) {
                 if (e.getClass() == UsernameAlreadyExistsException.class) {
                     model.addAttribute("usernameError", e.getMessage());
                 } else if (e.getClass() == EmailAlreadyExistsException.class) {

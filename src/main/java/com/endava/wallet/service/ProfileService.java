@@ -118,8 +118,7 @@ public class ProfileService {
             try {
                 request.logout();
                 return "redirect:/login";
-            }
-            catch (ServletException e) {
+            } catch (ServletException e) {
                 logger.error(e.getMessage());
             }
         }
