@@ -1,8 +1,9 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
+    <input type="hidden" id="currency" value="${currentProfile.currency}">
     <div class="container-fluid mb-4">
-        <h2 id="statTitle">Statistics</h2>
+        <h2 id="statTitle">${currentProfile.firstName} ${currentProfile.lastName} statistics</h2>
         <div class="container d-flex justify-content-center mb-3">
             <form action="/statistics/line" method="post" class="row g-3">
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
@@ -56,4 +57,4 @@
 
 
 </@c.page>
-<script type="text/javascript" src="/static/statistics.js"></script>
+<script type="text/javascript" src="/static/script/statistics.js"></script>

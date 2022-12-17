@@ -18,6 +18,10 @@ redGradient.addColorStop(1, 'rgba(165, 29, 42,0)');
 
 /*** Font ***/
 Chart.defaults.font.family = document.getElementById('statTitle').style.fontFamily;
+currencyFormat = new Intl.NumberFormat('ru-RU', {
+    style: 'currency',
+    currency: $('#currency').val()
+});
 
 /*** Charts ***/
 var lineChart, incomeCircleChart, expenseCircleChart;
@@ -26,23 +30,21 @@ $.getJSON('/statistics/line', function (data) {
     var sum = 0;
     $.each(data[0].values, function () {
         sum += parseFloat(this) || 0;
+        sum.toFixed(2);
     });
-    $('#totalEarned').text('Total earned: ' + sum.toFixed(2));
+    $('#totalEarned').text('Total earned: ' + currencyFormat.format(sum));
 });
 $.getJSON('/statistics/circle', function (data) {
     drawCircleStatistics(data);
     var sum = 0;
     $.each(data[1].values, function () {
         sum += parseFloat(this) || 0;
+        sum.toFixed(2);
     });
-    $('#totalSpent').text('Total spent: ' + sum.toFixed(2));
+    $('#totalSpent').text('Total spent: ' + currencyFormat.format(sum));
 });
 $('.statForm').change(function () {
     var token = $("meta[name='_csrf']").attr("content");
-
-    lineChart.destroy();
-    incomeCircleChart.destroy();
-    expenseCircleChart.destroy();
 
     $.ajax({
         url: '/statistics/line',
@@ -54,12 +56,17 @@ $('.statForm').change(function () {
         },
         dataType: 'json',
         success: function (data) {
-            drawLineStatistics(data);
+            lineChart.data.labels = data[0].labels;
+            lineChart.data.datasets[0].data = data[0].values;
+            lineChart.data.datasets[1].data = data[1].values;
+            lineChart.update();
+
             var sum = 0;
             $.each(data[0].values, function () {
                 sum += parseFloat(this) || 0;
+                sum.toFixed(2);
             });
-            $('#totalEarned').text('Total earned: ' + sum.toFixed(2));
+            $('#totalEarned').text('Total earned: ' + currencyFormat.format(sum));
         }
     });
 
@@ -73,12 +80,20 @@ $('.statForm').change(function () {
         },
         dataType: 'json',
         success: function (data) {
-            drawCircleStatistics(data);
+            incomeCircleChart.data.labels = data[0].categories;
+            incomeCircleChart.data.datasets[0].data = data[0].values;
+            incomeCircleChart.update();
+
+            expenseCircleChart.data.labels = data[1].categories;
+            expenseCircleChart.data.datasets[0].data = data[1].values;
+            expenseCircleChart.update();
+
             var sum = 0;
             $.each(data[1].values, function () {
                 sum += parseFloat(this) || 0;
+                sum.toFixed(2);
             });
-            $('#totalSpent').text('Total spent: ' + sum.toFixed(2));
+            $('#totalSpent').text('Total spent: ' + currencyFormat.format(sum));
         }
     });
 });
@@ -133,10 +148,7 @@ function drawLineStatistics(data) {
                                 label += ': ';
                             }
                             if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('ru-RU', {
-                                    style: 'currency',
-                                    currency: 'USD'
-                                }).format(context.parsed.y);
+                                label += currencyFormat.format(context.parsed.y);
                             }
                             return label;
                         }
@@ -193,6 +205,21 @@ function drawCircleStatistics(data) {
                 legend: {
                     position: 'bottom'
                 },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            let label = context.dataset.label || '';
+
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += currencyFormat.format(context.parsed);
+                            }
+                            return label;
+                        }
+                    }
+                }
             }
         }
     });
@@ -223,6 +250,21 @@ function drawCircleStatistics(data) {
                 legend: {
                     position: 'bottom'
                 },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            let label = context.dataset.label || '';
+
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += currencyFormat.format(context.parsed);
+                            }
+                            return label;
+                        }
+                    }
+                }
             }
         }
     });
