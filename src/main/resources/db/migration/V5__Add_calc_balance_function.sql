@@ -6,16 +6,16 @@ $$
 begin
     return
             coalesce((select sum(amount)
-             from transactions
-             where profile_id = current_profile
-               and is_income = true
-               and transaction_date <= CURRENT_DATE)
+                      from transactions
+                      where profile_id = current_profile
+                        and is_income = true
+                        and transaction_date <= CURRENT_DATE), 0)
             -
-            (select sum(amount)
-             from transactions
-             where profile_id = current_profile
-               and is_income = false
-               and transaction_date <= CURRENT_DATE), 0);
+            coalesce((select sum(amount)
+                      from transactions
+                      where profile_id = current_profile
+                        and is_income = false
+                        and transaction_date <= CURRENT_DATE), 0);
 end;
 $$;
 

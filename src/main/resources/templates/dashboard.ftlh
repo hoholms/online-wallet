@@ -26,7 +26,9 @@
                     Add Income Transaction
                 </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+            <div id="collapseOne"
+                 class="accordion-collapse collapse <#if errorsMap?? && transactionDto.isIncome>show</#if>"
+                 aria-labelledby="headingOne"
                  data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     <@at.addTransaction incomeCategories true today />
@@ -40,7 +42,9 @@
                     Add Expense Transaction
                 </button>
             </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+            <div id="collapseTwo"
+                 class="accordion-collapse collapse <#if errorsMap?? && !transactionDto.isIncome>show</#if>"
+                 aria-labelledby="headingTwo"
                  data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     <@at.addTransaction expenseCategories false today />
@@ -114,7 +118,7 @@
     <#if recentTransactions[0]??>
         <div class="container-fluid my-4">
             <h3 class="mb-4">Your recent transactions:</h3>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="row row-cols-1 row-cols-md-4 g-4" style="-webkit-transform: translateZ(0)">
                 <#assign maxDate = recentTransactions[0].transactionDate>
                 <hr class="col-md-12 mb-1">
                 <h4 class="col-md-12">${maxDate.month?capitalize} ${maxDate.year?string.computer}

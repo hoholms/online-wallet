@@ -2,9 +2,10 @@
 <#import "parts/auth.ftlh" as l>
 
 <@c.page>
-    <div class="mb-1 text-center">
-        <p class="text-info">${message!""}</p>
-        <p class="text-danger">${error!""}</p>
-    </div>
     <@l.auth "/login" false/>
+    <script>
+        window.onload = function () {
+            document.getElementById("uname").focus();
+        }
+    </script>
 </@c.page>

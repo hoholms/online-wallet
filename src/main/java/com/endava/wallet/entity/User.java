@@ -2,10 +2,13 @@ package com.endava.wallet.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -25,9 +28,14 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "username", nullable = false, length = 50)
+    @NotBlank(message = "Please provide a username")
+    @Length(max = 50, message = "Username is too long")
     private String username;
 
     @Column(name = "password", nullable = false, length = 500)
+    @NotBlank(message = "Please provide a password")
+    @Length(min = 8, max = 500, message = "Password must be at least 8 characters")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$", message = "Password must have at least 1 number and 1 letter")
     private String password;
 
     @Column(name = "enabled", nullable = false)

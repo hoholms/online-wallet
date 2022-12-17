@@ -33,8 +33,8 @@ public class LoginController {
         Exception exception = (Exception) request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
         String error;
         if (exception instanceof BadCredentialsException) {
-            logger.error("Invalid username and password!");
-            error = "Invalid username and password!";
+            logger.error("Invalid username or password!");
+            error = "Invalid username or password!";
         } else if (exception instanceof LockedException) {
             error = exception.getMessage();
         } else {

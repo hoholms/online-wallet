@@ -12,7 +12,7 @@
 
     <groupId>com.endava</groupId>
     <artifactId>online-wallet</artifactId>
-    <version>1.1.5</version>
+    <version>1.2</version>
     <name>Online_Wallet</name>
     <properties>
         <java.version>11</java.version>
@@ -44,6 +44,12 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+        </dependency>
+
+        <!--    Validation    -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <!--    Security    -->

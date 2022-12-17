@@ -2,8 +2,10 @@ package com.endava.wallet.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +26,8 @@ public class TransactionsCategory {
     private Boolean isIncome;
 
     @Column(name = "category", nullable = false, length = 50)
+    @NotBlank(message = "Please provide a category name")
+    @Length(max = 50, message = "Category name is too long")
     private String category;
 
     @Override

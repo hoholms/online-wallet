@@ -21,3 +21,17 @@ $('.dropup').on('hidden.bs.dropdown', function () {
     }).detach());
 });
 
+(function ($) {
+
+    "use strict";
+
+    $(".tran-card").tilt({
+        maxTilt: 20,
+        perspective: 1400,
+        easing: "cubic-bezier(.03,.98,.52,.99)",
+        speed: 1200,
+        glare: true,
+        maxGlare: 0.5,
+        scale: 1.04,
+    });
+}(jQuery));

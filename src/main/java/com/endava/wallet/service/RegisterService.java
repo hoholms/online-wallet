@@ -6,7 +6,9 @@ import com.endava.wallet.entity.dto.ProfileDto;
 import com.endava.wallet.entity.dto.ProfileDtoConverter;
 import com.endava.wallet.entity.dto.UserDto;
 import com.endava.wallet.entity.dto.UserDtoConverter;
-import com.endava.wallet.exception.RegisterException;
+import com.endava.wallet.exception.EmailAlreadyExistsException;
+import com.endava.wallet.exception.PasswordsDontMatchException;
+import com.endava.wallet.exception.UsernameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +32,13 @@ public class RegisterService {
 
         if (userService.existsUserByUsername(user.getUsername())) {
             logger.error("User not added, because user {} already exists", user.getUsername());
-            throw new RegisterException("User already exists!");
+            throw new UsernameAlreadyExistsException("User already exists!");
         } else if (profileService.existsProfileByEmail(profile.getEmail())) {
             logger.error("User not added, because email {} exists", profile.getEmail());
-            throw new RegisterException("Email already registered!");
+            throw new EmailAlreadyExistsException("Email already registered!");
         } else if (!Objects.equals(user.getPassword(), passwordConfirm)) {
             logger.error("User not added, because passwords not matching");
-            throw new RegisterException("Passwords don't match!");
+            throw new PasswordsDontMatchException("Passwords don't match!");
         }
 
         userService.add(user);

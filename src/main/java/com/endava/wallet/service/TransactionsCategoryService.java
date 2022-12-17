@@ -3,6 +3,7 @@ package com.endava.wallet.service;
 import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.TransactionsCategory;
 import com.endava.wallet.entity.dto.TransactionsCategoryDto;
+import com.endava.wallet.entity.dto.TransactionsCategoryDtoConverter;
 import com.endava.wallet.exception.TransactionCategoryNotFoundException;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ public class TransactionsCategoryService {
     private final TransactionsCategoryRepository categoryRepository;
 
     private final TransactionService transactionService;
+
+    private final TransactionsCategoryDtoConverter categoryDtoConverter;
 
     public List<TransactionsCategory> findAllCategoriesByTransactionIdByIsIncome(Long transactionId) {
 
@@ -65,6 +68,11 @@ public class TransactionsCategoryService {
                 .category(category)
                 .isIncome(isIncome)
                 .build();
+        categoryRepository.save(transactionsCategory);
+    }
+
+    public void addCategory(TransactionsCategoryDto categoryDto) {
+        TransactionsCategory transactionsCategory = categoryDtoConverter.fromDto(categoryDto);
         categoryRepository.save(transactionsCategory);
     }
 }
