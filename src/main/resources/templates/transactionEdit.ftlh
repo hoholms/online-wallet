@@ -1,61 +1,73 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    <h4>Transaction editor</h4>
-    <br>
-    <form action="/transactions" method="post">
-        <input type="hidden" value="${_csrf.token}" name="_csrf">
-        <input type="hidden" value="${transactionEdit.id}" name="id">
+    <div class="row align-items-center">
+        <div class="col-md-10 mx-auto col-lg-8">
+            <form action="/transactions" method="post" class="p-4 border rounded-3 bg-light">
+                <h1 class="h2 mb-3 fw-normal text-center">Transaction editor</h1>
+                <input type="hidden" value="${_csrf.token}" name="_csrf">
+                <input type="hidden" value="${id}" name="id">
 
-        <input type="hidden" value="${transactionEdit.id}" name="id">
-        <div class="form-group row">
-            <label for="transactionId" class="col-sm-2 col-form-label">Category</label>
-            <div class="col-sm-10">
-                <select class="form-select" name="category" id="transactionId" required>
-                    <#list categories as category>
-                        <#if category == transactionEdit.category>
-                            <option selected="selected">${category.category}</option>
-                        <#else>
-                            <option>${category.category}</option>
-                        </#if>
-                    </#list>
-                </select>
-            </div>
-        </div>
-        <br>
-        <div class="form-group row">
-            <label for="message" class="col-sm-2 col-form-label">Message</label>
-            <div class="col-sm-10">
-                <input type="text" id="message" name="message" maxlength="255" class="form-control"
-                       value="${transactionEdit.message}"
-                       placeholder="Message">
-            </div>
-        </div>
-        <br>
-        <div class="form-group row">
-            <label for="tAmount" class="col-sm-2 col-form-label">Amount</label>
-            <div class="col-sm-10">
-                <input type="number" id="tAmount" name="amount" class="form-control"
-                       placeholder="${transactionEdit.amount}"
-                       step="0.01" min="0.01" max="1000000" value="${transactionEdit.amount}">
-            </div>
-        </div>
-        <br>
-        <div class="form-group row">
-            <label for="tDate" class="col-sm-2 col-form-label">Date</label>
-            <div class="col-sm-10">
-                <input type="date" id="tDate" name="transactionDate" class="form-control" placeholder="Date"
-                       style="height: 2.4rem" value="${transactionEdit.transactionDate}" required>
-            </div>
-        </div>
+                <div class="form-floating mb-3">
+                    <select class="form-select ${(categoryError??)?string('is-invalid', '')}" name="category"
+                            id="transactionId">
+                        <#list categories as category>
+                            <#if category == transactionEdit.category || (category.category == transactionEdit.category)>
+                                <option selected="selected">${category.category}</option>
+                            <#else>
+                                <option>${category.category}</option>
+                            </#if>
+                        </#list>
+                    </select>
+                    <label for="transactionId" class="col-sm-2 col-form-label">Category</label>
+                    <#if categoryError??>
+                        <div class="invalid-feedback">
+                            ${categoryError}
+                        </div>
+                    </#if>
+                </div>
 
-        <div class="form-group row">
-            <div class="col-sm-10">
-                <button class="btn btn-outline-primary mt-3" type="submit">Save</button>
+                <div class="form-floating mb-3">
+                    <input type="text" id="message" name="message"
+                           class="form-control ${(messageError??)?string('is-invalid', '')}"
+                           value="${transactionEdit.message}"
+                           placeholder="Message">
+                    <label for="message" class="col-sm-2 col-form-label">Message</label>
+                    <#if messageError??>
+                        <div class="invalid-feedback">
+                            ${messageError}
+                        </div>
+                    </#if>
+                </div>
 
-                <a href="/transactions/delete/${transactionEdit.id}" class="btn btn-outline-danger mt-3">Delete</a>
-            </div>
+                <div class="form-floating mb-3">
+                    <input type="number" id="tAmount" name="amount"
+                           class="form-control ${(amountError??)?string('is-invalid', '')}"
+                           placeholder="Amount"
+                           value="${(transactionEdit.amount?string.computer)!""}">
+                    <label for="tAmount" class="col-sm-2 col-form-label">Amount</label>
+                    <#if amountError??>
+                        <div class="invalid-feedback">
+                            ${amountError}
+                        </div>
+                    </#if>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="date" id="tDate" name="transactionDate"
+                           class="form-control ${(transactionDateError??)?string('is-invalid', '')}" placeholder="Date"
+                           min="1970-01-01" value="${transactionEdit.transactionDate}">
+                    <label for="tDate" class="col-sm-2 col-form-label">Date</label>
+                    <#if transactionDateError??>
+                        <div class="invalid-feedback">
+                            ${transactionDateError}
+                        </div>
+                    </#if>
+                </div>
+
+                <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Save</button>
+                <a href="/transactions/delete/${id}" class="w-100 btn btn-lg btn-outline-danger">Delete</a>
+            </form>
         </div>
-
-    </form>
+    </div>
 </@c.page>

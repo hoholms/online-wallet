@@ -33,7 +33,7 @@
         <div class="col-md-2 form-group">
             <label class="form-label" for="tDate">Date</label>
             <input class="form-control ${((errorsMap['transactionDateError'])??)?string('is-invalid', '')}" type="date"
-                   value="${today}" min="1970-01-01" name="transactionDate" id="tDate"
+                   value="<#if errorsMap?? && transactionDto??>${transactionDto.transactionDate!""}<#else>${today}</#if>" min="1970-01-01" name="transactionDate" id="tDate"
                    style="height: 2.4rem">
             <#if (errorsMap['transactionDateError'])??>
                 <div class="invalid-feedback">

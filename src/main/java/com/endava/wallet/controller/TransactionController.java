@@ -3,6 +3,7 @@ package com.endava.wallet.controller;
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.Transaction;
 import com.endava.wallet.entity.User;
+import com.endava.wallet.entity.dto.TransactionDto;
 import com.endava.wallet.service.ProfileService;
 import com.endava.wallet.service.TransactionService;
 import com.endava.wallet.service.TransactionsCategoryService;
@@ -12,9 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
+import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/transactions")
@@ -38,6 +41,7 @@ public class TransactionController {
         Transaction transaction = transactionService.findTransactionByIdAndProfile(transactionID, currentProfile);
 
         model.addAttribute("transactionEdit", transaction);
+        model.addAttribute("id", transaction.getId());
         model.addAttribute("categories",
                 categoryService.findAllCategoriesByTransactionIdByIsIncome(transactionID));
 
@@ -52,17 +56,26 @@ public class TransactionController {
         return "redirect:/dashboard";
     }
 
-    @PostMapping
+    @PostMapping()
     public String transactionSave(
             @AuthenticationPrincipal User user,
             @RequestParam Long id,
-            @RequestParam(required = false) String message,
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) BigDecimal amount,
-            @RequestParam String transactionDate
+            @Valid TransactionDto transactionDto,
+            BindingResult bindingResult,
+            Model model
     ) {
-        transactionService.save(user, id, message, category, amount, transactionDate);
-        logger.info("Saved transaction with id: {}", id);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("transactionEdit", transactionDto);
+            model.addAttribute("id", id);
+            model.addAttribute("categories",
+                    categoryService.findAllCategoriesByTransactionIdByIsIncome(id));
+            return "transactionEdit";
+        } else {
+            transactionService.save(user, id, transactionDto);
+            logger.info("Saved transaction by id {}", id);
+        }
 
         return "redirect:/dashboard";
     }

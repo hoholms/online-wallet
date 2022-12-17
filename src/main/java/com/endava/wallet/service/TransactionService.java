@@ -1,6 +1,7 @@
 package com.endava.wallet.service;
 
 import com.endava.wallet.entity.*;
+import com.endava.wallet.entity.dto.TransactionDto;
 import com.endava.wallet.exception.TransactionCategoryNotFoundException;
 import com.endava.wallet.exception.TransactionNotFoundException;
 import com.endava.wallet.repository.TransactionRepository;
@@ -44,17 +45,17 @@ public class TransactionService {
         logger.info("Transaction with id: {} was added", transaction.getId());
     }
 
-    public void save(User user, Long id, String message, String category, BigDecimal amount, String transactionDate) {
+    public void save(User user, Long id, TransactionDto transactionDto) {
         Profile currentProfile = profileService.findProfileByUser(user);
         Transaction transaction = findTransactionByIdAndProfile(id, currentProfile);
 
-        if (amount != null) {
-            transaction.setAmount(amount);
+        if (transactionDto.getAmount() != null) {
+            transaction.setAmount(transactionDto.getAmount());
         }
-        transaction.setCategory(categoryRepository.findByCategory(category)
+        transaction.setCategory(categoryRepository.findByCategory(transactionDto.getCategory())
                 .orElseThrow(() -> new TransactionCategoryNotFoundException("Transaction category not found!")));
-        transaction.setTransactionDate(parseDate(transactionDate));
-        transaction.setMessage(message);
+        transaction.setTransactionDate(parseDate(transactionDto.getTransactionDate()));
+        transaction.setMessage(transaction.getMessage());
 
         transactionRepository.save(transaction);
         profileService.save(currentProfile);

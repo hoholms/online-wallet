@@ -1,6 +1,7 @@
 package com.endava.wallet.service;
 
 import com.endava.wallet.entity.*;
+import com.endava.wallet.entity.dto.TransactionDtoConverter;
 import com.endava.wallet.repository.ProfileRepository;
 import com.endava.wallet.repository.TransactionRepository;
 import com.endava.wallet.repository.TransactionsCategoryRepository;
@@ -39,6 +40,9 @@ public class TransactionServiceTest {
     private ProfileRepository profileRepository;
     @MockBean
     private TransactionsCategoryRepository categoryRepository;
+
+    @MockBean
+    private TransactionDtoConverter transactionDtoConverter;
 
     @Before
     public void setUp() {
@@ -89,12 +93,11 @@ public class TransactionServiceTest {
         Mockito.when(categoryRepository.findByCategory(transaction.getCategory().toString()))
                 .thenReturn(Optional.of(transaction.getCategory()));
 
-        transactionService.save(user,
+        transactionService.save(
+                user,
                 transaction.getId(),
-                "message",
-                transaction.getCategory().toString(),
-                BigDecimal.valueOf(Mockito.anyInt()),
-                LocalDate.now().toString());
+                transactionDtoConverter.toDto(transaction)
+        );
 
         Mockito.verify(transactionRepository, Mockito.times(1)).save(transaction);
         Mockito.verify(profileService, Mockito.times(1)).save(profile);
@@ -109,12 +112,11 @@ public class TransactionServiceTest {
         Mockito.when(categoryRepository.findByCategory(transaction.getCategory().toString()))
                 .thenReturn(Optional.empty());
 
-        Assertions.assertThrows(Exception.class, () -> transactionService.save(user,
+        Assertions.assertThrows(Exception.class, () -> transactionService.save(
+                user,
                 transaction.getId(),
-                "message",
-                transaction.getCategory().toString(),
-                BigDecimal.valueOf(Mockito.anyInt()),
-                LocalDate.now().toString()));
+                transactionDtoConverter.toDto(transaction)
+        ));
 
         Mockito.verify(transactionRepository, Mockito.times(0)).save(transaction);
         Mockito.verify(profileService, Mockito.times(0)).save(profile);

@@ -23,4 +23,14 @@ public class TransactionDtoConverter {
                 .transactionDate(LocalDate.parse(transactionDto.getTransactionDate()))
                 .build();
     }
+
+    public TransactionDto toDto(Transaction transaction) {
+        return TransactionDto.builder()
+                .category(transaction.getCategory().getCategory())
+                .transactionDate(transaction.getTransactionDate().toString())
+                .amount(transaction.getAmount())
+                .isIncome(transaction.getIsIncome())
+                .message(transaction.getMessage())
+                .build();
+    }
 }

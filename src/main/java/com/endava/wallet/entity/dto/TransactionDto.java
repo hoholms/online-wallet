@@ -1,6 +1,7 @@
 package com.endava.wallet.entity.dto;
 
 import com.endava.wallet.entity.Transaction;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
  * A dto for the {@link Transaction} entity
  */
 @Data
+@Builder
 public class TransactionDto implements Serializable {
 
     @NotNull(message = "Please provide a category")
