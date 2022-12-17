@@ -13,13 +13,17 @@
             </h1>
             <#if !isRegisterForm>
                 <div class="text-center">
-                    <p class="text-info">${message!""}</p>
-                    <p class="text-danger">${error!""}</p>
+                    <#if message??>
+                        <p class="alert alert-info" role="alert">${message!""}</p>
+                    </#if>
+                    <#if error?? && RequestParameters.error??>
+                        <p class="alert alert-danger" role="alert">${error!""}</p>
+                    </#if>
                 </div>
             </#if>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control ${(usernameError??)?string('is-invalid', '')}" name="username"
-                       id="uname" maxlength="50" placeholder="Username"
+                       id="uname" placeholder="Username"
                        value="<#if userDto??>${userDto.username!""}</#if>"/>
                 <label for="uname">Username</label>
                 <#if usernameError??>

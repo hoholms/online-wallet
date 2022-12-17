@@ -118,7 +118,7 @@
     <#if recentTransactions[0]??>
         <div class="container-fluid my-4">
             <h3 class="mb-4">Your recent transactions:</h3>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="row row-cols-1 row-cols-md-4 g-4" style="-webkit-transform: translateZ(0)">
                 <#assign maxDate = recentTransactions[0].transactionDate>
                 <hr class="col-md-12 mb-1">
                 <h4 class="col-md-12">${maxDate.month?capitalize} ${maxDate.year?string.computer}

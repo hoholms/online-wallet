@@ -9,8 +9,15 @@
 
             <div class="mt-0 col">
                 <label class="form-label" for="category">Name</label>
-                <input class="form-control" type="text" name="category" placeholder="Category name"
-                       id="category" required>
+                <input class="form-control ${(categoryError??)?string('is-invalid', '')}" type="text" name="category"
+                       placeholder="Category name"
+                       id="category"
+                       value="<#if categoryDto?? && categoryError??>${categoryDto.category!""}</#if>">
+                <#if categoryError??>
+                    <div class="invalid-feedback">
+                        ${categoryError}
+                    </div>
+                </#if>
             </div>
 
             <div class="mt-0 col-2">

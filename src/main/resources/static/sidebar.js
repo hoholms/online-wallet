@@ -32,7 +32,6 @@ $('.dropup').on('hidden.bs.dropdown', function () {
         speed: 1200,
         glare: true,
         maxGlare: 0.5,
-        scale: 1.04
+        scale: 1.04,
     });
-
 }(jQuery));

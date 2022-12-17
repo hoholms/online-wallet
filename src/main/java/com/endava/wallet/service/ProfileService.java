@@ -2,14 +2,18 @@ package com.endava.wallet.service;
 
 import com.endava.wallet.entity.Profile;
 import com.endava.wallet.entity.User;
+import com.endava.wallet.entity.dto.PasswordChangeDto;
 import com.endava.wallet.entity.dto.ProfileDto;
+import com.endava.wallet.exception.EmailAlreadyExistsException;
+import com.endava.wallet.exception.OldPasswordDontMatchException;
+import com.endava.wallet.exception.PasswordsDontMatchException;
 import com.endava.wallet.exception.ProfileNotFoundException;
-import com.endava.wallet.exception.RegisterException;
 import com.endava.wallet.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -68,7 +72,7 @@ public class ProfileService {
         return true;
     }
 
-    public String updateProfile(HttpServletRequest request, User user, ProfileDto profileDto, String password) {
+    public String updateProfile(HttpServletRequest request, User user, ProfileDto profileDto, PasswordChangeDto passwordChangeDto) {
         Profile currentProfile = profileRepository.findByUser(user)
                 .orElseThrow(() -> new ProfileNotFoundException(
                         String.format("Profile for user %s not found!", user.getId())
@@ -86,6 +90,8 @@ public class ProfileService {
         boolean isLastNameChanged = (profileDto.getLastName() != null && !profileDto.getLastName().equals(userLastName) ||
                 userLastName != null && !userLastName.equals(profileDto.getLastName()));
 
+        boolean isPasswordChanged = !ObjectUtils.isEmpty(passwordChangeDto.getNewPassword());
+
         if (isFirstNameChanged) {
             currentProfile.setFirstName(profileDto.getFirstName());
         }
@@ -94,8 +100,14 @@ public class ProfileService {
             currentProfile.setLastName(profileDto.getLastName());
         }
 
-        if (!ObjectUtils.isEmpty(password)) {
-            user.setPassword(passwordEncoder.encode(password));
+        if (isPasswordChanged) {
+            if (BCrypt.checkpw(passwordChangeDto.getNewPassword(), user.getPassword())) {
+                throw new OldPasswordDontMatchException("Old password is incorrect");
+            } else if (!passwordChangeDto.getNewPassword().equals(passwordChangeDto.getConfirmPassword())) {
+                throw new PasswordsDontMatchException("Passwords don't match");
+            }
+
+            user.setPassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
         }
 
         if (isEmailChanged && !existsProfileByEmail(profileDto.getEmail())) {
@@ -106,7 +118,7 @@ public class ProfileService {
             logger.info("Profile id {} has been updated", currentProfile.getId());
         } else if (isEmailChanged && existsProfileByEmail(profileDto.getEmail())) {
             logger.error("Profile id {} failed to update", currentProfile.getId());
-            throw new RegisterException("Email already registered!");
+            throw new EmailAlreadyExistsException("Email already registered!");
         }
 
         currentProfile.setCurrency(profileDto.getCurrency());
@@ -114,7 +126,7 @@ public class ProfileService {
         userService.save(user);
         profileRepository.save(currentProfile);
 
-        if (isEmailChanged || !ObjectUtils.isEmpty(password)) {
+        if (isEmailChanged || isPasswordChanged) {
             try {
                 request.logout();
                 return "redirect:/login";

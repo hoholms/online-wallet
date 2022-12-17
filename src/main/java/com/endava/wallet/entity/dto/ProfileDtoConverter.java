@@ -23,4 +23,15 @@ public class ProfileDtoConverter {
                 .currency(profile.getCurrency())
                 .build();
     }
+
+    public ProfileDto toDto(Profile profile) {
+        return ProfileDto.builder()
+                .firstName(profile.getFirstName())
+                .lastName(profile.getLastName())
+                .email(profile.getEmail())
+                .balance(profile.getBalance())
+                .createdDate(profile.getCreatedDate())
+                .currency(profile.getCurrency())
+                .build();
+    }
 }

@@ -3,4 +3,9 @@
 
 <@c.page>
     <@l.auth "/login" false/>
+    <script>
+        window.onload = function () {
+            document.getElementById("uname").focus();
+        }
+    </script>
 </@c.page>

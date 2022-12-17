@@ -1,6 +1,7 @@
 package com.endava.wallet.entity.dto;
 
 import com.endava.wallet.entity.Profile;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -14,6 +15,7 @@ import java.time.Instant;
  * A dto for the {@link Profile} entity
  */
 @Data
+@Builder
 public class ProfileDto implements Serializable {
 
     @NotBlank(message = "Please provide your first name")
