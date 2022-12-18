@@ -101,7 +101,7 @@ public class ProfileService {
         }
 
         if (isPasswordChanged) {
-            if (BCrypt.checkpw(passwordChangeDto.getNewPassword(), user.getPassword())) {
+            if (!BCrypt.checkpw(passwordChangeDto.getOldPassword(), user.getPassword())) {
                 throw new OldPasswordDontMatchException("Old password is incorrect");
             } else if (!passwordChangeDto.getNewPassword().equals(passwordChangeDto.getConfirmPassword())) {
                 throw new PasswordsDontMatchException("Passwords don't match");
