@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -58,8 +55,24 @@ public class TransactionsCategoryController {
     }
 
     @PostMapping("/edit")
-    public String updateCategory(TransactionsCategoryDto categoryDto) {
-        transactionsCategoryService.updateCategory(categoryDto);
+    public String updateCategory(
+            @RequestParam Long id,
+            @Valid TransactionsCategoryDto categoryDto,
+            BindingResult bindingResult,
+            Model model
+    ) {
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("category", categoryDto);
+            model.addAttribute("category.id", id);
+            logger.error("Category update error!");
+            return "categoryEdit";
+        } else {
+            transactionsCategoryService.updateCategory(categoryDto);
+            logger.info(String.format("Category \"%s\" added.", categoryDto.getCategory()));
+        }
 
         return "redirect:/categories";
     }

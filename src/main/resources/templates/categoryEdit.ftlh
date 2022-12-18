@@ -24,9 +24,15 @@
         <div class="form-group row mb-3">
             <label for="category" class="col-sm-2 col-form-label">Category name</label>
             <div class="col-4">
-                <input type="text" id="category" name="category" class="form-control" maxlength="50"
+                <input type="text" id="category" name="category"
+                       class="form-control ${(categoryError??)?string('is-invalid', '')}"
                        value="${category.category}"
-                       placeholder="Category name" required>
+                       placeholder="Category name">
+                <#if categoryError??>
+                    <div class="invalid-feedback">
+                        ${categoryError}
+                    </div>
+                </#if>
             </div>
         </div>
 

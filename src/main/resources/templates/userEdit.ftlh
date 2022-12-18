@@ -23,9 +23,15 @@
         <div class="form-group row mb-3">
             <label for="username" class="col-sm-2 col-form-label">Username</label>
             <div class="col-4">
-                <input type="text" id="username" name="username" class="form-control" maxlength="50"
-                       value="${user.username}"
+                <input type="text" id="username" name="username"
+                       class="form-control ${(usernameError??)?string('is-invalid', '')}"
+                       value="<#if usernameError??>${failedUsername}<#else>${user.username}</#if>"
                        placeholder="Username">
+                <#if usernameError??>
+                    <div class="invalid-feedback">
+                        ${usernameError}
+                    </div>
+                </#if>
             </div>
         </div>
 

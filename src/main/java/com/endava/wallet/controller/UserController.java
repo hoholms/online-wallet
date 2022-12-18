@@ -1,14 +1,17 @@
 package com.endava.wallet.controller;
 
 import com.endava.wallet.entity.Authority;
+import com.endava.wallet.entity.dto.UsernameDto;
 import com.endava.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -36,13 +39,24 @@ public class UserController {
     @PostMapping
     public String userSave(
             @RequestParam Long userID,
-            @RequestParam String username,
             @RequestParam(defaultValue = "false") Boolean enabled,
-            @RequestParam Map<String, String> form
+            @RequestParam Map<String, String> form,
+            @Valid UsernameDto username,
+            BindingResult bindingResult,
+            Model model
 
     ) {
-        userService.updateUser(userID, username, enabled, form);
-        logger.info("Saved user with id: {}", userID);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("user", userService.findUserById(userID));
+            model.addAttribute("authorities", Authority.values());
+            model.addAttribute("failedUsername", username.getUsername());
+            return "userEdit";
+        } else {
+            userService.updateUser(userID, username.getUsername(), enabled, form);
+            logger.info("Saved user with id: {}", userID);
+        }
         return "redirect:/users";
     }
 
