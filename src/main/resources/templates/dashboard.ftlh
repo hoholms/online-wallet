@@ -136,8 +136,8 @@
                                  style="height: 100%;">
                                 <div class="card-body <#if transaction.transactionDate.isAfter(today)>text-muted</#if>">
                                     <h5 class="card-title">${transaction.category.category}</h5>
-                                    <#if transaction.message != "">
-                                        <p class="card-text ">${transaction.message}</p>
+                                    <#if transaction.message?? && transaction.message != "">
+                                        <p class="card-text ">${transaction.message!""}</p>
                                     <#else>
                                         <p class="card-text">
                                             Got ${transaction.amount?string[",###.## ¤;; currencyCode=${currentProfile.currency}"]}
@@ -159,8 +159,8 @@
                                  style="height: 100%;">
                                 <div class="card-body <#if transaction.transactionDate.isAfter(today)>text-muted</#if>">
                                     <h5 class="card-title">${transaction.category.category}</h5>
-                                    <#if transaction.message != "">
-                                        <p class="card-text">${transaction.message}</p>
+                                    <#if transaction.message?? && transaction.message != "">
+                                        <p class="card-text">${transaction.message!""}</p>
                                     <#else>
                                         <p class="card-text">
                                             Spent ${transaction.amount?string[",###.## ¤;; currencyCode=${currentProfile.currency}"]}
@@ -181,4 +181,6 @@
             </div>
         </div>
     </#if>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js"></script>
 </@c.page>

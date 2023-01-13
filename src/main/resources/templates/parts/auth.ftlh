@@ -1,6 +1,6 @@
 <#macro auth path isRegisterForm>
     <div class="col-md-10 mx-auto col-lg-8">
-        <form action="${path}" method="post" class="p-4 border rounded-3 bg-light">
+        <form action="${path}" method="post" class="p-4 border rounded-3 bg-light-subtle">
             <#--noinspection FtlReferencesInspection-->
             <input type="hidden" name="_csrf" value="${_csrf.token}">
 

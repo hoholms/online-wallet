@@ -117,7 +117,7 @@ html {
     left: 0;
     z-index: 100; /* Behind the navbar */
     padding: 0 0 0; /* Height of navbar */
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    box-shadow: inset -1px 0 0 var(--bs-border-color);
 }
 
 .sidebar-sticky {
@@ -141,7 +141,7 @@ html {
 
 .col-md-main {
     flex: 0 0 auto;
-    width: calc(100% - 4.5rem);
+    width: calc(100% - 4.5rem) !important;
 }
 
 .col-lg-sidebar {
@@ -163,23 +163,23 @@ html {
 }
 
 .dropdown-item-danger:hover, .dropdown-item-danger:focus {
-    color: var(--bs-white);
-    background-color: var(--bs-red);
+    color: var(--bs-white) !important;
+    background-color: var(--bs-danger) !important;
 }
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-    background-color: var(--bs-white);
-    color: var(--bs-primary);
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-primary) !important;
+    box-shadow: inset -1px 0 0 var(--bs-border-color);
 }
 
 .nav-link {
-    color: var(--bs-gray-600);
+    color: var(--bs-secondary-color) !important;
 }
 
 .nav-link:hover, .nav-link:focus {
-    color: black;
+    color: var(--bs-emphasis-color) !important;
 }
 
 .border-profile {
@@ -191,7 +191,7 @@ html {
         position: fixed !important;
         top: initial;
         bottom: 0;
-        box-shadow: 0px 1px 0px rgba(34, 60, 80, 0.1) inset !important;
+        box-shadow: 0px 1px 0px var(--bs-border-color) inset !important;
         display: flex;
         flex-wrap: nowrap;
         white-space: nowrap;
@@ -228,7 +228,7 @@ html {
 
     .col-md-main {
         flex: 0 0 auto;
-        width: 100%;
+        width: 100% !important;
     }
 
     .nav {
@@ -237,7 +237,7 @@ html {
 
     .nav-pills .nav-link.active,
     .nav-pills .show > .nav-link {
-        box-shadow: 0px 1px 0px rgba(34, 60, 80, 0.1) inset;
+        box-shadow: 0px 1px 0px var(--bs-border-color) inset;
     }
 
     .border-sidebar {

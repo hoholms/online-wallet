@@ -3,7 +3,7 @@
 <@c.page>
     <div class="row align-items-center">
         <div class="col-md-10 mx-auto col-lg-8">
-            <form method="post" class="p-4 border rounded-3 bg-light">
+            <form method="post" class="p-4 border rounded-3 bg-light-subtle">
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
 
                 <h1 class="h2 mb-3 fw-normal text-center">${username}</h1>

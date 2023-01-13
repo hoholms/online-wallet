@@ -31,7 +31,7 @@ $('.dropup').on('hidden.bs.dropdown', function () {
         easing: "cubic-bezier(.03,.98,.52,.99)",
         speed: 1200,
         glare: true,
-        maxGlare: 0.5,
+        maxGlare: 0.05,
         scale: 1.04,
     });
 }(jQuery));

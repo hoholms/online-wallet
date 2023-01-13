@@ -3,7 +3,7 @@
 <@c.page>
     <div class="row align-items-center">
         <div class="col-md-10 mx-auto col-lg-8">
-            <form action="/transactions" method="post" class="p-4 border rounded-3 bg-light">
+            <form action="/transactions" method="post" class="p-4 border rounded-3 bg-light-subtle">
                 <h1 class="h2 mb-3 fw-normal text-center">Transaction editor</h1>
                 <input type="hidden" value="${_csrf.token}" name="_csrf">
                 <input type="hidden" value="${id}" name="id">
@@ -30,7 +30,7 @@
                 <div class="form-floating mb-3">
                     <input type="text" id="message" name="message"
                            class="form-control ${(messageError??)?string('is-invalid', '')}"
-                           value="${transactionEdit.message}"
+                           value="${transactionEdit.message!""}"
                            placeholder="Message">
                     <label for="message" class="col-sm-2 col-form-label">Message</label>
                     <#if messageError??>

@@ -34,9 +34,9 @@
     </symbol>
 </svg>
 
-<nav class="col-md-sidebar mt-auto bg-white sidebar overflow-visible">
+<nav class="bg-body col-md-sidebar mt-auto sidebar overflow-visible">
     <div class="position-sticky sidebar-sticky d-flex flex-sidebar flex-shrink-0 overflow-visible">
-        <a href="/" class="d-block p-3 link-dark text-decoration-none border-sidebar">
+        <a href="/" class="d-block p-3 text-dark-emphasis text-decoration-none border-sidebar">
             <svg class="bi pe-none" width="40" height="32">
                 <use xlink:href="#wallet"/>
             </svg>
@@ -85,13 +85,13 @@
         <#if user??>
             <div class="dropup border-profile">
                 <a href="#"
-                   class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle"
+                   class="nav-link d-flex align-items-center justify-content-center p-3 text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Statistics">
                         <use xlink:href="#profile"/>
                     </svg>
                 </a>
-                <ul class="dropdown-menu text-small shadow mb-sm-1 ms-sm-1">
+                <ul class="dropdown-menu text-small mb-sm-1 ms-sm-1">
                     <li><a class="dropdown-item" href="/profile">Profile</a></li>
                     <li><a class="dropdown-item" href="https://github.com/hoholms/online-wallet" target="_blank">GitHub
                             Repo</a></li>

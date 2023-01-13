@@ -4,7 +4,8 @@
     <h2>List of transaction categories</h2>
 
     <div class="col-md-10 mx-auto col-lg-8">
-        <form action="/categories" method="post" class="m-4 row align-items-center p-4 border rounded-3 bg-light">
+        <form action="/categories" method="post"
+              class="m-4 row align-items-center p-4 border rounded-3 bg-light-subtle">
             <input type="hidden" value="${_csrf.token}" name="_csrf">
 
             <div class="mt-0 col">
@@ -51,8 +52,9 @@
             <#list categories as category>
                 <tr>
                     <td>${category.category}</td>
-                    <td class="table-<#if category.isIncome>success<#else>danger</#if>"
-                        style="width: 10%; text-align: center">
+                    <td
+                            style="width: 10%; text-align: center;
+                                    background-color: <#if category.isIncome>var(--bs-success-border-subtle)<#else>var(--bs-danger-border-subtle)</#if>">
                         <input type="checkbox" name="isIncome" id="isIncomeCheck"
                                class="form-check-input" ${category.isIncome?string("checked", "")} disabled>
                     </td>
