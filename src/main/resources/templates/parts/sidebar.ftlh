@@ -34,7 +34,7 @@
     </symbol>
 </svg>
 
-<nav class="bg-body col-md-sidebar mt-auto sidebar overflow-visible">
+<nav class="bg-body col-md-sidebar mt-auto sidebar">
     <div class="position-sticky sidebar-sticky d-flex flex-sidebar flex-shrink-0 overflow-visible">
         <a href="/" class="d-block p-3 text-dark-emphasis text-decoration-none border-sidebar">
             <svg class="bi pe-none" width="40" height="32">

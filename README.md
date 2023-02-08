@@ -5,9 +5,6 @@ Made on [Bootstrap 5.2](https://getbootstrap.com/) and [Spring](https://spring.i
 
 By [hoholms](https://github.com/hoholms) and [VetrovMilka](https://github.com/VetrovMilka)
 
-## Demo
-You can try Online Wallet on this [page](https://hoholms.hopto.org/).
-
 ## Installation
 ### Requirements
 This application using **postgresql** database. Install it.
