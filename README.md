@@ -1,7 +1,7 @@
 # Online Wallet
 Simple user friendly web application to control your finances.
 
-Made on [Bootstrap 5.2](https://getbootstrap.com/) and [Spring](https://spring.io/)
+Made on [Bootstrap 5.2](https://getbootstrap.com/) and [Spring Boot](https://spring.io/)
 
 By [hoholms](https://github.com/hoholms) and [VetrovMilka](https://github.com/VetrovMilka)
 
