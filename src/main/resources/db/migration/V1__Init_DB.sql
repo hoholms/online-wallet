@@ -1,7 +1,8 @@
-create table authorities
+CREATE TABLE authorities
 (
-    user_id   int8 not null,
-    authority varchar(255)
+    user_id   int8 NOT NULL,
+    authority varchar(255) NOT NULL,
+    PRIMARY KEY (user_id, authority)
 );
 
 create table profiles

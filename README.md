@@ -5,6 +5,9 @@ Made on [Bootstrap 5.2](https://getbootstrap.com/) and [Spring Boot](https://spr
 
 By [hoholms](https://github.com/hoholms) and [VetrovMilka](https://github.com/VetrovMilka)
 
+## Demo
+You can try [Online Wallet](https://onlinewallet.dubrovschii.com) live demo
+
 ## Installation
 ### Requirements
 This application using **postgresql** database. Install it.
