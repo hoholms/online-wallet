@@ -1,20 +1,23 @@
 # Online Wallet
+
 Simple user friendly web application to control your finances.
 
 Made on [Bootstrap 5.2](https://getbootstrap.com/) and [Spring Boot](https://spring.io/)
 
 By [hoholms](https://github.com/hoholms) and [VetrovMilka](https://github.com/VetrovMilka)
 
-## Demo
-You can try [Online Wallet](https://onlinewallet.dubrovschii.com) live demo
-
 ## Installation
+
 ### Requirements
+
 This application using **postgresql** database. Install it.
 
 Also, you need to install **git** and **maven**.
+
 ### Installation
+
 Clone repository:
+
 ```bash
 git clone https://github.com/hoholms/online-wallet.git
 ```
@@ -48,19 +51,26 @@ spring.session.jdbc.table-name=SPRING_SESSION
 ```
 
 After setting up ```application.properties``` you can run application, or build artifacts with:
+
 ```bash
 mvn clean package
 ```
+
 And then run artifact executing this script in project root folder:
+
 ```bash
 #!/usr/bin/env bash
 ver=$(mvn help:evaluate -Dexpression=project.version | grep -e '^[^\[]')
 cd target
 java -jar online-wallet-"${ver}".jar
 ```
+
 ## Screenshots
+
 ### Dashboard
+
 <img width="1452" alt="dashboard" src="https://user-images.githubusercontent.com/46485037/205487889-8d065b18-8d76-4a4f-a76c-faa0ee25a7bf.png">
 
 ### Statistics
+
 <img width="1452" alt="statistics" src="https://user-images.githubusercontent.com/46485037/205487904-4b78290f-b541-4cfd-9e3f-db1d1af95524.png">

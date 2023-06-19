@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  database:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "online_wallet"
+    networks:
+      backend:
+        aliases:
+          - "database"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: hoholms/online-wallet:1.3
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: "database"
+      DB_PORT: "5432"
+      DB_NAME: "online_wallet"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+
+    networks:
+      backend:
+        aliases:
+          - "online-wallet"
+
+networks:
+  backend:
+    driver: bridge
