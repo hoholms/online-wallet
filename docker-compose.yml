@@ -27,6 +27,7 @@ services:
     ports:
       - "8080:8080"
     environment:
+      HOSTNAME: "localhost:8080"
       DB_HOST: "database"
       DB_PORT: "5432"
       DB_NAME: "online_wallet"
