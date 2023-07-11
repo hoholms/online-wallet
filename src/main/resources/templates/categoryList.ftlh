@@ -3,12 +3,12 @@
 <@c.page>
     <h2>List of transaction categories</h2>
 
-    <div class="col-md-10 mx-auto col-lg-8">
+    <div class="mx-auto col-md-10 col-lg-8 overflow-auto">
         <form action="/categories" method="post"
-              class="m-4 row align-items-center p-4 border rounded-3 bg-light-subtle">
+              class="my-4 mx-0 row align-items-center p-4 border rounded-3 bg-light-subtle overflow-auto">
             <input type="hidden" value="${_csrf.token}" name="_csrf">
 
-            <div class="mt-0 col">
+            <div class="mt-0 col-sm">
                 <label class="form-label" for="category">Name</label>
                 <input class="form-control ${(categoryError??)?string('is-invalid', '')}" type="text" name="category"
                        placeholder="Category name"
@@ -21,7 +21,7 @@
                 </#if>
             </div>
 
-            <div class="mt-0 col-2">
+            <div class="mt-0 col-sm-2">
                 <label for="isIncome" class="col-sm-4 form-label">Income</label>
                 <div class="col-sm-8">
                     <input type="checkbox" id="isIncome" name="isIncome"
@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="mt-0 col-4">
+            <div class="mt-0 col-sm-4">
                 <label class="col-sm-4 form-label" for="subm"></label>
                 <input type="submit" class="btn btn-success mx-auto col-12" name="subbtn" value="Add category"
                        id="subm">

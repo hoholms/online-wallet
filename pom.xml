@@ -11,7 +11,7 @@
     </parent>
 
     <name>Online Wallet</name>
-    <groupId>com.endava</groupId>
+    <groupId>com.online.wallet</groupId>
     <artifactId>online-wallet</artifactId>
     <version>1.3</version>
 
@@ -156,7 +156,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.endava.wallet.OnlineWalletApplication</mainClass>
+                            <mainClass>com.online.wallet.OnlineWalletApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -175,12 +175,12 @@
                     </to>
                     <container>
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-                        <mainClass>com.endava.wallet.OnlineWalletApplication</mainClass>
+                        <mainClass>com.online.wallet.OnlineWalletApplication</mainClass>
                         <entrypoint>
                             <arg>java</arg>
                             <arg>-cp</arg>
                             <arg>/app/resources:/app/classes:/app/libs/*</arg>
-                            <arg>com.endava.wallet.OnlineWalletApplication</arg>
+                            <arg>com.online.wallet.OnlineWalletApplication</arg>
                         </entrypoint>
                     </container>
                 </configuration>

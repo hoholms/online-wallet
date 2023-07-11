@@ -4,7 +4,7 @@
 
 <@c.page>
 <#--noinspection FtlReferencesInspection-->
-    <h1>${currentProfile.firstName} ${currentProfile.lastName} dashboard</h1>
+    <h1 class="ps-2">${currentProfile.firstName} ${currentProfile.lastName} dashboard</h1>
 
     <div class="container-fluid my-3">
         <h3>Your balance is
@@ -22,7 +22,7 @@
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                     Add Income Transaction
                 </button>
             </h2>
