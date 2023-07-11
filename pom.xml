@@ -10,10 +10,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <name>Online Wallet</name>
     <groupId>com.endava</groupId>
     <artifactId>online-wallet</artifactId>
     <version>1.3</version>
-    <name>Online_Wallet</name>
+
     <properties>
         <java.version>17</java.version>
         <docker.image.prefix>hoholms</docker.image.prefix>
@@ -125,6 +126,7 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
+                <version>11.0.15</version>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

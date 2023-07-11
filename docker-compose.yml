@@ -5,6 +5,7 @@ services:
     image: postgres:latest
     ports:
       - "5432:5432"
+    restart: always
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
@@ -26,6 +27,7 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
+    restart: always
     environment:
       HOSTNAME: "localhost:8080"
       DB_HOST: "database"
