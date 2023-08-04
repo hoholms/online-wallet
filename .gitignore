@@ -6,6 +6,7 @@ target/
 *.log
 /logs
 /scripts
+/.jpb
 
 ### STS ###
 .apt_generated
