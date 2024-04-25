@@ -1,4 +1,5 @@
-create or replace function balance_trigger_func()
+create
+    or replace function balance_trigger_func()
     returns trigger
     language plpgsql as
 $$

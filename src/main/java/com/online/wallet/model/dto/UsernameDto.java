@@ -1,13 +1,16 @@
 package com.online.wallet.model.dto;
 
-import lombok.Data;
+import javax.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class UsernameDto {
-    @NotBlank(message = "Please provide a username")
-    @Length(max = 50, message = "Username is too long")
-    private final String username;
+
+  @NotBlank(message = "Please provide a username")
+  @Length(max = 50, message = "Username is too long")
+  private final String username;
+
 }

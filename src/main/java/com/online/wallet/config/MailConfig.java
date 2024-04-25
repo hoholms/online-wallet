@@ -1,5 +1,7 @@
 package com.online.wallet.config;
 
+import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,40 +10,40 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import java.util.Properties;
-
 @Configuration
 public class MailConfig {
-    private static final Logger logger = LoggerFactory.getLogger(MailConfig.class);
-    @Value("${spring.mail.host}")
-    private String host;
-    @Value("${spring.mail.username}")
-    private String username;
-    @Value("${spring.mail.password}")
-    private String password;
-    @Value("${spring.mail.port}")
-    private int port;
-    @Value("${spring.mail.protocol}")
-    private String protocol;
-    @Value("${mail.debug}")
-    private String debug;
 
-    @Bean
-    public JavaMailSender getMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+  private static final Logger logger = LoggerFactory.getLogger(MailConfig.class);
+  @Value("${spring.mail.host}")
+  private              String host;
+  @Value("${spring.mail.username}")
+  private              String username;
+  @Value("${spring.mail.password}")
+  private              String password;
+  @Value("${spring.mail.port}")
+  private              int    port;
+  @Value("${spring.mail.protocol}")
+  private              String protocol;
+  @Value("${mail.debug}")
+  private              String debug;
 
-        mailSender.setHost(host);
-        mailSender.setPort(port);
-        mailSender.setUsername(username);
-        mailSender.setPassword(password);
+  @Bean
+  public JavaMailSender getMailSender() {
+    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
-        Properties properties = mailSender.getJavaMailProperties();
+    mailSender.setHost(host);
+    mailSender.setPort(port);
+    mailSender.setUsername(username);
+    mailSender.setPassword(password);
 
-        properties.setProperty("mail.transport.protocol", protocol);
-        properties.setProperty("mail.debug", debug);
+    Properties properties = mailSender.getJavaMailProperties();
 
-        logger.info("MailSender configured");
+    properties.setProperty("mail.transport.protocol", protocol);
+    properties.setProperty("mail.debug", debug);
 
-        return mailSender;
-    }
+    logger.info("MailSender configured");
+
+    return mailSender;
+  }
+
 }

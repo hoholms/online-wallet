@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class PasswordsDontMatchException extends RegisterException {
-    public PasswordsDontMatchException(String message) {
-        super(message);
-    }
+
+  public PasswordsDontMatchException(String message) {
+    super(message);
+  }
+
 }

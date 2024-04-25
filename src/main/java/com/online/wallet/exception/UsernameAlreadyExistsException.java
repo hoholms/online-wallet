@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class UsernameAlreadyExistsException extends RegisterException {
-    public UsernameAlreadyExistsException(String message) {
-        super(message);
-    }
+
+  public UsernameAlreadyExistsException(String message) {
+    super(message);
+  }
+
 }
