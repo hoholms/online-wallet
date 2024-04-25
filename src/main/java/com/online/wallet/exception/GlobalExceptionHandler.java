@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public String globalExceptionHandling(Exception e, HttpServletRequest request) {
-        logger.error(e.getMessage());
+        logger.error(e.getMessage(), e);
         return DEFAULT_ERROR;
     }
 }

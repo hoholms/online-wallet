@@ -18,12 +18,15 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,22 @@ public class TransactionService {
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
+    }
+
+    private static <T> Predicate<T> distinctByKeys(Function<? super T, ?>... keyExtractors) {
+
+        final Map<List<?>, Boolean> seen = new ConcurrentHashMap<>();
+
+        return t -> {
+
+            final List<?> keys = Arrays.stream(keyExtractors)
+                                       .map(ke -> ke.apply(t))
+                                       .collect(Collectors.toList());
+
+            return seen.putIfAbsent(keys, Boolean.TRUE) == null;
+
+        };
+
     }
 
     public LocalDate parseDate(String transactionDate) {
@@ -132,7 +151,7 @@ public class TransactionService {
 
         List<LocalDate> dates = profile.getTransactions().stream()
                 .map(transaction -> transaction.getTransactionDate().withDayOfMonth(1))
-                .filter(distinctByKey(LocalDate::getMonth))
+                .filter(distinctByKeys(LocalDate::getMonth, LocalDate::getYear))
                 .sorted(Comparator.naturalOrder())
                 .toList();
 

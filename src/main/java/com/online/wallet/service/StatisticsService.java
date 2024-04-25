@@ -53,7 +53,7 @@ public class StatisticsService {
                     date.getDate().getYear() == LocalDate.now().getYear()) {
                 lastDay = LocalDate.now();
             } else {
-                lastDay = date.getDate().withDayOfMonth(date.getDate().getMonth().length(LocalDate.now().isLeapYear()));
+                lastDay = date.getDate().withDayOfMonth(date.getDate().getMonth().length(date.getDate().isLeapYear()));
             }
             BigDecimal incSum = transactionService.findTranSumDateBetween(
                     currentProfile,
