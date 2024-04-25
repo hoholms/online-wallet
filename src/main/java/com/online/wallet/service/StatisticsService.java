@@ -92,6 +92,10 @@ public class StatisticsService {
                 .getTransactionDate());
         DateWithLabel to = new DateWithLabel(LocalDate.now());
 
+        return getCircleStatistics(currentProfile, from, to);
+    }
+
+    private List<CircleStatistics> getCircleStatistics(Profile currentProfile, DateWithLabel from, DateWithLabel to) {
         CircleStatistics incomeStatistics = transactionService.findCategoryAndSumByProfileAndIsIncome(currentProfile, true, from, to);
         CircleStatistics expenseStatistics = transactionService.findCategoryAndSumByProfileAndIsIncome(currentProfile, false, from, to);
 
@@ -115,17 +119,10 @@ public class StatisticsService {
                 to.getDate().getYear() == LocalDate.now().getYear()) {
             to.setDate(LocalDate.now());
         } else {
-            to.setDate(to.getDate().withDayOfMonth(to.getDate().getMonth().length(LocalDate.now().isLeapYear())));
+            to.setDate(to.getDate().withDayOfMonth(to.getDate().getMonth().length(to.getDate().isLeapYear())));
         }
 
 
-        CircleStatistics incomeStatistics = transactionService.findCategoryAndSumByProfileAndIsIncome(currentProfile, true, from, to);
-        CircleStatistics expenseStatistics = transactionService.findCategoryAndSumByProfileAndIsIncome(currentProfile, false, from, to);
-
-        List<CircleStatistics> statistics = new ArrayList<>();
-        statistics.add(incomeStatistics);
-        statistics.add(expenseStatistics);
-
-        return statistics;
+        return getCircleStatistics(currentProfile, from, to);
     }
 }
