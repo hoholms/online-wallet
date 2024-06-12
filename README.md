@@ -1,76 +1,153 @@
 # Online Wallet
 
-Simple user friendly web application to control your finances.
+A simple, user-friendly web application to manage your finances efficiently.
 
-Made on [Bootstrap 5.2](https://getbootstrap.com/) and [Spring Boot](https://spring.io/)
+## Table of Contents
 
-By [hoholms](https://github.com/hoholms) and [VetrovMilka](https://github.com/VetrovMilka)
+1. [Installation](#installation)
+    - [Requirements](#requirements)
+    - [Running Locally](#running-locally)
+2. [Configuration](#configuration)
+3. [Running with Docker](#running-with-docker)
+4. [Screenshots](#screenshots)
 
 ## Installation
 
 ### Requirements
 
-This application using **postgresql** database. Install it.
+Ensure the following are installed on your system:
 
-Also, you need to install **git** and **maven**.
+- **PostgreSQL**: This application uses PostgreSQL as its database.
+- **Git**: For cloning the repository.
+- **Maven**: For building the project.
 
-### Installation
+### Running Locally
 
-Clone repository:
+1. **Clone the repository:**
 
-```bash
-git clone https://github.com/hoholms/online-wallet.git
-```
+    ```shell
+    git clone https://github.com/hoholms/online-wallet.git
+    cd online-wallet
+    ```
 
-To get this application working you shoud set up ```application.properties``` file:
+2. **Set up the configuration:**
 
-```properties
-# HOSTNAME
-hostname=YOUR_HOSTNAME
-# DATABASE CONNECT
-spring.datasource.url=jdbc:postgresql://YOUR_DB_URL:5432/online_wallet
-spring.datasource.username=YOUR_DB_USERNAME
-spring.datasource.password=YOUR_DB_PASSWORD
-# CSRF
-spring.freemarker.expose-request-attributes=true
-# HIBERNATE
-spring.jpa.generate-ddl=false
-spring.jpa.show-sql=false
-spring.jpa.hibernate.ddl-auto=validate
-spring.flyway.enabled=true
-# SMTP MAIL
-spring.mail.host=YOUR_MAIL_HOST
-spring.mail.username=YOUR_EMAIL
-spring.mail.password=YOUR_EMAIL_PASSWORD
-spring.mail.port=YOUR_MAIL_PORT
-spring.mail.protocol=smtps
-mail.debug=false
-# SPRING SESSION JDBC
-spring.session.jdbc.initialize-schema=always
-spring.session.jdbc.table-name=SPRING_SESSION
-```
+   Configure
+   the [application.yml](https://github.com/hoholms/online-wallet/blob/main/src/main/resources/application.yml) file by
+   setting the necessary environment variables or replacing them with actual values:
 
-After setting up ```application.properties``` you can run application, or build artifacts with:
+    ```yaml
+    # HOSTNAME
+    hostname: ${HOSTNAME}
 
-```bash
-mvn clean package
-```
+    # DATABASE CONNECTION
+    spring:
+      datasource:
+        url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
+        driverClassName: org.postgresql.Driver
 
-And then run artifact executing this script in project root folder:
+      # CSRF
+      freemarker:
+        expose-request-attributes: true
 
-```bash
-#!/usr/bin/env bash
-ver=$(mvn help:evaluate -Dexpression=project.version | grep -e '^[^\[]')
-cd target
-java -jar online-wallet-"${ver}".jar
-```
+      # HIBERNATE
+      jpa:
+        generate-ddl: false
+        show-sql: false
+        hibernate:
+          ddl-auto: validate
+      flyway:
+        enabled: true
+
+      # SPRING SESSION JDBC
+      session:
+        jdbc:
+          initialize-schema: always
+          table-name: SPRING_SESSION
+
+      # SMTP MAIL
+      mail:
+        host: ${MAIL_HOST}
+        username: ${MAIL_USERNAME}
+        password: ${MAIL_PASSWORD}
+        port: ${MAIL_PORT}
+        protocol: smtps
+
+    mail:
+      debug: false
+    ```
+
+3. **Build the application:**
+
+    ```shell
+    mvn clean package
+    ```
+
+4. **Run the application:**
+
+   Execute the following script in the project root folder:
+
+    ```shell
+    #!/usr/bin/env bash
+    ver=$(mvn help:evaluate -Dexpression=project.version | grep -e '^[^\[]')
+    cd target
+    java -jar online-wallet-"${ver}".jar
+    ```
+
+## Configuration
+
+### `application.yml`
+
+The `application.yml` file requires configuration to connect to your database and other services. You can set these
+values using environment variables or directly within the file.
+
+- **Database Configuration:**
+    - `DB_HOST`: Database host
+    - `DB_PORT`: Database port
+    - `DB_NAME`: Database name
+    - `DB_USER`: Database username
+    - `DB_PASSWORD`: Database password
+
+- **Mail Configuration:**
+    - `MAIL_HOST`: SMTP mail host
+    - `MAIL_USERNAME`: Mail username
+    - `MAIL_PASSWORD`: Mail password
+    - `MAIL_PORT`: Mail port
+
+## Running with Docker
+
+To run `Online Wallet` using Docker, follow these steps:
+
+1. **Build the Docker image:**
+
+    ```shell
+    mvn clean package jib:dockerBuild
+    ```
+
+2. **Set up [docker-compose.yml](https://github.com/hoholms/online-wallet/blob/main/docker-compose.yml):**
+
+   Configure the `docker-compose.yml` file similarly to `application.yml`.
+
+3. **Run Docker Compose:**
+
+    ```shell
+    docker compose -f docker-compose.yml -p online-wallet up -d
+    ```
 
 ## Screenshots
 
 ### Dashboard
 
-<img width="1452" alt="dashboard" src="https://user-images.githubusercontent.com/46485037/205487889-8d065b18-8d76-4a4f-a76c-faa0ee25a7bf.png">
+![Dashboard](https://user-images.githubusercontent.com/46485037/205487889-8d065b18-8d76-4a4f-a76c-faa0ee25a7bf.png)
 
 ### Statistics
 
-<img width="1452" alt="statistics" src="https://user-images.githubusercontent.com/46485037/205487904-4b78290f-b541-4cfd-9e3f-db1d1af95524.png">
+![Statistics](https://user-images.githubusercontent.com/46485037/205487904-4b78290f-b541-4cfd-9e3f-db1d1af95524.png)
+
+---
+
+This README provides a comprehensive guide to setting up and running the Online Wallet application. If you encounter any
+issues or have questions, please refer to the
+repository's [issues section](https://github.com/hoholms/online-wallet/issues) for support.

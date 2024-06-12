@@ -1,0 +1,40 @@
+# HOSTNAME
+hostname: ${HOSTNAME}
+
+# DATABASE CONNECT
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driverClassName: org.postgresql.Driver
+
+  # CSRF
+  freemarker:
+    expose-request-attributes: true
+
+  # HIBERNATE
+  jpa:
+    generate-ddl: false
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+  # SPRING SESSION JDBC
+  session:
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
+
+  # SMTP MAIL
+  mail:
+    host: ${MAIL_HOST}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    port: ${MAIL_PORT}
+    protocol: smtps
+
+mail:
+  debug: false
