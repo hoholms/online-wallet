@@ -140,11 +140,15 @@ To run `Online Wallet` using Docker, follow these steps:
 
 ### Dashboard
 
-![Dashboard](https://user-images.githubusercontent.com/46485037/205487889-8d065b18-8d76-4a4f-a76c-faa0ee25a7bf.png)
+![Dashboard](https://github.com/hoholms/online-wallet/assets/46485037/f6c4bea8-f29b-417d-b58f-9f2885fac2ff)
 
 ### Statistics
 
-![Statistics](https://user-images.githubusercontent.com/46485037/205487904-4b78290f-b541-4cfd-9e3f-db1d1af95524.png)
+![Statistics](https://github.com/hoholms/online-wallet/assets/46485037/c03c467d-50ff-4f13-9309-851d23f0e24a)
+
+### Profile Page
+
+![Profile](https://github.com/hoholms/online-wallet/assets/46485037/ea6e89b8-fc4c-477f-a89a-2288df3535cc)
 
 ---
 
