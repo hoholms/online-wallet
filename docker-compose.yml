@@ -27,7 +27,7 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
-    restart: always
+#    restart: always
     environment:
       HOSTNAME: "localhost:8080"
       DB_HOST: "database"
