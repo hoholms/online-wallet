@@ -3,8 +3,10 @@ package com.online.wallet.controller;
 import javax.validation.Valid;
 import java.util.Map;
 
+import com.online.wallet.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -62,8 +64,8 @@ public class UserController {
   }
 
   @GetMapping("/delete/{userID}")
-  public String userDelete(@PathVariable Long userID) {
-    userService.deleteUserById(userID);
+  public String userDelete(@AuthenticationPrincipal User user, @PathVariable Long userID) {
+    userService.deleteUserById(user, userID);
     logger.info("Deleted user with id: {}", userID);
     return "redirect:/users";
   }

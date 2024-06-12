@@ -48,7 +48,7 @@
                         </svg>
                     </a>
                 </li>
-                <#if user??>
+                <#if currentUser??>
                     <li class="nav-item col-6 col-lg-auto">
                         <a href="/profile"
                            class="nav-link me-3 <#if springMacroRequestContext.requestUri?contains("/profile")>active</#if>">${name}</a>
@@ -56,7 +56,7 @@
                 </#if>
             </ul>
 
-            <#if user??>
+            <#if currentUser??>
                 <@l.logout />
             </#if>
         </div>

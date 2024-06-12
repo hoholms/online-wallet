@@ -82,7 +82,7 @@
                 </li>
             </#if>
         </ul>
-        <#if user??>
+        <#if currentUser??>
             <div class="dropup border-profile">
                 <a href="#"
                    class="nav-link d-flex align-items-center justify-content-center p-3 text-decoration-none dropdown-toggle"

@@ -1,4 +1,5 @@
 <#import "parts/common.ftlh" as c>
+<#include "parts/security.ftlh">
 
 <@c.page>
     <h2 class="mb-4">List of users</h2>
@@ -21,8 +22,11 @@
                     <td><#list user.authority as authority>${authority}<#sep>, </#list></td>
                     <td><a class="btn btn-outline-primary btn-sm" href="/users/${user.id}"
                            role="button">Edit</a></td>
-                    <td><a class="btn btn-outline-danger btn-sm" href="/users/delete/${user.id}"
-                           role="button">Delete</a></td>
+                    <td>
+                        <a class="btn btn-outline-danger btn-sm <#if currentUser.getId() == user.getId()>disabled</#if>"
+                           href="/users/delete/${user.id}"
+                           role="button">Delete</a>
+                    </td>
                 </tr>
             </#list>
             </tbody>

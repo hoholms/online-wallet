@@ -1,4 +1,5 @@
 <#import "parts/common.ftlh" as c>
+<#include "parts/security.ftlh">
 
 <@c.page>
     <h4>User editor</h4>
@@ -40,9 +41,13 @@
                 <legend class="col-form-label col-sm-2 pt-0">Roles</legend>
                 <div class="col-sm-10">
                     <#list authorities as authority>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="${authority}"
-                                   name="${authority}" ${user.authorities?seq_contains(authority)?string("checked", "")}>
+                        <div class="form-check"
+                             <#if authority == "ADMIN" && user.id == currentUser.id>style="pointer-events: none"</#if>>
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   id="${authority}"
+                                   name="${authority}" ${user.authorities?seq_contains(authority)?string("checked", "")}
+                            >
                             <label for="${authority}" class="form-check-label">${authority}</label>
                         </div>
                     </#list>

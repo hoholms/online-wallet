@@ -2,7 +2,7 @@
 <#include "parts/security.ftlh">
 
 <@c.page>
-    <#if !user??>
+    <#if !currentUser??>
         <div class="px-4 my-5 text-center border-bottom">
             <h1 class="display-4 fw-bold">Online Wallet</h1>
             <div class="col-lg-6 mx-auto">
