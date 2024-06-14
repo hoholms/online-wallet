@@ -9,7 +9,10 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Pair;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,24 +42,22 @@ public class DashboardController {
   private final        TransactionDtoConverter     transactionDtoConverter;
 
   @GetMapping("/dashboard")
-  public String dashboard(@AuthenticationPrincipal User user, Model model) {
+  public String dashboard(@AuthenticationPrincipal User user, Model model,
+                          @PageableDefault(sort = {"transactionDate", "id"}, direction = Sort.Direction.DESC)
+                          Pageable pageable) {
     logger.info("Call for dashboard page by user id {}", user.getId());
     Profile currentProfile = profileService.findProfileByUser(user);
     currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
 
-    setModel(model, currentProfile);
+    setModel(model, currentProfile, pageable);
 
     return "dashboard";
   }
 
-  private void setModel(Model model, Profile currentProfile) {
+  private void setModel(Model model, Profile currentProfile, Pageable pageable) {
     model.addAttribute("currentProfile", currentProfile);
 
-    model.addAttribute("recentTransactions", currentProfile
-        .getTransactions()
-        .stream()
-        .sorted(Comparator.comparing(Transaction::getTransactionDate).thenComparing(Transaction::getId).reversed())
-        .toList());
+    model.addAttribute("recentTransactions", transactionService.findTransactionsByProfile(currentProfile, pageable));
 
     List<TransactionsCategory> incomeCategories = categoryService
         .findByIsIncome(true)
@@ -100,7 +101,8 @@ public class DashboardController {
 
   @PostMapping("/dashboard")
   public String addTransaction(@AuthenticationPrincipal User user, @Valid TransactionDto transactionDto,
-      BindingResult bindingResult, Model model) {
+      BindingResult bindingResult, Model model, @PageableDefault(sort = {"transactionDate", "id"}, direction = Sort.Direction.DESC)
+                                 Pageable pageable) {
     Profile currentProfile = profileService.findProfileByUser(user);
 
     if (bindingResult.hasErrors()) {
@@ -113,7 +115,7 @@ public class DashboardController {
       currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
     }
 
-    setModel(model, currentProfile);
+    setModel(model, currentProfile, pageable);
 
     profileService.calcBalance(user);
 

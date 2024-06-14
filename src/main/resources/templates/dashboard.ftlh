@@ -1,5 +1,6 @@
 <#import "parts/common.ftlh" as c>
 <#import "parts/addTransaction.ftlh" as at>
+<#import "parts/pager.ftlh" as p>
 <#include "parts/security.ftlh">
 
 <@c.page>
@@ -115,15 +116,18 @@
         </div>
     </div>
 
-    <#if recentTransactions[0]??>
+    <#if recentTransactions.getSize() gte 25>
+        <@p.pager "/dashboard" recentTransactions/>
+    </#if>
+    <#if recentTransactions.content[0]??>
         <div class="container-fluid my-4">
             <h3 class="mb-4">Your recent transactions:</h3>
             <div class="row row-cols-1 row-cols-md-4 g-4" style="-webkit-transform: translateZ(0)">
-                <#assign maxDate = recentTransactions[0].transactionDate>
+                <#assign maxDate = recentTransactions.content[0].transactionDate>
                 <hr class="col-md-12 mb-1">
                 <h4 class="col-md-12">${maxDate.month?capitalize} ${maxDate.year?string.computer}
                 </h4>
-                <#list recentTransactions as transaction>
+                <#list recentTransactions.content as transaction>
                     <#if transaction.transactionDate.month != maxDate.month ||
                     transaction.transactionDate.year != maxDate.year>
                         <#assign maxDate = transaction.transactionDate>
@@ -181,6 +185,7 @@
             </div>
         </div>
     </#if>
+    <@p.pager "/dashboard" recentTransactions/>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js"></script>
 </@c.page>
