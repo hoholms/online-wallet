@@ -35,3 +35,10 @@ $('.dropup').on('hidden.bs.dropdown', function () {
         scale: 1.04,
     });
 }(jQuery));
+
+function toggleCategorySelects() {
+    var isIncomeChecked = document.getElementById('isIncome').checked;
+    var isExpenseChecked = document.getElementById('isExpense').checked;
+    document.getElementById('incomeCategories').disabled = !isIncomeChecked;
+    document.getElementById('expenseCategories').disabled = !isExpenseChecked;
+}

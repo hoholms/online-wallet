@@ -3,7 +3,6 @@ package com.online.wallet.controller;
 import javax.validation.Valid;
 import java.util.Map;
 
-import com.online.wallet.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.online.wallet.model.Authority;
+import com.online.wallet.model.User;
 import com.online.wallet.model.dto.UsernameDto;
 import com.online.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;

@@ -32,8 +32,9 @@ public class DateWithLabel {
     if (date != null) {
       this.date = date;
       this.label =
-              StringUtils.capitalize(date.getMonth().toString().toLowerCase()).substring(0, 3) + " " + date.getYear();
-    }  }
+          StringUtils.capitalize(date.getMonth().toString().toLowerCase()).substring(0, 3) + " " + date.getYear();
+    }
+  }
 
   public DateWithLabel(String label) {
     this.label = label;

@@ -13,7 +13,7 @@
     <name>Online Wallet</name>
     <groupId>com.online.wallet</groupId>
     <artifactId>online-wallet</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
 
     <properties>
         <java.version>17</java.version>

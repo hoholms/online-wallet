@@ -79,10 +79,10 @@ public class UserService implements UserDetailsService {
   }
 
   public void deleteUserById(User user, Long userID) {
-      if (user != null && !user.getId().equals(userID)) {
-          findUserById(userID);
-          userRepository.deleteById(userID);
-      }
+    if (user != null && !user.getId().equals(userID)) {
+      findUserById(userID);
+      userRepository.deleteById(userID);
+    }
   }
 
   public List<User> findAllUsers() {

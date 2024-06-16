@@ -1,4 +1,4 @@
-<#macro pager url page>
+<#macro pager url page filters="">
     <#if page.getTotalPages() gt 7>
         <#assign
         totalPages = page.getTotalPages()
@@ -31,7 +31,7 @@
                             <#else>
                                 <li>
                                     <a class="dropdown-item"
-                                       href="${url}?page=<#if page.getNumber() gt page.getTotalElements() / c>${(page.getTotalElements() / c)?round - 1}<#else>${page.getNumber()}</#if>&size=${c}"
+                                       href="${url}?${filters}&page=<#if page.getNumber() gt page.getTotalElements() / c>${(page.getTotalElements() / c)?round - 1}<#else>${page.getNumber()}</#if>&size=${c}"
                                        tabindex="-1">${c}</a>
                                 </li>
                             </#if>
@@ -40,7 +40,7 @@
                 </div>
             </li>
             <li class="page-item <#if page.getNumber() == 0>disabled</#if>">
-                <a class="page-link" href="${url}?page=${page.getNumber() - 1}&size=${page.getSize()}" tabindex="-1">Previous</a>
+                <a class="page-link" href="${url}?${filters}&page=${page.getNumber() - 1}&size=${page.getSize()}" tabindex="-1">Previous</a>
             </li>
             <#list body as p>
                 <#if (p - 1) == page.getNumber()>
@@ -53,12 +53,12 @@
                     </li>
                 <#else>
                     <li class="page-item">
-                        <a class="page-link" href="${url}?page=${p - 1}&size=${page.getSize()}" tabindex="-1">${p}</a>
+                        <a class="page-link" href="${url}?${filters}&page=${p - 1}&size=${page.getSize()}" tabindex="-1">${p}</a>
                     </li>
                 </#if>
             </#list>
             <li class="page-item <#if page.getNumber() == page.getTotalPages() - 1>disabled</#if>">
-                <a class="page-link" href="${url}?page=${page.getNumber() + 1}&size=${page.getSize()}" tabindex="-1">Next</a>
+                <a class="page-link" href="${url}?${filters}&page=${page.getNumber() + 1}&size=${page.getSize()}" tabindex="-1">Next</a>
             </li>
         </ul>
     </div>

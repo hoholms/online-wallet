@@ -3,6 +3,17 @@
 <#import "parts/pager.ftlh" as p>
 <#include "parts/security.ftlh">
 
+<#assign filterMinAmount = filters.minAmount!"">
+<#assign filterMaxAmount = filters.maxAmount!"">
+<#assign filterMessage = filters.message!"">
+<#assign filterIsIncome = (filters.isIncome?? && filters.isIncome)?string("on", "")!"">
+<#assign filterIsExpense = (filters.isExpense?? && filters.isExpense)?string("on", "")!"">
+<#assign filterIncomeCategories = filters.incomeCategories!?join(',')!"">
+<#assign filterExpenseCategories = filters.expenseCategories!?join(',')!"">
+<#assign filterTransactionDateFrom = filters.transactionDateFrom!"">
+<#assign filterTransactionDateTo = filters.transactionDateTo!"">
+<#assign filterParams = "minAmount=${filterMinAmount}&maxAmount=${filterMaxAmount}&message=${filterMessage}&isIncome=${filterIsIncome}&isExpense=${filterIsExpense}&incomeCategories=${filterIncomeCategories}&expenseCategories=${filterExpenseCategories}&transactionDateFrom=${filterTransactionDateFrom}&transactionDateTo=${filterTransactionDateTo}">
+
 <@c.page>
 <#--noinspection FtlReferencesInspection-->
     <h1 class="ps-2">${currentProfile.firstName} ${currentProfile.lastName} dashboard</h1>
@@ -116,9 +127,87 @@
         </div>
     </div>
 
+    <div class="container-fluid p-4 my-4 rounded-3 border">
+        <h3 class="mb-3">Filter Transactions:</h3>
+        <form action="/dashboard" method="get" class="row g-3">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <input type="number" step="0.01" class="form-control" id="minAmount" name="minAmount"
+                               value="${filterMinAmount}" placeholder="Min Amount">
+                        <label for="minAmount">Min Amount</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="number" step="0.01" class="form-control" id="maxAmount" name="maxAmount"
+                               value="${filterMaxAmount}" placeholder="Max Amount">
+                        <label for="maxAmount">Max Amount</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="message" name="message" value="${filterMessage}"
+                           placeholder="Message">
+                    <label for="message">Message</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="incomeCategories" class="form-label">Income Categories</label>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="isIncome" name="isIncome"
+                           <#if filters.isIncome??>checked</#if>
+                           onchange="toggleCategorySelects()">
+                    <label class="form-check-label" for="isIncome">Income</label>
+                </div>
+                <select id="incomeCategories" name="incomeCategories" class="form-select" multiple
+                        <#if !filterIsIncome?? || filterIsIncome == "">disabled</#if>>
+                    <#list incomeCategories as category>
+                        <option value="${category.id}"
+                                <#if category.id?string?contains(filterIncomeCategories) && filters.isIncome??>selected</#if>>${category.category}</option>
+                    </#list>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="expenseCategories" class="form-label">Expense Categories</label>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="isExpense" name="isExpense"
+                           <#if filters.isExpense??>checked</#if>
+                           onchange="toggleCategorySelects()">
+                    <label class="form-check-label" for="isExpense">Expense</label>
+                </div>
+                <select id="expenseCategories" name="expenseCategories" class="form-select" multiple
+                        <#if !filterIsExpense?? || filterIsExpense == "">disabled</#if>>
+                    <#list expenseCategories as category>
+                        <option value="${category.id}"
+                                <#if category.id?string?contains(filterExpenseCategories) && filters.isExpense??>selected</#if>>${category.category}</option>
+                    </#list>
+                </select>
+            </div>
+            <div class="col-md-12">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" id="transactionDateFrom" name="transactionDateFrom"
+                               value="${filterTransactionDateFrom}" placeholder="Transaction Date From">
+                        <label for="transactionDateFrom">Transaction Date From</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="date" class="form-control" id="transactionDateTo" name="transactionDateTo"
+                               value="${filterTransactionDateTo}" placeholder="Transaction Date To">
+                        <label for="transactionDateTo">Transaction Date To</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="dashboard" class="btn btn-danger">Clear filters</a>
+            </div>
+        </form>
+    </div>
+
     <#if recentTransactions.getSize() gte 25>
-        <@p.pager "/dashboard" recentTransactions/>
+        <@p.pager "/dashboard" recentTransactions filterParams/>
     </#if>
+
     <#if recentTransactions.content[0]??>
         <div class="container-fluid my-4">
             <h3 class="mb-4">Your recent transactions:</h3>
@@ -185,7 +274,5 @@
             </div>
         </div>
     </#if>
-    <@p.pager "/dashboard" recentTransactions/>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js"></script>
+    <@p.pager "/dashboard" recentTransactions filterParams/>
 </@c.page>

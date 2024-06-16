@@ -12,7 +12,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ControllerUtils {
 
-  static Map<String, String> getErrors(BindingResult bindingResult) {
+  public static Map<String, String> getErrors(BindingResult bindingResult) {
     Collector<FieldError, ?, Map<String, String>> collector = Collectors.toMap(fieldError -> fieldError.getField() +
         "Error", FieldError::getDefaultMessage, (fieldError1, fieldError2) -> fieldError1 + ". " + fieldError2);
 

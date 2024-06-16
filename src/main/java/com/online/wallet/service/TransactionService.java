@@ -27,6 +27,8 @@ import com.online.wallet.model.User;
 import com.online.wallet.model.dto.CircleStatistics;
 import com.online.wallet.model.dto.DateWithLabel;
 import com.online.wallet.model.dto.TransactionDto;
+import com.online.wallet.model.dto.TransactionFilterDTO;
+import com.online.wallet.model.specification.TransactionSpecification;
 import com.online.wallet.repository.TransactionRepository;
 import com.online.wallet.repository.TransactionsCategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -63,10 +65,6 @@ public class TransactionService {
     profileService.save(currentProfile);
   }
 
-  public Page<Transaction> findTransactionsByProfile(Profile profile, Pageable pageable) {
-    return transactionRepository.findTransactionsByProfile(profile, pageable);
-  }
-
   public Transaction findTransactionByIdAndProfile(Long id, Profile profile) {
     return transactionRepository
         .findTransactionByIdAndProfile(id, profile)
@@ -75,6 +73,14 @@ public class TransactionService {
 
   public LocalDate parseDate(String transactionDate) {
     return LocalDate.parse(transactionDate);
+  }
+
+  public Page<Transaction> findTransactionsByProfile(Profile profile, Pageable pageable) {
+    return transactionRepository.findTransactionsByProfile(profile, pageable);
+  }
+
+  public Page<Transaction> filterTransactions(Long profileId, TransactionFilterDTO transactionFilterDTO, Pageable pageable) {
+    return transactionRepository.findAll(TransactionSpecification.getTransactionSpecification(transactionFilterDTO, profileId), pageable);
   }
 
   public Transaction findTransactionById(Long id) {
