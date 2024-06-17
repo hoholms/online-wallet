@@ -21,26 +21,35 @@ public class LoginController {
 
   @GetMapping("/login")
   public String login(HttpServletRequest request, Model model) {
-    model.addAttribute("error", getErrorMessage(request));
+    logger.info("Login page requested");
+    String errorMessage = getErrorMessage(request);
+    if (errorMessage != null) {
+      logger.warn("Login error: {}", errorMessage);
+    }
+    model.addAttribute("error", errorMessage);
     return "login";
   }
 
   private String getErrorMessage(HttpServletRequest request) {
     Exception exception = (Exception) request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
-    String error;
-    if (exception instanceof BadCredentialsException) {
-      logger.error("Invalid username or password!");
-      error = "Invalid username or password!";
-    } else if (exception instanceof LockedException) {
-      error = exception.getMessage();
-    } else {
-      error = null;
+    String error = null;
+    if (exception != null) {
+      if (exception instanceof BadCredentialsException) {
+        logger.error("Login failed: Invalid username or password");
+        error = "Invalid username or password!";
+      } else if (exception instanceof LockedException) {
+        logger.error("Login failed: Account locked - {}", exception.getMessage());
+        error = exception.getMessage();
+      } else {
+        logger.error("Login failed: Unknown error - {}", exception.getMessage());
+      }
     }
     return error;
   }
 
   @PostMapping("/login")
   public String loginPost() {
+    logger.info("Login post request received, redirecting to dashboard");
     return "redirect:/dashboard";
   }
 

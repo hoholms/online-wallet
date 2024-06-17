@@ -39,6 +39,7 @@ public class ProfileService {
 
   public void save(Profile profile) {
     profileRepository.save(profile);
+    logger.info("Profile saved: {}", profile);
   }
 
   public boolean add(Profile profile) {
@@ -51,6 +52,7 @@ public class ProfileService {
     profile.setActivationCode(UUID.randomUUID().toString());
     profileRepository.save(profile);
     sendMail(profile);
+    logger.info("Profile added: {}", profile);
 
     return true;
   }
@@ -65,6 +67,7 @@ public class ProfileService {
           .getUsername(), hostname, profile.getActivationCode());
 
       mailSender.send(profile.getEmail(), "Online Wallet activation code", message);
+      logger.info("Activation email sent to: {}", profile.getEmail());
     }
   }
 
@@ -72,6 +75,7 @@ public class ProfileService {
     Profile profile = profileRepository.findByActivationCode(code);
 
     if (profile == null) {
+      logger.warn("Activation code {} not found", code);
       return false;
     }
 
@@ -82,6 +86,7 @@ public class ProfileService {
 
     userService.save(user);
     profileRepository.save(profile);
+    logger.info("Profile activated: {}", profile);
 
     return true;
   }
@@ -117,8 +122,10 @@ public class ProfileService {
 
     if (isPasswordChanged) {
       if (!BCrypt.checkpw(passwordChangeDto.getOldPassword(), user.getPassword())) {
+        logger.error("Old password doesn't match for user {}", user.getId());
         throw new OldPasswordDontMatchException("Old password is incorrect");
       } else if (!passwordChangeDto.getNewPassword().equals(passwordChangeDto.getConfirmPassword())) {
+        logger.error("New passwords don't match for user {}", user.getId());
         throw new PasswordsDontMatchException("Passwords don't match");
       }
 
@@ -130,9 +137,9 @@ public class ProfileService {
       currentProfile.setActivationCode(UUID.randomUUID().toString());
       sendMail(currentProfile);
       user.setEnabled(false);
-      logger.info("Profile id {} has been updated", currentProfile.getId());
+      logger.info("Profile id {} has been updated with new email", currentProfile.getId());
     } else if (isEmailChanged && existsProfileByEmail(profileDto.getEmail())) {
-      logger.error("Profile id {} failed to update", currentProfile.getId());
+      logger.error("Email update failed for profile id {}: email already exists", currentProfile.getId());
       throw new EmailAlreadyExistsException("Email already registered!");
     }
 
@@ -140,13 +147,15 @@ public class ProfileService {
 
     userService.save(user);
     profileRepository.save(currentProfile);
+    logger.info("Profile updated: {}", currentProfile);
 
     if (isEmailChanged || isPasswordChanged) {
       try {
         request.logout();
+        logger.info("User {} logged out due to email or password change", user.getId());
         return "redirect:/login";
       } catch (ServletException e) {
-        logger.error(e.getMessage());
+        logger.error("Logout failed for user {}: {}", user.getId(), e.getMessage());
       }
     }
 
@@ -154,21 +163,29 @@ public class ProfileService {
   }
 
   public boolean existsProfileByEmail(String email) {
-    return profileRepository.existsProfileByEmail(email);
+    boolean exists = profileRepository.existsProfileByEmail(email);
+    logger.debug("Check if email exists: {} - {}", email, exists);
+    return exists;
   }
 
   public void calcBalance(User user) {
-    profileRepository.calcBalance(findProfileByUser(user).getId());
+    Profile profile = findProfileByUser(user);
+    profileRepository.calcBalance(profile.getId());
+    logger.info("Calculated balance for profile id {}", profile.getId());
   }
 
   public Profile findProfileByUser(User user) {
-    return profileRepository
+    Profile profile = profileRepository
         .findByUser(user)
         .orElseThrow(() -> new ProfileNotFoundException(String.format("Profile for user %s not found!", user.getId())));
+    logger.debug("Found profile for user {}: {}", user.getId(), profile);
+    return profile;
   }
 
   public BigDecimal getCalcBalance(Profile profile) {
-    return profileRepository.getCalcBalance(profile.getId());
+    BigDecimal balance = profileRepository.getCalcBalance(profile.getId());
+    logger.debug("Calculated balance for profile id {}: {}", profile.getId(), balance);
+    return balance;
   }
 
 }

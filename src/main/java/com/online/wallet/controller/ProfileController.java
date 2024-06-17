@@ -57,17 +57,22 @@ public class ProfileController {
       Map<String, String> profileErrorsMap = ControllerUtils.getErrors(profileBindingResult);
       model.mergeAttributes(passwordErrorsMap);
       model.mergeAttributes(profileErrorsMap);
+      logger.warn("Validation errors for user {}: passwordErrors={}, profileErrors={}", user.getUsername(),
+          passwordErrorsMap, profileErrorsMap);
     } else {
       try {
         response = profileService.updateProfile(request, user, profileDto, passwordChangeDto);
-        logger.info("User {} profile has been updated", user.getUsername());
+        logger.info("User {} profile has been updated successfully", user.getUsername());
         model.addAttribute("message", "Profile successfully updated!");
       } catch (OldPasswordDontMatchException e) {
         model.addAttribute("oldPasswordError", e.getMessage());
+        logger.error("Old password doesn't match for user {}: {}", user.getUsername(), e.getMessage());
       } catch (PasswordsDontMatchException e) {
         model.addAttribute("confirmPasswordError", e.getMessage());
+        logger.error("New passwords don't match for user {}: {}", user.getUsername(), e.getMessage());
       } catch (EmailAlreadyExistsException e) {
         model.addAttribute("emailError", e.getMessage());
+        logger.error("Email already exists for user {}: {}", user.getUsername(), e.getMessage());
       }
     }
 

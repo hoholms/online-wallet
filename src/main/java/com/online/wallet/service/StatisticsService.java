@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.online.wallet.model.Profile;
@@ -20,15 +22,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StatisticsService {
 
-  private final ProfileService     profileService;
-  private final TransactionService transactionService;
+  private static final Logger             logger = LoggerFactory.getLogger(StatisticsService.class);
+  private final        ProfileService     profileService;
+  private final        TransactionService transactionService;
 
   public List<LineStatistics> findLineStatistics(User user) {
+    logger.info("Fetching line statistics for user id {}", user.getId());
     Profile currentProfile = profileService.findProfileByUser(user);
-
     List<DateWithLabel> dates = transactionService.findTransactionsDatesWithLabels(user);
-
-    return getLineStatistics(currentProfile, dates);
+    List<LineStatistics> lineStatistics = getLineStatistics(currentProfile, dates);
+    logger.debug("Retrieved line statistics for user id {}: {}", user.getId(), lineStatistics);
+    return lineStatistics;
   }
 
   private List<LineStatistics> getLineStatistics(Profile currentProfile, List<DateWithLabel> dates) {
@@ -60,6 +64,7 @@ public class StatisticsService {
   }
 
   public List<LineStatistics> findLineStatistics(User user, DateWithLabel from, DateWithLabel to) {
+    logger.info("Fetching line statistics for user id {} from {} to {}", user.getId(), from, to);
     Profile currentProfile = profileService.findProfileByUser(user);
 
     if (from.getDate().isAfter(to.getDate())) {
@@ -69,11 +74,13 @@ public class StatisticsService {
     }
 
     List<DateWithLabel> dates = transactionService.findTransactionsDatesWithLabels(currentProfile, from, to);
-
-    return getLineStatistics(currentProfile, dates);
+    List<LineStatistics> lineStatistics = getLineStatistics(currentProfile, dates);
+    logger.debug("Retrieved line statistics for user id {} from {} to {}: {}", user.getId(), from, to, lineStatistics);
+    return lineStatistics;
   }
 
   public List<CircleStatistics> findCircleStatistics(User user) {
+    logger.info("Fetching circle statistics for user id {}", user.getId());
     Profile currentProfile = profileService.findProfileByUser(user);
 
     DateWithLabel from = new DateWithLabel(currentProfile
@@ -85,7 +92,9 @@ public class StatisticsService {
         .getTransactionDate());
     DateWithLabel to = new DateWithLabel(LocalDate.now());
 
-    return getCircleStatistics(currentProfile, from, to);
+    List<CircleStatistics> circleStatistics = getCircleStatistics(currentProfile, from, to);
+    logger.debug("Retrieved circle statistics for user id {}: {}", user.getId(), circleStatistics);
+    return circleStatistics;
   }
 
   private List<CircleStatistics> getCircleStatistics(Profile currentProfile, DateWithLabel from, DateWithLabel to) {
@@ -102,6 +111,7 @@ public class StatisticsService {
   }
 
   public List<CircleStatistics> findCircleStatistics(User user, DateWithLabel from, DateWithLabel to) {
+    logger.info("Fetching circle statistics for user id {} from {} to {}", user.getId(), from, to);
     Profile currentProfile = profileService.findProfileByUser(user);
 
     if (from.getDate().isAfter(to.getDate())) {
@@ -117,8 +127,10 @@ public class StatisticsService {
       to.setDate(to.getDate().withDayOfMonth(to.getDate().getMonth().length(to.getDate().isLeapYear())));
     }
 
-
-    return getCircleStatistics(currentProfile, from, to);
+    List<CircleStatistics> circleStatistics = getCircleStatistics(currentProfile, from, to);
+    logger.debug("Retrieved circle statistics for user id {} from {} to {}: {}", user.getId(), from, to,
+        circleStatistics);
+    return circleStatistics;
   }
 
 }

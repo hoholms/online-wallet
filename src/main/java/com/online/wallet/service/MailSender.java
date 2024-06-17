@@ -19,15 +19,20 @@ public class MailSender {
   private              String         username;
 
   public void send(String emailTo, String subject, String message) {
+    logger.info("Preparing to send email to: {}", emailTo);
     SimpleMailMessage mailMessage = new SimpleMailMessage();
 
-    mailMessage.setFrom(username);
-    mailMessage.setTo(emailTo);
-    mailMessage.setSubject(subject);
-    mailMessage.setText(message);
+    try {
+      mailMessage.setFrom(username);
+      mailMessage.setTo(emailTo);
+      mailMessage.setSubject(subject);
+      mailMessage.setText(message);
 
-    javaMailSender.send(mailMessage);
-    logger.info("Email to: {} was sent", emailTo);
+      javaMailSender.send(mailMessage);
+      logger.info("Email successfully sent to: {}", emailTo);
+    } catch (Exception e) {
+      logger.error("Failed to send email to: {} with subject: {}", emailTo, subject, e);
+    }
   }
 
 }

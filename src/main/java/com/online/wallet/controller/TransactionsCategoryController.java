@@ -30,7 +30,7 @@ public class TransactionsCategoryController {
   @GetMapping
   public String getCategories(Model model) {
     model.addAttribute("categories", transactionsCategoryService.findAllCategoriesOrderByIsIncome());
-
+    logger.info("Retrieved all categories ordered by income status");
     return "categoryList";
   }
 
@@ -40,7 +40,7 @@ public class TransactionsCategoryController {
       Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
       model.mergeAttributes(errorsMap);
       model.addAttribute("categoryDto", categoryDto);
-      logger.error("Category add error!");
+      logger.error("Category add error: {}", errorsMap);
     } else {
       transactionsCategoryService.addCategory(categoryDto);
       logger.info("Category \"{}\" added.", categoryDto.getCategory());
@@ -53,7 +53,7 @@ public class TransactionsCategoryController {
   @GetMapping("{categoryID}")
   public String categoryEditForm(@PathVariable Long categoryID, Model model) {
     model.addAttribute("category", transactionsCategoryService.findById(categoryID));
-
+    logger.info("Editing category with id {}", categoryID);
     return "categoryEdit";
   }
 
@@ -66,11 +66,11 @@ public class TransactionsCategoryController {
       model.mergeAttributes(errorsMap);
       model.addAttribute("category", categoryDto);
       model.addAttribute("category.id", id);
-      logger.error("Category update error!");
+      logger.error("Category update error: {}", errorsMap);
       return "categoryEdit";
     } else {
       transactionsCategoryService.updateCategory(categoryDto);
-      logger.info("Category \"{}\" added.", categoryDto.getCategory());
+      logger.info("Category \"{}\" updated.", categoryDto.getCategory());
     }
 
     return "redirect:/categories";
@@ -79,7 +79,7 @@ public class TransactionsCategoryController {
   @GetMapping("delete/{categoryID}")
   public String deleteCategory(@PathVariable Long categoryID) {
     transactionsCategoryService.deleteCategoryById(categoryID);
-
+    logger.info("Deleted category with id {}", categoryID);
     return "redirect:/categories";
   }
 

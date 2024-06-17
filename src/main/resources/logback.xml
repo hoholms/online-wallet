@@ -80,15 +80,15 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger level="ERROR" name="com.endava.wallet" additivity="false">
+    <logger level="ERROR" name="com.online.wallet" additivity="false">
         <appender-ref ref="FILE_ERROR"/>
     </logger>
 
-    <logger level="INFO" name="com.endava.wallet" additivity="false">
+    <logger level="INFO" name="com.online.wallet" additivity="false">
         <appender-ref ref="FILE_INFO"/>
     </logger>
 
-    <logger level="INFO" name="com.endava.wallet" additivity="false">
+    <logger level="INFO" name="com.online.wallet" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE_ALL_LOGS"/>
     </logger>

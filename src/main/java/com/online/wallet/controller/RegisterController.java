@@ -50,16 +50,22 @@ public class RegisterController {
       model.mergeAttributes(userErrorsMap);
       model.addAttribute("userDto", userDto);
       model.addAttribute("profileDto", profileDto);
+      logger.warn("Validation errors during registration: userErrors={}, profileErrors={}", userErrorsMap,
+          profileErrorsMap);
     } else {
       try {
         registerService.registerUser(userDto, profileDto, passwordConfirm);
+        logger.info("User {} registered successfully", userDto.getUsername());
       } catch (RegisterException e) {
         if (e.getClass() == UsernameAlreadyExistsException.class) {
           model.addAttribute("usernameError", e.getMessage());
+          logger.error("Registration failed: Username already exists - {}", e.getMessage());
         } else if (e.getClass() == EmailAlreadyExistsException.class) {
           model.addAttribute("emailError", e.getMessage());
+          logger.error("Registration failed: Email already exists - {}", e.getMessage());
         } else if (e.getClass() == PasswordsDontMatchException.class) {
           model.addAttribute("passwordConfirmError", e.getMessage());
+          logger.error("Registration failed: Passwords do not match - {}", e.getMessage());
         }
 
         model.addAttribute("userDto", userDto);
@@ -82,11 +88,10 @@ public class RegisterController {
 
     if (isActivated) {
       model.addAttribute(MESSAGE_ATTR, "Your account is now activated!");
-      logger.info("Account is now activated");
-
+      logger.info("Account activated successfully with code {}", code);
     } else {
       model.addAttribute(MESSAGE_ATTR, "Activation code is not found!");
-      logger.warn("Account was not activated");
+      logger.warn("Failed to activate account with code {}", code);
     }
 
     return "info";

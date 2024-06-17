@@ -38,15 +38,20 @@ public class TransactionController {
 
   @GetMapping("{transactionID}")
   public String transactionEditForm(@AuthenticationPrincipal User user, @PathVariable Long transactionID, Model model) {
-    logger.info("Call for transaction with id: {} edit page", transactionID);
+    logger.info("Call for transaction edit page with id: {}", transactionID);
 
     Profile currentProfile = profileService.findProfileByUser(user);
 
     Transaction transaction = transactionService.findTransactionByIdAndProfile(transactionID, currentProfile);
+    if (transaction == null) {
+      logger.warn("Transaction with id {} not found for user {}", transactionID, user.getId());
+      return "redirect:/dashboard";
+    }
 
     model.addAttribute(TRANSACTION_EDIT_ATTR, transaction);
     model.addAttribute("id", transaction.getId());
     model.addAttribute("categories", categoryService.findAllCategoriesByTransactionIdByIsIncome(transactionID));
+    logger.debug("Editing transaction with id: {}, user: {}", transactionID, user.getId());
 
     return TRANSACTION_EDIT_ATTR;
   }
@@ -68,10 +73,11 @@ public class TransactionController {
       model.addAttribute(TRANSACTION_EDIT_ATTR, transactionDto);
       model.addAttribute("id", id);
       model.addAttribute("categories", categoryService.findAllCategoriesByTransactionIdByIsIncome(id));
+      logger.warn("Validation errors while saving transaction with id {}: {}", id, errorsMap);
       return TRANSACTION_EDIT_ATTR;
     } else {
       transactionService.save(user, id, transactionDto);
-      logger.info("Saved transaction by id {}", id);
+      logger.info("Saved transaction with id {}", id);
     }
 
     return "redirect:/dashboard";

@@ -48,9 +48,16 @@ public class DashboardController {
   public String dashboard(@AuthenticationPrincipal User user, Model model,
       @ModelAttribute TransactionFilterDTO transactionFilterDTO,
       @PageableDefault(sort = {"transactionDate", "id"}, direction = Sort.Direction.DESC) Pageable pageable) {
-    logger.info("Call for dashboard page by user id {}", user.getId());
+    logger.info("Dashboard page requested by user id {}", user.getId());
+
     Profile currentProfile = profileService.findProfileByUser(user);
+    if (currentProfile == null) {
+      logger.error("No profile found for user id {}", user.getId());
+      return "error";
+    }
+
     currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
+    logger.debug("Calculated balance for user id {}: {}", user.getId(), currentProfile.getBalance());
 
     setModel(model, currentProfile, transactionFilterDTO, pageable);
 
@@ -61,16 +68,25 @@ public class DashboardController {
   public String addTransaction(@AuthenticationPrincipal User user, @Valid TransactionDto transactionDto,
       BindingResult bindingResult, Model model,
       @PageableDefault(sort = {"transactionDate", "id"}, direction = Sort.Direction.DESC) Pageable pageable) {
+    logger.info("Adding transaction for user id {}", user.getId());
+
     Profile currentProfile = profileService.findProfileByUser(user);
+    if (currentProfile == null) {
+      logger.error("No profile found for user id {}", user.getId());
+      return "error";
+    }
 
     if (bindingResult.hasErrors()) {
       Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
       model.addAttribute("errorsMap", errorsMap);
       model.addAttribute("transactionDto", transactionDto);
+      logger.warn("Validation errors for transaction: {}", errorsMap);
     } else {
       Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
       transactionService.add(transaction, currentProfile);
       currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
+      logger.debug("Transaction added and balance updated for user id {}: {}", user.getId(),
+          currentProfile.getBalance());
     }
 
     setModel(model, currentProfile, transactionDtoConverter.toTransactionFilterDTO(transactionDto), pageable);
@@ -82,8 +98,9 @@ public class DashboardController {
 
   private void setModel(Model model, Profile currentProfile, TransactionFilterDTO transactionFilterDTO,
       Pageable pageable) {
-    model.addAttribute("currentProfile", currentProfile);
+    logger.info("Setting model attributes for user id {}", currentProfile.getUser().getId());
 
+    model.addAttribute("currentProfile", currentProfile);
     model.addAttribute("filters", transactionFilterDTO);
 
     final Page<Transaction> filteredTransactions = transactionService.filterTransactions(currentProfile.getId(),
@@ -114,7 +131,6 @@ public class DashboardController {
         .withDayOfMonth(1), LocalDate.now());
     model.addAttribute("monthExpense", monthExpense);
 
-
     Pair<String, BigDecimal> maxIncomeCategory = transactionService.findMaxCategorySumDateBetween(currentProfile,
         true, LocalDate
         .now()
@@ -128,6 +144,12 @@ public class DashboardController {
     model.addAttribute("maxExpenseCategory", maxExpenseCategory);
 
     model.addAttribute("today", LocalDate.now());
+
+    logger.debug("Model attributes set for user id {}: incomeCategories={}, expenseCategories={}, monthIncome={}, " +
+        "monthExpense={}, maxIncomeCategory={}, maxExpenseCategory={}", currentProfile
+        .getUser()
+        .getId(), incomeCategories.size(), expenseCategories.size(), monthIncome, monthExpense, maxIncomeCategory,
+        maxExpenseCategory);
   }
 
 }

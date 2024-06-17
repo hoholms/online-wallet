@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,23 +26,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-  private final UserRepository  userRepository;
-  private final PasswordEncoder passwordEncoder;
+  private static final Logger          logger = LoggerFactory.getLogger(UserService.class);
+  private final        UserRepository  userRepository;
+  private final        PasswordEncoder passwordEncoder;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return userRepository
-        .findUserByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException(String.format("User with username \"%s\" not found",
-            username)));
+    logger.info("Loading user by username: {}", username);
+    return userRepository.findUserByUsername(username).orElseThrow(() -> {
+      logger.error("User with username \"{}\" not found", username);
+      return new UsernameNotFoundException(String.format("User with username \"%s\" not found", username));
+    });
   }
 
   public void save(User user) {
     userRepository.save(user);
+    logger.info("User saved with id: {}", user.getId());
   }
 
   public boolean add(User user) {
     if (userRepository.existsUserByUsername(user.getUsername())) {
+      logger.warn("User with username \"{}\" already exists", user.getUsername());
       return false;
     }
 
@@ -49,12 +55,14 @@ public class UserService implements UserDetailsService {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
 
     userRepository.save(user);
+    logger.info("User added with username: {}", user.getUsername());
 
     return true;
   }
 
   public void updateUser(Long userId, String username, Boolean enabled, Map<String, String> form) {
     User user = findUserById(userId);
+    logger.info("Updating user with id: {}", userId);
 
     user.setUsername(username);
     user.setEnabled(enabled);
@@ -70,27 +78,35 @@ public class UserService implements UserDetailsService {
     }
 
     userRepository.save(user);
+    logger.info("Updated user with id: {}", userId);
   }
 
   public User findUserById(Long id) {
-    return userRepository
-        .findById(id)
-        .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found"));
+    logger.info("Finding user by id: {}", id);
+    return userRepository.findById(id).orElseThrow(() -> {
+      logger.error("User with id: {} not found", id);
+      return new UserNotFoundException("User with id: " + id + " not found");
+    });
   }
 
   public void deleteUserById(User user, Long userID) {
     if (user != null && !user.getId().equals(userID)) {
+      logger.info("Deleting user with id: {}", userID);
       findUserById(userID);
       userRepository.deleteById(userID);
+      logger.info("Deleted user with id: {}", userID);
     }
   }
 
   public List<User> findAllUsers() {
+    logger.info("Fetching all users");
     return userRepository.findAll(Sort.by(Sort.Order.by("id")));
   }
 
   public boolean existsUserByUsername(String username) {
-    return userRepository.existsUserByUsername(username);
+    boolean exists = userRepository.existsUserByUsername(username);
+    logger.debug("Check if user exists by username \"{}\": {}", username, exists);
+    return exists;
   }
 
 }

@@ -63,6 +63,7 @@ public class TransactionService {
 
     transactionRepository.save(transaction);
     profileService.save(currentProfile);
+    logger.info("Transaction with id: {} for user id: {} was saved", id, user.getId());
   }
 
   public Transaction findTransactionByIdAndProfile(Long id, Profile profile) {
@@ -76,11 +77,15 @@ public class TransactionService {
   }
 
   public Page<Transaction> findTransactionsByProfile(Profile profile, Pageable pageable) {
+    logger.info("Fetching transactions for profile id: {}", profile.getId());
     return transactionRepository.findTransactionsByProfile(profile, pageable);
   }
 
-  public Page<Transaction> filterTransactions(Long profileId, TransactionFilterDTO transactionFilterDTO, Pageable pageable) {
-    return transactionRepository.findAll(TransactionSpecification.getTransactionSpecification(transactionFilterDTO, profileId), pageable);
+  public Page<Transaction> filterTransactions(Long profileId, TransactionFilterDTO transactionFilterDTO,
+      Pageable pageable) {
+    logger.info("Filtering transactions for profile id: {}", profileId);
+    return transactionRepository.findAll(TransactionSpecification.getTransactionSpecification(transactionFilterDTO,
+        profileId), pageable);
   }
 
   public Transaction findTransactionById(Long id) {
@@ -92,8 +97,10 @@ public class TransactionService {
   public BigDecimal findTranSumDateBetween(Profile profile, boolean isIncome, LocalDate from, LocalDate to) {
     List<Transaction> transactions = transactionRepository.findByProfileAndIsIncomeAndTransactionDateBetween(profile,
         isIncome, from, to);
-
-    return transactions.stream().map(Transaction::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+    BigDecimal sum = transactions.stream().map(Transaction::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+    logger.debug("Calculated transaction sum for profile id: {} from: {} to: {} isIncome: {} is: {}", profile.getId()
+        , from, to, isIncome, sum);
+    return sum;
   }
 
   public Pair<String, BigDecimal> findMaxCategorySumDateBetween(Profile profile, boolean isIncome, LocalDate from,
@@ -108,6 +115,8 @@ public class TransactionService {
       maxTranSum = BigDecimal.ZERO;
     }
 
+    logger.debug("Max category sum for profile id: {} from: {} to: {} isIncome: {} is: {} with sum: {}",
+        profile.getId(), from, to, isIncome, maxTranCategory, maxTranSum);
     return Pair.of(maxTranCategory, maxTranSum);
   }
 
@@ -138,17 +147,11 @@ public class TransactionService {
   }
 
   private static <T> Predicate<T> distinctByKeys(Function<? super T, ?>... keyExtractors) {
-
     final Map<List<?>, Boolean> seen = new ConcurrentHashMap<>();
-
     return t -> {
-
       final List<?> keys = Arrays.stream(keyExtractors).map(ke -> ke.apply(t)).collect(Collectors.toList());
-
       return seen.putIfAbsent(keys, Boolean.TRUE) == null;
-
     };
-
   }
 
   public List<DateWithLabel> findTransactionsDatesWithLabels(Profile profile, DateWithLabel from, DateWithLabel to) {
@@ -172,10 +175,9 @@ public class TransactionService {
 
   public void deleteTransactionById(Long transactionID, User user) {
     Profile currentProfile = profileService.findProfileByUser(user);
-
     transactionRepository.deleteById(transactionID);
-
     profileService.save(currentProfile);
+    logger.info("Deleted transaction with id: {} for user id: {}", transactionID, user.getId());
   }
 
 }

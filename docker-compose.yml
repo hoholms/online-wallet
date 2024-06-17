@@ -26,10 +26,10 @@ services:
       database:
         condition: service_healthy
     ports:
-      - "8888:8888"
+      - "8080:8080"
 #    restart: always
     environment:
-      PORT: 8888
+      PORT: 8080
       HOSTNAME: "localhost:8888"
       DB_HOST: "database"
       DB_PORT: "5432"
