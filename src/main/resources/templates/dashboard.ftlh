@@ -3,8 +3,8 @@
 <#import "parts/pager.ftlh" as p>
 <#include "parts/security.ftlh">
 
-<#assign filterMinAmount = filters.minAmount!"">
-<#assign filterMaxAmount = filters.maxAmount!"">
+<#assign filterMinAmount = filters.minAmount!""?has_content?then(filters.minAmount?c, '')>
+<#assign filterMaxAmount = filters.maxAmount!""?has_content?then(filters.maxAmount?c, '')>
 <#assign filterMessage = filters.message!"">
 <#assign filterIsIncome = (filters.isIncome?? && filters.isIncome)?string("on", "")!"">
 <#assign filterIsExpense = (filters.isExpense?? && filters.isExpense)?string("on", "")!"">
@@ -12,7 +12,8 @@
 <#assign filterExpenseCategories = filters.expenseCategories!?join(',')!"">
 <#assign filterTransactionDateFrom = filters.transactionDateFrom!"">
 <#assign filterTransactionDateTo = filters.transactionDateTo!"">
-<#assign filterParams = "minAmount=${filterMinAmount}&maxAmount=${filterMaxAmount}&message=${filterMessage}&isIncome=${filterIsIncome}&isExpense=${filterIsExpense}&incomeCategories=${filterIncomeCategories}&expenseCategories=${filterExpenseCategories}&transactionDateFrom=${filterTransactionDateFrom}&transactionDateTo=${filterTransactionDateTo}">
+<#assign isAnyParamPresent = filterMinAmount?has_content || filterMaxAmount?has_content || filterMessage?has_content || filterIsIncome?has_content || filterIsExpense?has_content || filterIncomeCategories?has_content || filterExpenseCategories?has_content || filterTransactionDateFrom?has_content || filterTransactionDateTo?has_content>
+<#assign filterParams = "minAmount=${filterMinAmount?has_content?then(filterMinAmount?c, '')}&maxAmount=${filterMaxAmount?has_content?then(filterMaxAmount?c, '')}&message=${filterMessage}&isIncome=${filterIsIncome}&isExpense=${filterIsExpense}&incomeCategories=${filterIncomeCategories}&expenseCategories=${filterExpenseCategories}&transactionDateFrom=${filterTransactionDateFrom}&transactionDateTo=${filterTransactionDateTo}">
 
 <@c.page>
 <#--noinspection FtlReferencesInspection-->
@@ -30,7 +31,7 @@
         </h3>
     </div>
 
-    <div class="container-fluid accordion" id="accordionExample">
+    <div class="container-fluid accordion" id="addTransactionAccordion">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -41,7 +42,7 @@
             <div id="collapseOne"
                  class="accordion-collapse collapse <#if errorsMap?? && transactionDto.isIncome>show</#if>"
                  aria-labelledby="headingOne"
-                 data-bs-parent="#accordionExample">
+                 data-bs-parent="#addTransactionAccordion">
                 <div class="accordion-body">
                     <@at.addTransaction incomeCategories true today />
                 </div>
@@ -57,7 +58,7 @@
             <div id="collapseTwo"
                  class="accordion-collapse collapse <#if errorsMap?? && !transactionDto.isIncome>show</#if>"
                  aria-labelledby="headingTwo"
-                 data-bs-parent="#accordionExample">
+                 data-bs-parent="#addTransactionAccordion">
                 <div class="accordion-body">
                     <@at.addTransaction expenseCategories false today />
                 </div>
@@ -127,81 +128,104 @@
         </div>
     </div>
 
-    <div class="container-fluid p-4 my-4 rounded-3 border">
-        <h3 class="mb-3">Filter Transactions:</h3>
-        <form action="/dashboard" method="get" class="row g-3">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <div class="form-floating">
-                        <input type="number" step="0.01" class="form-control" id="minAmount" name="minAmount"
-                               value="${filterMinAmount}" placeholder="Min Amount">
-                        <label for="minAmount">Min Amount</label>
-                    </div>
-                    <div class="form-floating">
-                        <input type="number" step="0.01" class="form-control" id="maxAmount" name="maxAmount"
-                               value="${filterMaxAmount}" placeholder="Max Amount">
-                        <label for="maxAmount">Max Amount</label>
-                    </div>
+    <div class="accordion" id="filterAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button <#if !isAnyParamPresent>collapsed</#if>" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseFilter"
+                        aria-expanded="false" aria-controls="collapseFilter">
+                    Filter Transactions
+                </button>
+            </h2>
+            <div id="collapseFilter" class="accordion-collapse collapse <#if isAnyParamPresent>show</#if>"
+                 data-bs-parent="#filterAccordion">
+                <div class="accordion-body">
+                    <form action="/dashboard" method="get" class="row g-3">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input type="number" step="0.01" class="form-control" id="minAmount"
+                                           name="minAmount"
+                                           value="${filterMinAmount?has_content?then(filterMinAmount?c, '')}"
+                                           placeholder="Min Amount">
+                                    <label for="minAmount">Min Amount</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input type="number" step="0.01" class="form-control" id="maxAmount"
+                                           name="maxAmount"
+                                           value="${filterMaxAmount?has_content?then(filterMaxAmount?c, '')}"
+                                           placeholder="Max Amount">
+                                    <label for="maxAmount">Max Amount</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="message" name="message"
+                                       value="${filterMessage}"
+                                       placeholder="Message">
+                                <label for="message">Message</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="incomeCategories" class="form-label">Income Categories</label>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="isIncome" name="isIncome"
+                                       <#if filters.isIncome??>checked</#if>
+                                       onchange="toggleCategorySelects()">
+                                <label class="form-check-label" for="isIncome">Income</label>
+                            </div>
+                            <select id="incomeCategories" name="incomeCategories" class="form-select"
+                                    data-placeholder="Income categories" multiple
+                                    <#if !filterIsIncome?? || filterIsIncome == "">disabled</#if>>
+                                <#list incomeCategories as category>
+                                    <option value="${category.id}"
+                                            <#if filterIncomeCategories?split(",")?seq_contains(category.id?string)>selected</#if>>${category.category}</option>
+                                </#list>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="expenseCategories" class="form-label">Expense Categories</label>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="isExpense" name="isExpense"
+                                       <#if filters.isExpense??>checked</#if>
+                                       onchange="toggleCategorySelects()">
+                                <label class="form-check-label" for="isExpense">Expense</label>
+                            </div>
+                            <select id="expenseCategories" name="expenseCategories" class="form-select"
+                                    data-placeholder="Expense categories" multiple
+                                    <#if !filterIsExpense?? || filterIsExpense == "">disabled</#if>>
+                                <#list expenseCategories as category>
+                                    <option value="${category.id}"
+                                            <#if filterExpenseCategories?split(",")?seq_contains(category.id?string)>selected</#if>>${category.category}</option>
+                                </#list>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control" id="transactionDateFrom"
+                                           name="transactionDateFrom"
+                                           value="${filterTransactionDateFrom}" placeholder="Transaction Date From">
+                                    <label for="transactionDateFrom">Transaction Date From</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input type="date" class="form-control" id="transactionDateTo"
+                                           name="transactionDateTo"
+                                           value="${filterTransactionDateTo}" placeholder="Transaction Date To">
+                                    <label for="transactionDateTo">Transaction Date To</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <a href="dashboard" class="btn btn-danger">Clear filters</a>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="message" name="message" value="${filterMessage}"
-                           placeholder="Message">
-                    <label for="message">Message</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label for="incomeCategories" class="form-label">Income Categories</label>
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="isIncome" name="isIncome"
-                           <#if filters.isIncome??>checked</#if>
-                           onchange="toggleCategorySelects()">
-                    <label class="form-check-label" for="isIncome">Income</label>
-                </div>
-                <select id="incomeCategories" name="incomeCategories" class="form-select" multiple
-                        <#if !filterIsIncome?? || filterIsIncome == "">disabled</#if>>
-                    <#list incomeCategories as category>
-                        <option value="${category.id}"
-                                <#if category.id?string?contains(filterIncomeCategories) && filters.isIncome??>selected</#if>>${category.category}</option>
-                    </#list>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label for="expenseCategories" class="form-label">Expense Categories</label>
-                <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="isExpense" name="isExpense"
-                           <#if filters.isExpense??>checked</#if>
-                           onchange="toggleCategorySelects()">
-                    <label class="form-check-label" for="isExpense">Expense</label>
-                </div>
-                <select id="expenseCategories" name="expenseCategories" class="form-select" multiple
-                        <#if !filterIsExpense?? || filterIsExpense == "">disabled</#if>>
-                    <#list expenseCategories as category>
-                        <option value="${category.id}"
-                                <#if category.id?string?contains(filterExpenseCategories) && filters.isExpense??>selected</#if>>${category.category}</option>
-                    </#list>
-                </select>
-            </div>
-            <div class="col-md-12">
-                <div class="input-group">
-                    <div class="form-floating">
-                        <input type="date" class="form-control" id="transactionDateFrom" name="transactionDateFrom"
-                               value="${filterTransactionDateFrom}" placeholder="Transaction Date From">
-                        <label for="transactionDateFrom">Transaction Date From</label>
-                    </div>
-                    <div class="form-floating">
-                        <input type="date" class="form-control" id="transactionDateTo" name="transactionDateTo"
-                               value="${filterTransactionDateTo}" placeholder="Transaction Date To">
-                        <label for="transactionDateTo">Transaction Date To</label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Filter</button>
-                <a href="dashboard" class="btn btn-danger">Clear filters</a>
-            </div>
-        </form>
+        </div>
     </div>
 
     <#if recentTransactions.getSize() gte 25>

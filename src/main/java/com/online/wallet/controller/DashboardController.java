@@ -59,7 +59,7 @@ public class DashboardController {
 
   @PostMapping("/dashboard")
   public String addTransaction(@AuthenticationPrincipal User user, @Valid TransactionDto transactionDto,
-      BindingResult bindingResult, Model model, @ModelAttribute TransactionFilterDTO transactionFilterDTO,
+      BindingResult bindingResult, Model model,
       @PageableDefault(sort = {"transactionDate", "id"}, direction = Sort.Direction.DESC) Pageable pageable) {
     Profile currentProfile = profileService.findProfileByUser(user);
 
@@ -73,7 +73,7 @@ public class DashboardController {
       currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
     }
 
-    setModel(model, currentProfile, transactionFilterDTO, pageable);
+    setModel(model, currentProfile, transactionDtoConverter.toTransactionFilterDTO(transactionDto), pageable);
 
     profileService.calcBalance(user);
 
