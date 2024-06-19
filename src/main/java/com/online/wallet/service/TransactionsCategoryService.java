@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.online.wallet.exception.TransactionCategoryNotFoundException;
@@ -52,9 +53,9 @@ public class TransactionsCategoryService {
     return categoryRepository.findByIsIncome(isIncome);
   }
 
-  public List<TransactionsCategory> findAllCategoriesOrderByIsIncome() {
-    logger.info("Fetching all categories ordered by isIncome");
-    return categoryRepository.findAll(Sort.by(Sort.Direction.DESC, "isIncome"));
+  public Page<TransactionsCategory> findByIsIncome(boolean isIncome, Pageable pageable) {
+    logger.info("Fetching categories by isIncome {}", isIncome);
+    return categoryRepository.findByIsIncome(isIncome, pageable);
   }
 
   public void updateCategory(TransactionsCategoryDto categoryDto) {

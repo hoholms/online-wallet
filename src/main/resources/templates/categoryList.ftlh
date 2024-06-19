@@ -1,4 +1,5 @@
 <#import "parts/common.ftlh" as c>
+<#import "parts/pager.ftlh" as p>
 
 <@c.page>
     <h2>List of transaction categories</h2>
@@ -37,38 +38,75 @@
         </form>
     </div>
 
-    <div class="mb-4 table-responsive">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Category name</th>
-                <th style="text-align: center">Is income</th>
-                <th style="text-align: center">Edit</th>
-                <th style="text-align: center">Delete</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <#list categories as category>
+    <div class="my-4 row">
+        <div class="col-md table-responsive">
+            <table class="table table-hover">
+                <thead>
                 <tr>
-                    <td>${category.category}</td>
-                    <td
-                            style="width: 10%; text-align: center;
-                                    background-color: <#if category.isIncome>var(--bs-success-border-subtle)<#else>var(--bs-danger-border-subtle)</#if>">
-                        <input type="checkbox" name="isIncome" id="isIncomeCheck"
-                               class="form-check-input" ${category.isIncome?string("checked", "")} disabled>
-                    </td>
-                    <td style="width: 10%; text-align: center">
-                        <a class="btn btn-outline-primary btn-sm" href="/categories/${category.id}"
-                           role="button">Edit</a>
-                    </td>
-                    <td style="width: 10%; text-align: center">
-                        <a class="btn btn-outline-danger btn-sm" href="/categories/delete/${category.id}"
-                           role="button">Delete</a>
-                    </td>
+                    <th>Category name</th>
+                    <th style="text-align: center">Is income</th>
+                    <th style="text-align: center">Edit</th>
+                    <th style="text-align: center">Delete</th>
                 </tr>
-            </#list>
-            </tbody>
-        </table>
+                </thead>
+
+                <tbody>
+                <#list incomeCategories.content as category>
+                    <tr>
+                        <td>${category.category}</td>
+                        <td
+                                style="width: 15%; text-align: center;
+                                        background-color: <#if category.isIncome>var(--bs-success-border-subtle)<#else>var(--bs-danger-border-subtle)</#if>">
+                            <input type="checkbox" name="isIncome" id="isIncomeCheck"
+                                   class="form-check-input" ${category.isIncome?string("checked", "")} disabled>
+                        </td>
+                        <td style="width: 10%; text-align: center">
+                            <a class="btn btn-outline-primary btn-sm" href="/categories/${category.id}"
+                               role="button">Edit</a>
+                        </td>
+                        <td style="width: 10%; text-align: center">
+                            <a class="btn btn-outline-danger btn-sm" href="/categories/delete/${category.id}"
+                               role="button">Delete</a>
+                        </td>
+                    </tr>
+                </#list>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Category name</th>
+                    <th style="text-align: center">Is income</th>
+                    <th style="text-align: center">Edit</th>
+                    <th style="text-align: center">Delete</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <#list expenseCategories.content as category>
+                    <tr>
+                        <td>${category.category}</td>
+                        <td
+                                style="width: 15%; text-align: center;
+                                        background-color: <#if category.isIncome>var(--bs-success-border-subtle)<#else>var(--bs-danger-border-subtle)</#if>">
+                            <input type="checkbox" name="isIncome" id="isIncomeCheck"
+                                   class="form-check-input" ${category.isIncome?string("checked", "")} disabled>
+                        </td>
+                        <td style="width: 10%; text-align: center">
+                            <a class="btn btn-outline-primary btn-sm" href="/categories/${category.id}"
+                               role="button">Edit</a>
+                        </td>
+                        <td style="width: 10%; text-align: center">
+                            <a class="btn btn-outline-danger btn-sm" href="/categories/delete/${category.id}"
+                               role="button">Delete</a>
+                        </td>
+                    </tr>
+                </#list>
+                </tbody>
+            </table>
+        </div>
     </div>
+    <@p.pager "/categories" categories/>
 </@c.page>

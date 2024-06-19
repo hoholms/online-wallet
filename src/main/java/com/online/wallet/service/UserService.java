@@ -2,14 +2,14 @@ package com.online.wallet.service;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -98,9 +98,9 @@ public class UserService implements UserDetailsService {
     }
   }
 
-  public List<User> findAllUsers() {
+  public Page<User> findAllUsers(final Pageable pageable) {
     logger.info("Fetching all users");
-    return userRepository.findAll(Sort.by(Sort.Order.by("id")));
+    return userRepository.findAll(pageable);
   }
 
   public boolean existsUserByUsername(String username) {

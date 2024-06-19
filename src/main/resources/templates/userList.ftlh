@@ -1,4 +1,5 @@
 <#import "parts/common.ftlh" as c>
+<#import "parts/pager.ftlh" as p>
 <#include "parts/security.ftlh">
 
 <@c.page>
@@ -15,7 +16,7 @@
             </tr>
             </thead>
             <tbody>
-            <#list users as user>
+            <#list users.content as user>
                 <tr>
                     <td>${user.id}</td>
                     <td>${user.username}</td>
@@ -32,4 +33,5 @@
             </tbody>
         </table>
     </div>
+    <@p.pager "/users" users/>
 </@c.page>

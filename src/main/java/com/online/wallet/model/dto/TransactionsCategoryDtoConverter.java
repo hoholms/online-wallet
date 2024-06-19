@@ -14,7 +14,7 @@ public class TransactionsCategoryDtoConverter {
         .builder()
         .id(categoryDto.getId())
         .category(categoryDto.getCategory())
-        .isIncome(categoryDto.getIsIncome())
+        .isIncome(categoryDto.getIsIncome() != null && categoryDto.getIsIncome())
         .build();
   }
 

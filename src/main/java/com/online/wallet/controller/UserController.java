@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +33,10 @@ public class UserController {
   private final        UserService userService;
 
   @GetMapping
-  public String userList(Model model) {
+  public String userList(Model model,
+      @PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable) {
     logger.info("Call for users list page");
-    model.addAttribute("users", userService.findAllUsers());
+    model.addAttribute("users", userService.findAllUsers(pageable));
     logger.debug("Retrieved list of all users");
     return "userList";
   }
