@@ -76,12 +76,14 @@ public class DashboardController {
       return "error";
     }
 
+    TransactionFilterDTO transactionFilterDTO = new TransactionFilterDTO();
     if (bindingResult.hasErrors()) {
       Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
       model.addAttribute("errorsMap", errorsMap);
       model.addAttribute("transactionDto", transactionDto);
       logger.warn("Validation errors for transaction: {}", errorsMap);
     } else {
+      transactionFilterDTO = transactionDtoConverter.toTransactionFilterDTO(transactionDto);
       Transaction transaction = transactionDtoConverter.fromDto(transactionDto, currentProfile);
       transactionService.add(transaction, currentProfile);
       currentProfile.setBalance(profileService.getCalcBalance(currentProfile));
@@ -89,7 +91,7 @@ public class DashboardController {
           currentProfile.getBalance());
     }
 
-    setModel(model, currentProfile, transactionDtoConverter.toTransactionFilterDTO(transactionDto), pageable);
+    setModel(model, currentProfile, transactionFilterDTO, pageable);
 
     profileService.calcBalance(user);
 
