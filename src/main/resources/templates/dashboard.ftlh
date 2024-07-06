@@ -13,7 +13,6 @@
 <#assign filterTransactionDateFrom = filters.transactionDateFrom!"">
 <#assign filterTransactionDateTo = filters.transactionDateTo!"">
 <#assign isAnyParamPresent = filterMinAmount?has_content || filterMaxAmount?has_content || filterMessage?has_content || filterIsIncome?has_content || filterIsExpense?has_content || filterIncomeCategories?has_content || filterExpenseCategories?has_content || filterTransactionDateFrom?has_content || filterTransactionDateTo?has_content>
-<#assign filterParams = "minAmount=${filterMinAmount?has_content?then(filterMinAmount?c, '')}&maxAmount=${filterMaxAmount?has_content?then(filterMaxAmount?c, '')}&message=${filterMessage}&isIncome=${filterIsIncome}&isExpense=${filterIsExpense}&incomeCategories=${filterIncomeCategories}&expenseCategories=${filterExpenseCategories}&transactionDateFrom=${filterTransactionDateFrom}&transactionDateTo=${filterTransactionDateTo}">
 
 <@c.page>
 <#--noinspection FtlReferencesInspection-->
@@ -229,7 +228,7 @@
     </div>
 
     <#if recentTransactions.getSize() gte 25>
-        <@p.pager "/dashboard" recentTransactions filterParams/>
+        <@p.pager springMacroRequestContext.requestUri!'' recentTransactions springMacroRequestContext.queryString!''/>
     </#if>
 
     <#if recentTransactions.content[0]??>
@@ -298,5 +297,5 @@
             </div>
         </div>
     </#if>
-    <@p.pager "/dashboard" recentTransactions filterParams/>
+    <@p.pager springMacroRequestContext.requestUri!'' recentTransactions springMacroRequestContext.queryString!''/>
 </@c.page>

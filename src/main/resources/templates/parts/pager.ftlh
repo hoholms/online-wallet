@@ -1,4 +1,16 @@
+<#function removeSizeAndPageParams filters>
+    <#assign result = []>
+    <#list filters?split('&') as param>
+        <#if !param?starts_with("size=") && !param?starts_with("page=")>
+            <#assign result += [param]>
+        </#if>
+    </#list>
+    <#return result?join("&")>
+</#function>
+
 <#macro pager url page filters="">
+    <#assign cleanedFilters = removeSizeAndPageParams(filters)>
+
     <#if page.getTotalPages() gt 7>
         <#assign
         totalPages = page.getTotalPages()
@@ -31,7 +43,7 @@
                             <#else>
                                 <li>
                                     <a class="dropdown-item"
-                                       href="${url}?${filters}&page=<#if page.getNumber() gt page.getTotalElements() / c>${(page.getTotalElements() / c)?round - 1}<#else>${page.getNumber()}</#if>&size=${c}"
+                                       href="${url}?${cleanedFilters}&page=<#if page.getNumber() gt page.getTotalElements() / c>${(page.getTotalElements() / c)?round - 1}<#else>${page.getNumber()}</#if>&size=${c}"
                                        tabindex="-1">${c}</a>
                                 </li>
                             </#if>
@@ -40,7 +52,7 @@
                 </div>
             </li>
             <li class="page-item <#if page.getNumber() == 0>disabled</#if>">
-                <a class="page-link" href="${url}?${filters}&page=${page.getNumber() - 1}&size=${page.getSize()}"
+                <a class="page-link" href="${url}?${cleanedFilters}&page=${page.getNumber() - 1}&size=${page.getSize()}"
                    tabindex="-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-arrow-left-short" viewBox="0 0 16 16">
@@ -56,7 +68,7 @@
                     </li>
                 <#elseif p == 1 && body?seq_contains(-1) && !(page.getNumber() + 1 == 2)>
                     <li class="page-item">
-                        <a class="page-link" href="${url}?${filters}&page=${p - 1}&size=${page.getSize()}"
+                        <a class="page-link" href="${url}?${cleanedFilters}&page=${p - 1}&size=${page.getSize()}"
                            tabindex="-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-chevron-bar-left" viewBox="0 0 16 16">
@@ -67,7 +79,7 @@
                     </li>
                 <#elseif p == page.getTotalPages() && body?seq_contains(-1) && !(page.getNumber() + 1 == page.getTotalPages() - 1)>
                     <li class="page-item">
-                        <a class="page-link" href="${url}?${filters}&page=${p - 1}&size=${page.getSize()}"
+                        <a class="page-link" href="${url}?${cleanedFilters}&page=${p - 1}&size=${page.getSize()}"
                            tabindex="-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-chevron-bar-right" viewBox="0 0 16 16">
@@ -79,13 +91,13 @@
                 <#elseif p == -1>
                 <#else>
                     <li class="page-item">
-                        <a class="page-link" href="${url}?${filters}&page=${p - 1}&size=${page.getSize()}"
+                        <a class="page-link" href="${url}?${cleanedFilters}&page=${p - 1}&size=${page.getSize()}"
                            tabindex="-1">${p}</a>
                     </li>
                 </#if>
             </#list>
             <li class="page-item <#if page.getNumber() == page.getTotalPages() - 1>disabled</#if>">
-                <a class="page-link" href="${url}?${filters}&page=${page.getNumber() + 1}&size=${page.getSize()}"
+                <a class="page-link" href="${url}?${cleanedFilters}&page=${page.getNumber() + 1}&size=${page.getSize()}"
                    tabindex="-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-arrow-right-short" viewBox="0 0 16 16">
